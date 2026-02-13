@@ -41,15 +41,15 @@ story_location: _bmad-output/implementation-artifacts
 
 development_status:
   # Epic 1: Lien Unique & Page Invité
-  epic-1: in-progress
+  epic-1: done
   1-1-setup-technique-fondation: done
   1-2-page-invite-avec-lien-unique: done
   1-3-page-erreur-elegante: done
   epic-1-retrospective: optional
 
   # Epic 2: Expérience Visuelle Premium
-  epic-2: backlog
-  2-1-section-hero-cinematique: backlog
+  epic-2: in-progress
+  2-1-section-hero-cinematique: done
   2-2-timeline-notre-histoire: backlog
   2-3-sections-conditionnelles-lieu-programme: backlog
   2-4-scroll-animations-navigation-fluide: backlog

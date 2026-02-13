@@ -60,6 +60,18 @@
   --animate-duration-overlay: 400ms;
   --animate-duration-pulse: 2000ms;
   --animate-ease-overlay: cubic-bezier(0.32, 0.72, 0, 1);
+  --animate-fade-in-up: fadeInUp var(--animate-duration-entry) ease-out both;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 :root {

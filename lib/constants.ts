@@ -2,6 +2,7 @@ export const COUPLE = {
   names: 'Ahmed & Ghizlaine',
   contactNames: 'Ahmed ou Ghizlaine',
   date: '17 Octobre 2026',
+  inviteText: 'Vous êtes cordialement invité(e)',
   greeting: (name: string) => `${name}, vous êtes attendu(e)`,
   message: 'Nous avons le plaisir de vous convier à célébrer notre union.',
   submessage: 'Votre présence est le plus beau des cadeaux.',
