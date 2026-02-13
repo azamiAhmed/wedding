@@ -1,26 +1,96 @@
 @import "tailwindcss";
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
 @theme inline {
+  /* shadcn semantic color mappings */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Wedding color tokens */
+  --color-cream-warm: #FAF7F2;
+  --color-gold-moroccan: #B8860B;
+  --color-brown-deep: #2C2418;
+  --color-gold-luminous: #D4A54A;
+  --color-gold-veil: #E8D5A8;
+  --color-white-broken: #FFFDF9;
+  --color-brown-medium: #6B5D4F;
+  --color-red-soft: #C45B4A;
+  --color-green-olive: #6B8F5E;
+
+  /* Fonts */
   --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-cormorant);
+
+  /* Radius */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+
+  /* Spacing (8px base) */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 32px;
+  --spacing-xl: 64px;
+  --spacing-2xl: 128px;
+
+  /* Animation */
+  --animate-duration-entry: 600ms;
+  --animate-duration-state: 300ms;
+  --animate-duration-feedback: 150ms;
+  --animate-duration-overlay: 400ms;
+  --animate-duration-pulse: 2000ms;
+  --animate-ease-overlay: cubic-bezier(0.32, 0.72, 0, 1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  --radius: 0.5rem;
+
+  /* shadcn semantic tokens — wedding palette */
+  --background: #FAF7F2;
+  --foreground: #2C2418;
+  --card: #FFFDF9;
+  --card-foreground: #2C2418;
+  --popover: #FFFDF9;
+  --popover-foreground: #2C2418;
+  --primary: #B8860B;
+  --primary-foreground: #FFFDF9;
+  --secondary: #E8D5A8;
+  --secondary-foreground: #2C2418;
+  --muted: #E8D5A8;
+  --muted-foreground: #6B5D4F;
+  --accent: #E8D5A8;
+  --accent-foreground: #2C2418;
+  --destructive: #C45B4A;
+  --border: #E8D5A8;
+  --input: #E8D5A8;
+  --ring: #B8860B;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
   }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  body {
+    @apply bg-background text-foreground;
+  }
 }
