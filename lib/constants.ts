@@ -1,5 +1,6 @@
 export const COUPLE = {
   names: 'Ahmed & Ghizlaine',
+  contactNames: 'Ahmed ou Ghizlaine',
   date: '17 Octobre 2026',
   greeting: (name: string) => `${name}, vous êtes attendu(e)`,
   message: 'Nous avons le plaisir de vous convier à célébrer notre union.',
