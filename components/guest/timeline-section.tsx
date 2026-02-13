@@ -38,7 +38,7 @@ export function TimelineSection() {
         {COUPLE.timelineTitle}
       </h2>
 
-      <div className="relative w-full max-w-3xl">
+      <div className="relative w-full">
         {/* Mobile layout: line left, cards right */}
         <div className="md:hidden relative pl-8">
           <div className="absolute left-[7px] top-2 bottom-2 w-0.5 bg-gold-moroccan" />

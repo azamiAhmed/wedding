@@ -5,7 +5,7 @@ function ProgramIcon({
 }: {
   icon: ProgramEvent['icon']
 }) {
-  const className = 'h-6 w-6 text-gold-moroccan'
+  const className = 'h-8 w-8 text-gold-moroccan'
 
   switch (icon) {
     case 'welcome':
@@ -56,21 +56,19 @@ export function ProgramSection() {
 
       <div className="scroll-reveal mt-4 mx-auto h-px w-12 bg-gold-moroccan" />
 
-      <div className="mt-8 mx-auto w-full max-w-sm lg:max-w-md space-y-5">
+      <div className="mt-10 w-full space-y-8">
         {PROGRAM_EVENTS.map((event) => (
-          <article key={event.title} className="scroll-reveal flex items-center gap-3">
-            <div className="flex-shrink-0">
+          <div key={event.title} className="scroll-reveal">
+            <div className="mx-auto w-fit">
               <ProgramIcon icon={event.icon} />
             </div>
-            <div>
-              <h3 className="font-display text-sm md:text-base text-brown-deep">
-                {event.title}
-              </h3>
-              <p className="font-sans text-xs text-brown-medium">
-                {event.description}
-              </p>
-            </div>
-          </article>
+            <p className="mt-3 font-display text-lg md:text-xl text-brown-deep text-center">
+              {event.title}
+            </p>
+            <p className="mt-1 font-sans text-sm md:text-base text-brown-medium text-center">
+              {event.description}
+            </p>
+          </div>
         ))}
       </div>
     </section>

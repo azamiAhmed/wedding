@@ -24,7 +24,7 @@ export function VenueSection() {
       </p>
 
       {VENUE.details.length > 0 && (
-        <dl className="scroll-reveal mt-6 mx-auto w-full max-w-xs lg:max-w-sm space-y-2">
+        <dl className="scroll-reveal mt-6 w-full space-y-2">
           {VENUE.details.map((detail) => (
             <div key={detail.label} className="flex justify-between gap-4">
               <dt className="font-sans text-xs text-brown-medium uppercase tracking-wider">
