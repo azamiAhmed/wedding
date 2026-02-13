@@ -1,0 +1,74 @@
+# generated: 2026-02-13
+# project: wedding
+# project_key: NOKEY
+# tracking_system: file-system
+# story_location: _bmad-output/implementation-artifacts
+
+# STATUS DEFINITIONS:
+# ==================
+# Epic Status:
+#   - backlog: Epic not yet started
+#   - in-progress: Epic actively being worked on
+#   - done: All stories in epic completed
+#
+# Epic Status Transitions:
+#   - backlog → in-progress: Automatically when first story is created (via create-story)
+#   - in-progress → done: Manually when all stories reach 'done' status
+#
+# Story Status:
+#   - backlog: Story only exists in epic file
+#   - ready-for-dev: Story file created in stories folder
+#   - in-progress: Developer actively working on implementation
+#   - review: Ready for code review (via Dev's code-review workflow)
+#   - done: Story completed
+#
+# Retrospective Status:
+#   - optional: Can be completed but not required
+#   - done: Retrospective has been completed
+#
+# WORKFLOW NOTES:
+# ===============
+# - Epic transitions to 'in-progress' automatically when first story is created
+# - Stories can be worked in parallel if team capacity allows
+# - SM typically creates next story after previous one is 'done' to incorporate learnings
+# - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
+
+generated: 2026-02-13
+project: wedding
+project_key: NOKEY
+tracking_system: file-system
+story_location: _bmad-output/implementation-artifacts
+
+development_status:
+  # Epic 1: Lien Unique & Page Invité
+  epic-1: backlog
+  1-1-setup-technique-fondation: backlog
+  1-2-page-invite-avec-lien-unique: backlog
+  1-3-page-erreur-elegante: backlog
+  epic-1-retrospective: optional
+
+  # Epic 2: Expérience Visuelle Premium
+  epic-2: backlog
+  2-1-section-hero-cinematique: backlog
+  2-2-timeline-notre-histoire: backlog
+  2-3-sections-conditionnelles-lieu-programme: backlog
+  2-4-scroll-animations-navigation-fluide: backlog
+  2-5-apercu-open-graph-whatsapp: backlog
+  epic-2-retrospective: optional
+
+  # Epic 3: Système RSVP
+  epic-3: backlog
+  3-1-api-rsvp: backlog
+  3-2-bouton-rsvp-flottant: backlog
+  3-3-overlay-rsvp-confirmation: backlog
+  3-4-modification-pre-affichage-rsvp: backlog
+  epic-3-retrospective: optional
+
+  # Epic 4: Administration
+  epic-4: backlog
+  4-1-authentification-admin: backlog
+  4-2-dashboard-liste-des-invites: backlog
+  4-3-ajout-suppression-invites: backlog
+  4-4-modification-manuelle-statut-rsvp: backlog
+  4-5-toggles-sections-du-site: backlog
+  epic-4-retrospective: optional
