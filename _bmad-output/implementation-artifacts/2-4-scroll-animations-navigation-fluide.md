@@ -1,6 +1,6 @@
 # Story 2.4: Scroll Animations & Navigation Fluide
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -32,38 +32,38 @@ so that l'expérience soit premium et immersive comme un site Apple.
 
 ## Tasks / Subtasks
 
-- [ ] Task 1: Add scroll-driven animation CSS to globals.css (AC: #1, #3, #5)
-  - [ ] 1.1: Define `@keyframes scrollReveal` (opacity 0→1, translateY 30px→0)
-  - [ ] 1.2: Create `.scroll-reveal` utility class with `animation-timeline: view()` and `animation-range: entry 0% entry 40%`
-  - [ ] 1.3: Wrap in `@supports (animation-timeline: view())` for graceful degradation
-  - [ ] 1.4: Respect `prefers-reduced-motion` — disable scroll animations
-  - [ ] 1.5: Use GPU-accelerated properties only (`opacity`, `transform`) for 60fps
+- [x] Task 1: Add scroll-driven animation CSS to globals.css (AC: #1, #3, #5)
+  - [x] 1.1: Define `@keyframes scrollReveal` (opacity 0→1, translateY 30px→0)
+  - [x] 1.2: Create `.scroll-reveal` utility class with `animation-timeline: view()` and `animation-range: entry 0% entry 40%`
+  - [x] 1.3: Wrap in `@supports (animation-timeline: view())` for graceful degradation
+  - [x] 1.4: Respect `prefers-reduced-motion` — disable scroll animations
+  - [x] 1.5: Use GPU-accelerated properties only (`opacity`, `transform`) for 60fps
 
-- [ ] Task 2: Apply scroll reveal to InfoSection (AC: #1)
-  - [ ] 2.1: Add `scroll-reveal` class to section's inner content elements
-  - [ ] 2.2: Keep existing `motion-safe:animate-fade-in-up` on h2 heading (entry animation)
+- [x] Task 2: Apply scroll reveal to InfoSection (AC: #1)
+  - [x] 2.1: Add `scroll-reveal` class to section's inner content elements
+  - [x] 2.2: Keep existing `motion-safe:animate-fade-in-up` on h2 heading (entry animation)
 
-- [ ] Task 3: Apply scroll reveal to TimelineSection (AC: #1)
-  - [ ] 3.1: Add scroll reveal to timeline events/articles
-  - [ ] 3.2: Consider staggered reveal for timeline events
+- [x] Task 3: Apply scroll reveal to TimelineSection (AC: #1)
+  - [x] 3.1: Add scroll reveal to timeline events/articles
+  - [x] 3.2: Consider staggered reveal for timeline events
 
-- [ ] Task 4: Apply scroll reveal to VenueSection (AC: #1)
-  - [ ] 4.1: Add scroll reveal to section content
+- [x] Task 4: Apply scroll reveal to VenueSection (AC: #1)
+  - [x] 4.1: Add scroll reveal to section content
 
-- [ ] Task 5: Apply scroll reveal to ProgramSection (AC: #1)
-  - [ ] 5.1: Add scroll reveal to program events list
+- [x] Task 5: Apply scroll reveal to ProgramSection (AC: #1)
+  - [x] 5.1: Add scroll reveal to program events list
 
-- [ ] Task 6: Desktop responsive adaptations (AC: #4)
-  - [ ] 6.1: Add `lg:` breakpoint adjustments for wider content areas and spacing
-  - [ ] 6.2: Ensure scroll-snap still works correctly on desktop
+- [x] Task 6: Desktop responsive adaptations (AC: #4)
+  - [x] 6.1: Add `lg:` breakpoint adjustments for wider content areas and spacing
+  - [x] 6.2: Ensure scroll-snap still works correctly on desktop
 
-- [ ] Task 7: Verify scroll-snap is already in place (AC: #2)
-  - [ ] 7.1: Confirm layout.tsx has `snap-y snap-mandatory` (ALREADY DONE — verify only)
-  - [ ] 7.2: Confirm all sections have `snap-start` (ALREADY DONE — verify only)
+- [x] Task 7: Verify scroll-snap is already in place (AC: #2)
+  - [x] 7.1: Confirm layout.tsx has `snap-y snap-mandatory` (ALREADY DONE — verify only)
+  - [x] 7.2: Confirm all sections have `snap-start` (ALREADY DONE — verify only)
 
-- [ ] Task 8: Build + lint verification (AC: #3)
-  - [ ] 8.1: `npm run build` passes
-  - [ ] 8.2: `npm run lint` passes
+- [x] Task 8: Build + lint verification (AC: #3)
+  - [x] 8.1: `npm run build` passes
+  - [x] 8.2: `npm run lint` passes
 
 ## Dev Notes
 
@@ -212,8 +212,34 @@ Recent commits follow pattern: `feat: {story-key}`. Latest: `f02f493 feat: 2-2-t
 
 ### Agent Model Used
 
+Claude Opus 4.6
+
 ### Debug Log References
+
+None — clean implementation, no errors.
 
 ### Completion Notes List
 
+- Added `@keyframes scrollReveal` and `.scroll-reveal` CSS class using native CSS Scroll-Driven Animations API (`animation-timeline: view()`)
+- Created stagger variants `.scroll-reveal-stagger-1` and `.scroll-reveal-stagger-2` for future use
+- Progressive enhancement via `@supports (animation-timeline: view())` — content visible without animation on unsupported browsers
+- `prefers-reduced-motion: reduce` resets all scroll animations to visible state
+- Applied `scroll-reveal` to InfoSection (separator, message, submessage), TimelineSection (all event articles), VenueSection (separator, venue name, address, description, details), ProgramSection (separator, each event article)
+- Preserved existing `motion-safe:animate-fade-in-up` on all h2 headings
+- HeroSection untouched — uses entry animations, not scroll-driven
+- Desktop `lg:` adaptations: wider padding (`lg:px-12`), taller padding (`lg:py-20`), wider max-widths (`lg:max-w-sm`, `lg:max-w-md`)
+- Scroll-snap verified: layout.tsx has `snap-y snap-mandatory`, all sections have `snap-start`
+- Build passes, lint clean (Next.js 16.1.6 + Turbopack)
+- All components remain Server Components — no `"use client"` added
+
+### Change Log
+
+- 2026-02-13: Implemented scroll-driven animations and desktop adaptations
+
 ### File List
+
+- `app/globals.css` — Added `@keyframes scrollReveal`, `.scroll-reveal` classes, `@supports` wrapper, `prefers-reduced-motion` handling
+- `components/guest/info-section.tsx` — Added `scroll-reveal` classes, `lg:px-12` desktop padding
+- `components/guest/timeline-section.tsx` — Added `scroll-reveal` to event articles, `lg:px-12 lg:py-20` desktop spacing
+- `components/guest/venue-section.tsx` — Added `scroll-reveal` classes, `lg:px-12 lg:py-20`, `lg:max-w-sm` on details
+- `components/guest/program-section.tsx` — Added `scroll-reveal` to events, `lg:px-12 lg:py-20`, `lg:max-w-md` on event list

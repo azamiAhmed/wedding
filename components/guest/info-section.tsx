@@ -3,7 +3,7 @@ import { COUPLE } from '@/lib/constants'
 export function InfoSection() {
   return (
     <section
-      className="min-h-dvh snap-start flex flex-col justify-center px-6 bg-cream-warm"
+      className="min-h-dvh snap-start flex flex-col justify-center px-6 lg:px-12 bg-cream-warm"
       role="region"
       aria-label="Informations"
     >
@@ -11,12 +11,12 @@ export function InfoSection() {
         {COUPLE.infoTitle}
       </h2>
 
-      <div className="mt-4 mx-auto h-px w-12 bg-gold-moroccan" />
+      <div className="scroll-reveal mt-4 mx-auto h-px w-12 bg-gold-moroccan" />
 
-      <p className="mt-4 font-display text-sm md:text-lg text-brown-deep text-center leading-relaxed">
+      <p className="scroll-reveal mt-4 font-display text-sm md:text-lg text-brown-deep text-center leading-relaxed">
         {COUPLE.message}
       </p>
-      <p className="mt-2 font-sans text-xs md:text-sm italic text-brown-medium text-center leading-relaxed">
+      <p className="scroll-reveal mt-2 font-sans text-xs md:text-sm italic text-brown-medium text-center leading-relaxed">
         {COUPLE.submessage}
       </p>
     </section>

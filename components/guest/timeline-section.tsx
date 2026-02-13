@@ -30,7 +30,7 @@ function EventCard({
 export function TimelineSection() {
   return (
     <section
-      className="min-h-dvh snap-start flex flex-col items-center justify-center bg-cream-warm px-6 py-16"
+      className="min-h-dvh snap-start flex flex-col items-center justify-center bg-cream-warm px-6 lg:px-12 py-16 lg:py-20"
       role="region"
       aria-label={COUPLE.timelineTitle}
     >
@@ -49,7 +49,9 @@ export function TimelineSection() {
               className={i < TIMELINE_EVENTS.length - 1 ? 'pb-12' : ''}
             >
               <div className="absolute left-0 mt-1.5 h-4 w-4 rounded-full bg-gold-moroccan border-2 border-cream-warm" />
-              <EventCard event={event} titleSize="text-xl" />
+              <div className="scroll-reveal">
+                <EventCard event={event} titleSize="text-xl" />
+              </div>
             </article>
           ))}
         </div>
@@ -64,7 +66,7 @@ export function TimelineSection() {
             return (
               <article
                 key={event.title}
-                className={`relative grid grid-cols-[1fr_auto_1fr] gap-8 items-start ${i < TIMELINE_EVENTS.length - 1 ? 'pb-16' : ''}`}
+                className={`scroll-reveal relative grid grid-cols-[1fr_auto_1fr] gap-8 items-start ${i < TIMELINE_EVENTS.length - 1 ? 'pb-16' : ''}`}
               >
                 {isLeft ? (
                   <EventCard

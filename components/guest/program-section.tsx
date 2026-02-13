@@ -46,7 +46,7 @@ function ProgramIcon({
 export function ProgramSection() {
   return (
     <section
-      className="min-h-dvh snap-start flex flex-col justify-center px-6 py-16 bg-cream-warm"
+      className="min-h-dvh snap-start flex flex-col justify-center px-6 lg:px-12 py-16 lg:py-20 bg-cream-warm"
       role="region"
       aria-label={COUPLE.programTitle}
     >
@@ -54,11 +54,11 @@ export function ProgramSection() {
         {COUPLE.programTitle}
       </h2>
 
-      <div className="mt-4 mx-auto h-px w-12 bg-gold-moroccan" />
+      <div className="scroll-reveal mt-4 mx-auto h-px w-12 bg-gold-moroccan" />
 
-      <div className="mt-8 mx-auto w-full max-w-sm space-y-5">
+      <div className="mt-8 mx-auto w-full max-w-sm lg:max-w-md space-y-5">
         {PROGRAM_EVENTS.map((event) => (
-          <article key={event.title} className="flex items-center gap-3">
+          <article key={event.title} className="scroll-reveal flex items-center gap-3">
             <div className="flex-shrink-0">
               <ProgramIcon icon={event.icon} />
             </div>
