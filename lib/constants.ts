@@ -6,11 +6,10 @@ export const COUPLE = {
   greeting: (name: string) => `${name}, vous êtes attendu(e)`,
   message: 'Nous avons le plaisir de vous convier à célébrer notre union.',
   submessage: 'Votre présence est le plus beau des cadeaux.',
+  infoTitle: 'Nous nous marions',
   timelineTitle: 'Notre Histoire',
   venueTitle: 'Lieu de la Cérémonie',
-  venueText: 'Les détails du lieu seront communiqués prochainement.',
   programTitle: 'Programme de la Journée',
-  programText: 'Le programme détaillé sera partagé prochainement.',
 } as const
 
 export interface TimelineEvent {
@@ -41,5 +40,63 @@ export const TIMELINE_EVENTS: TimelineEvent[] = [
     title: 'Le Jour J',
     description:
       'Le plus beau chapitre commence, entourés de ceux que nous aimons.',
+  },
+]
+
+interface VenueDetail {
+  label: string
+  value: string
+}
+
+export interface VenueInfo {
+  name: string
+  address: string
+  city: string
+  description: string
+  details: VenueDetail[]
+}
+
+export const VENUE: VenueInfo = {
+  name: 'Nom du lieu',
+  address: '123 Rue Example',
+  city: 'Ville, Maroc',
+  description: 'Un lieu magique pour célébrer notre union.',
+  details: [
+    { label: 'Accès', value: 'Indications à venir' },
+    { label: 'Parking', value: 'Parking disponible sur place' },
+  ],
+}
+
+export interface ProgramEvent {
+  title: string
+  description: string
+  icon: 'welcome' | 'ceremony' | 'cocktail' | 'dinner' | 'dance'
+}
+
+export const PROGRAM_EVENTS: ProgramEvent[] = [
+  {
+    title: 'Accueil des invités',
+    description: 'Réception chaleureuse.',
+    icon: 'welcome',
+  },
+  {
+    title: 'Cérémonie',
+    description: 'Célébration de notre union.',
+    icon: 'ceremony',
+  },
+  {
+    title: 'Cocktail',
+    description: 'Convivialité et partage.',
+    icon: 'cocktail',
+  },
+  {
+    title: 'Dîner',
+    description: 'Un festin pour les papilles.',
+    icon: 'dinner',
+  },
+  {
+    title: 'Soirée dansante',
+    description: 'Place à la fête !',
+    icon: 'dance',
   },
 ]

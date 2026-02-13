@@ -51,8 +51,8 @@ development_status:
   epic-2: in-progress
   2-1-section-hero-cinematique: done
   2-2-timeline-notre-histoire: done
-  2-3-sections-conditionnelles-lieu-programme: backlog
-  2-4-scroll-animations-navigation-fluide: backlog
+  2-3-sections-conditionnelles-lieu-programme: done
+  2-4-scroll-animations-navigation-fluide: ready-for-dev
   2-5-apercu-open-graph-whatsapp: backlog
   epic-2-retrospective: optional
 

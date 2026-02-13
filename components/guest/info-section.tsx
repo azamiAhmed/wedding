@@ -3,25 +3,22 @@ import { COUPLE } from '@/lib/constants'
 export function InfoSection() {
   return (
     <section
-      className="min-h-dvh snap-start flex flex-col items-center justify-center px-6 bg-cream-warm"
+      className="min-h-dvh snap-start flex flex-col justify-center px-6 bg-cream-warm"
       role="region"
       aria-label="Informations"
     >
-      <h2 className="w-full font-display text-5xl md:text-[4.5rem] font-light text-brown-deep text-center leading-tight">
-        Nous nous marions
+      <h2 className="motion-safe:animate-fade-in-up font-display text-3xl md:text-[3.5rem] font-light text-brown-deep text-center leading-tight">
+        {COUPLE.infoTitle}
       </h2>
 
-      {/* Séparateur doré */}
-      <div className="mt-6 h-px w-16 bg-gold-moroccan" />
+      <div className="mt-4 mx-auto h-px w-12 bg-gold-moroccan" />
 
-      <div className="mt-6 w-full max-w-md text-center space-y-6">
-        <p className="font-display text-xl md:text-2xl text-brown-deep leading-relaxed">
-          {COUPLE.message}
-        </p>
-        <p className="font-sans text-base italic text-brown-medium leading-relaxed">
-          {COUPLE.submessage}
-        </p>
-      </div>
+      <p className="mt-4 font-display text-sm md:text-lg text-brown-deep text-center leading-relaxed">
+        {COUPLE.message}
+      </p>
+      <p className="mt-2 font-sans text-xs md:text-sm italic text-brown-medium text-center leading-relaxed">
+        {COUPLE.submessage}
+      </p>
     </section>
   )
 }
