@@ -7,14 +7,18 @@ export function InfoSection() {
       role="region"
       aria-label="Informations"
     >
-      <h2 className="font-display text-4xl md:text-[3.5rem] text-brown-deep text-center leading-tight">
+      <h2 className="w-full font-display text-5xl md:text-[4.5rem] font-light text-brown-deep text-center leading-tight">
         Nous nous marions
       </h2>
-      <div className="mt-8 max-w-md text-center space-y-4">
-        <p className="font-sans text-lg text-brown-deep">
+
+      {/* Séparateur doré */}
+      <div className="mt-6 h-px w-16 bg-gold-moroccan" />
+
+      <div className="mt-6 w-full max-w-md text-center space-y-6">
+        <p className="font-display text-xl md:text-2xl text-brown-deep leading-relaxed">
           {COUPLE.message}
         </p>
-        <p className="font-sans text-base text-brown-medium">
+        <p className="font-sans text-base italic text-brown-medium leading-relaxed">
           {COUPLE.submessage}
         </p>
       </div>

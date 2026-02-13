@@ -4,6 +4,7 @@ import { HeroSection } from '@/components/guest/hero-section'
 import { InfoSection } from '@/components/guest/info-section'
 import { VenueSection } from '@/components/guest/venue-section'
 import { ProgramSection } from '@/components/guest/program-section'
+import { TimelineSection } from '@/components/guest/timeline-section'
 
 export default async function InvitePage({
   params,
@@ -25,6 +26,7 @@ export default async function InvitePage({
     <>
       <HeroSection guestName={guest.firstName} />
       <InfoSection />
+      <TimelineSection />
       {showVenue && <VenueSection />}
       {showProgram && <ProgramSection />}
     </>
