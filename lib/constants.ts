@@ -73,6 +73,12 @@ export interface ProgramEvent {
   icon: 'welcome' | 'ceremony' | 'cocktail' | 'dinner' | 'dance'
 }
 
+export const OG = {
+  title: 'Ahmed & Ghizlaine vous invitent',
+  description:
+    'Célébrez avec nous notre mariage le 17 Octobre 2026. Nous avons hâte de partager ce moment avec vous.',
+} as const
+
 export const PROGRAM_EVENTS: ProgramEvent[] = [
   {
     title: 'Accueil des invités',

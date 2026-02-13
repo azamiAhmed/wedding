@@ -1,10 +1,24 @@
+import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { getGuestBySlug, getSiteConfig } from '@/lib/db/queries'
+import { OG } from '@/lib/constants'
 import { HeroSection } from '@/components/guest/hero-section'
 import { InfoSection } from '@/components/guest/info-section'
 import { VenueSection } from '@/components/guest/venue-section'
 import { ProgramSection } from '@/components/guest/program-section'
 import { TimelineSection } from '@/components/guest/timeline-section'
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: OG.title,
+    description: OG.description,
+    openGraph: {
+      title: OG.title,
+      description: OG.description,
+      type: 'website',
+    },
+  }
+}
 
 export default async function InvitePage({
   params,
