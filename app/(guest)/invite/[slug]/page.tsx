@@ -7,6 +7,7 @@ import { InfoSection } from '@/components/guest/info-section'
 import { VenueSection } from '@/components/guest/venue-section'
 import { ProgramSection } from '@/components/guest/program-section'
 import { TimelineSection } from '@/components/guest/timeline-section'
+import { FloatingRsvpButton } from '@/components/guest/floating-rsvp-button'
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -43,6 +44,7 @@ export default async function InvitePage({
       <TimelineSection />
       {showVenue && <VenueSection />}
       {showProgram && <ProgramSection />}
+      <FloatingRsvpButton status={guest.status} />
     </>
   )
 }

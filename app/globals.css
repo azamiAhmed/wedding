@@ -95,11 +95,24 @@
   }
 }
 
+@keyframes rsvpPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(184, 134, 11, 0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(184, 134, 11, 0); }
+}
+
+.rsvp-pulse {
+  animation: rsvpPulse var(--animate-duration-pulse) ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .scroll-reveal {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
+  }
+
+  .rsvp-pulse {
+    animation: none !important;
   }
 }
 

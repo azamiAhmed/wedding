@@ -73,6 +73,13 @@ export interface ProgramEvent {
   icon: 'welcome' | 'ceremony' | 'cocktail' | 'dinner' | 'dance'
 }
 
+export const RSVP = {
+  confirmButton: 'Confirmer ma présence',
+  modifyButton: 'Modifier ma réponse',
+  ariaConfirm: 'Ouvrir formulaire RSVP',
+  ariaModify: 'Modifier réponse RSVP',
+} as const
+
 export const OG = {
   title: 'Ahmed & Ghizlaine vous invitent',
   description:
