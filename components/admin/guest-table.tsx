@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/table'
 import { StatusBadge } from './status-badge'
 import { CopyLinkButton } from './copy-link-button'
+import { DeleteGuestButton } from './delete-guest-button'
 
 interface GuestTableProps {
   guests: Guest[]
@@ -23,6 +24,7 @@ export function GuestTable({ guests }: GuestTableProps) {
           <TableHead>Statut</TableHead>
           <TableHead>Personnes</TableHead>
           <TableHead>Lien</TableHead>
+          <TableHead>Actions</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -41,6 +43,12 @@ export function GuestTable({ guests }: GuestTableProps) {
             </TableCell>
             <TableCell>
               <CopyLinkButton slug={guest.slug} />
+            </TableCell>
+            <TableCell>
+              <DeleteGuestButton
+                guestId={guest.id}
+                guestName={`${guest.lastName} ${guest.firstName}`}
+              />
             </TableCell>
           </TableRow>
         ))}

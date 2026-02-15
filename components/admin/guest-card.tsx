@@ -1,6 +1,7 @@
 import { type Guest } from '@/lib/db/schema'
 import { StatusBadge } from './status-badge'
 import { CopyLinkButton } from './copy-link-button'
+import { DeleteGuestButton } from './delete-guest-button'
 
 interface GuestCardListProps {
   guests: Guest[]
@@ -26,7 +27,13 @@ export function GuestCardList({ guests }: GuestCardListProps) {
                 ? `${guest.personsConfirmed} personne${guest.personsConfirmed !== 1 ? 's' : ''}`
                 : '—'}
             </span>
-            <CopyLinkButton slug={guest.slug} />
+            <div className="flex items-center gap-3">
+              <CopyLinkButton slug={guest.slug} />
+              <DeleteGuestButton
+                guestId={guest.id}
+                guestName={`${guest.lastName} ${guest.firstName}`}
+              />
+            </div>
           </div>
         </div>
       ))}

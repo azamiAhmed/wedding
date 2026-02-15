@@ -68,7 +68,7 @@ development_status:
   epic-4: in-progress
   4-1-authentification-admin: done
   4-2-dashboard-liste-des-invites: done
-  4-3-ajout-suppression-invites: backlog
+  4-3-ajout-suppression-invites: done
   4-4-modification-manuelle-statut-rsvp: backlog
   4-5-toggles-sections-du-site: backlog
   epic-4-retrospective: optional

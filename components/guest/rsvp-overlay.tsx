@@ -94,7 +94,7 @@ export function RsvpOverlay({
       />
 
       <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent>
           <DialogHeader className="text-center sm:text-center">
             <DialogTitle className="font-display text-2xl font-light text-brown-deep">
               {RSVP.overlayTitle}

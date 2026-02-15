@@ -1,6 +1,8 @@
 import { asc, eq } from 'drizzle-orm'
 import { db } from './index'
 import { guests, siteConfig, type Guest } from './schema'
+import { generateSlug } from '../utils'
+import { type GuestCreateInput } from '../schemas/guest'
 
 export async function getGuestBySlug(slug: string) {
   return db.query.guests.findFirst({
@@ -18,6 +20,23 @@ export async function getAllGuests() {
     .select()
     .from(guests)
     .orderBy(asc(guests.lastName), asc(guests.firstName))
+}
+
+export async function createGuest(data: GuestCreateInput) {
+  const slug = generateSlug()
+  const result = await db
+    .insert(guests)
+    .values({ ...data, slug })
+    .returning()
+  return result[0]
+}
+
+export async function deleteGuest(id: number) {
+  const result = await db
+    .delete(guests)
+    .where(eq(guests.id, id))
+    .returning()
+  return result[0] ?? null
 }
 
 export async function updateGuestRsvp(
