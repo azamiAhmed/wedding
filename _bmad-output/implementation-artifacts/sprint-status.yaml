@@ -66,7 +66,7 @@ development_status:
 
   # Epic 4: Administration
   epic-4: in-progress
-  4-1-authentification-admin: ready-for-dev
+  4-1-authentification-admin: done
   4-2-dashboard-liste-des-invites: backlog
   4-3-ajout-suppression-invites: backlog
   4-4-modification-manuelle-statut-rsvp: backlog
