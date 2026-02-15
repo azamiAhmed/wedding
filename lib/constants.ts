@@ -78,6 +78,15 @@ export const RSVP = {
   modifyButton: 'Modifier ma réponse',
   ariaConfirm: 'Ouvrir formulaire RSVP',
   ariaModify: 'Modifier réponse RSVP',
+  overlayTitle: 'Confirmez votre présence',
+  guestLabel: 'Invité',
+  stepperLabel: 'Nous serons',
+  confirmAction: 'Je serai là',
+  declineAction: 'Je ne pourrai pas',
+  successMessage: 'On a hâte de vous voir !',
+  declineMessage: 'Nous comprenons, vous nous manquerez',
+  loadingText: 'Confirmation...',
+  errorText: 'Un souci temporaire. Réessayez.',
 } as const
 
 export const OG = {

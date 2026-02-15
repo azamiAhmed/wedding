@@ -60,7 +60,7 @@ development_status:
   epic-3: in-progress
   3-1-api-rsvp: done
   3-2-bouton-rsvp-flottant: done
-  3-3-overlay-rsvp-confirmation: backlog
+  3-3-overlay-rsvp-confirmation: done
   3-4-modification-pre-affichage-rsvp: backlog
   epic-3-retrospective: optional
 
