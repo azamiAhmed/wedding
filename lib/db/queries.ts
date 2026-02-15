@@ -1,4 +1,4 @@
-import { eq } from 'drizzle-orm'
+import { asc, eq } from 'drizzle-orm'
 import { db } from './index'
 import { guests, siteConfig, type Guest } from './schema'
 
@@ -11,6 +11,13 @@ export async function getGuestBySlug(slug: string) {
 export async function getSiteConfig(): Promise<Record<string, string>> {
   const rows = await db.select().from(siteConfig)
   return Object.fromEntries(rows.map((r) => [r.key, r.value]))
+}
+
+export async function getAllGuests() {
+  return db
+    .select()
+    .from(guests)
+    .orderBy(asc(guests.lastName), asc(guests.firstName))
 }
 
 export async function updateGuestRsvp(
