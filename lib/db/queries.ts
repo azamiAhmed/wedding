@@ -2,7 +2,7 @@ import { asc, eq } from 'drizzle-orm'
 import { db } from './index'
 import { guests, siteConfig, type Guest } from './schema'
 import { generateSlug } from '../utils'
-import { type GuestCreateInput } from '../schemas/guest'
+import { type GuestCreateInput, type GuestUpdateInput } from '../schemas/guest'
 
 export async function getGuestBySlug(slug: string) {
   return db.query.guests.findFirst({
@@ -34,6 +34,15 @@ export async function createGuest(data: GuestCreateInput) {
 export async function deleteGuest(id: number) {
   const result = await db
     .delete(guests)
+    .where(eq(guests.id, id))
+    .returning()
+  return result[0] ?? null
+}
+
+export async function updateGuest(id: number, data: GuestUpdateInput) {
+  const result = await db
+    .update(guests)
+    .set({ status: data.status, personsConfirmed: data.personsConfirmed })
     .where(eq(guests.id, id))
     .returning()
   return result[0] ?? null

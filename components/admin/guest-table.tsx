@@ -10,6 +10,7 @@ import {
 import { StatusBadge } from './status-badge'
 import { CopyLinkButton } from './copy-link-button'
 import { DeleteGuestButton } from './delete-guest-button'
+import { EditGuestButton } from './edit-guest-button'
 
 interface GuestTableProps {
   guests: Guest[]
@@ -45,10 +46,13 @@ export function GuestTable({ guests }: GuestTableProps) {
               <CopyLinkButton slug={guest.slug} />
             </TableCell>
             <TableCell>
-              <DeleteGuestButton
-                guestId={guest.id}
-                guestName={`${guest.lastName} ${guest.firstName}`}
-              />
+              <div className="flex items-center gap-3">
+                <EditGuestButton guest={guest} />
+                <DeleteGuestButton
+                  guestId={guest.id}
+                  guestName={`${guest.lastName} ${guest.firstName}`}
+                />
+              </div>
             </TableCell>
           </TableRow>
         ))}

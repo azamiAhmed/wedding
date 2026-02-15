@@ -8,3 +8,16 @@ export const guestCreateSchema = z.object({
 })
 
 export type GuestCreateInput = z.infer<typeof guestCreateSchema>
+
+export const guestUpdateSchema = z.object({
+  status: z.enum(['pending', 'confirmed', 'declined'], {
+    message: 'Statut invalide',
+  }),
+  personsConfirmed: z
+    .number()
+    .int()
+    .min(0, 'Le nombre de personnes doit être au moins 0')
+    .max(5, 'Le nombre de personnes ne peut pas dépasser 5'),
+})
+
+export type GuestUpdateInput = z.infer<typeof guestUpdateSchema>

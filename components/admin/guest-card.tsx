@@ -2,6 +2,7 @@ import { type Guest } from '@/lib/db/schema'
 import { StatusBadge } from './status-badge'
 import { CopyLinkButton } from './copy-link-button'
 import { DeleteGuestButton } from './delete-guest-button'
+import { EditGuestButton } from './edit-guest-button'
 
 interface GuestCardListProps {
   guests: Guest[]
@@ -29,6 +30,7 @@ export function GuestCardList({ guests }: GuestCardListProps) {
             </span>
             <div className="flex items-center gap-3">
               <CopyLinkButton slug={guest.slug} />
+              <EditGuestButton guest={guest} />
               <DeleteGuestButton
                 guestId={guest.id}
                 guestName={`${guest.lastName} ${guest.firstName}`}
