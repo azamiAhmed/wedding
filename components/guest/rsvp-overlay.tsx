@@ -14,6 +14,8 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog'
 
+type ViewState = 'returning' | 'form' | 'result'
+
 interface RsvpOverlayProps {
   slug: string
   guestFirstName: string
@@ -28,18 +30,25 @@ export function RsvpOverlay({
   initialPersonsConfirmed,
 }: RsvpOverlayProps) {
   const [isOpen, setIsOpen] = useState(false)
-  const [personsCount, setPersonsCount] = useState(
-    initialPersonsConfirmed > 0 ? initialPersonsConfirmed : 1
-  )
+  const initialCount = initialPersonsConfirmed > 0 ? initialPersonsConfirmed : 1
+  const [personsCount, setPersonsCount] = useState(initialCount)
+  const [savedPersonsCount, setSavedPersonsCount] = useState(initialCount)
   const [isLoading, setIsLoading] = useState(false)
-  const [result, setResult] = useState<'confirmed' | 'declined' | null>(null)
+  const [view, setView] = useState<ViewState>(
+    initialStatus !== 'pending' ? 'returning' : 'form'
+  )
+  const [resultType, setResultType] = useState<
+    'confirmed' | 'declined' | null
+  >(null)
   const [error, setError] = useState<string | null>(null)
   const [currentStatus, setCurrentStatus] = useState(initialStatus)
 
   function handleOpenChange(open: boolean) {
     setIsOpen(open)
     if (open) {
-      setResult(null)
+      setPersonsCount(savedPersonsCount)
+      setView(currentStatus !== 'pending' ? 'returning' : 'form')
+      setResultType(null)
       setError(null)
     }
   }
@@ -61,9 +70,13 @@ export function RsvpOverlay({
         const data = await res.json()
         throw new Error(data.error || 'Erreur serveur')
       }
-      setResult(status)
+      setResultType(status)
+      setView('result')
       setCurrentStatus(status)
-      if (status === 'declined') {
+      if (status === 'confirmed') {
+        setSavedPersonsCount(personsCount)
+      } else {
+        setSavedPersonsCount(1)
         setPersonsCount(1)
       }
     } catch (e) {
@@ -72,8 +85,6 @@ export function RsvpOverlay({
       setIsLoading(false)
     }
   }
-
-  const showForm = !result
 
   return (
     <>
@@ -93,7 +104,32 @@ export function RsvpOverlay({
             </DialogDescription>
           </DialogHeader>
 
-          {showForm ? (
+          {view === 'returning' && (
+            <div className="text-center py-6 space-y-4">
+              {currentStatus === 'confirmed' && (
+                <>
+                  <CheckCircle className="mx-auto h-12 w-12 text-green-olive" />
+                  <p className="font-display text-xl text-brown-deep">
+                    {RSVP.statusConfirmed(savedPersonsCount)}
+                  </p>
+                </>
+              )}
+              {currentStatus === 'declined' && (
+                <p className="font-sans text-base text-brown-medium">
+                  {RSVP.statusDeclined}
+                </p>
+              )}
+              <button
+                type="button"
+                onClick={() => setView('form')}
+                className="w-full min-h-11 rounded-lg border border-gold-moroccan bg-transparent text-brown-deep font-sans text-base transition-colors duration-150 hover:bg-gold-veil/30 active:scale-[0.97]"
+              >
+                {RSVP.modifyStatusAction}
+              </button>
+            </div>
+          )}
+
+          {view === 'form' && (
             <div className="space-y-6 pt-2">
               {/* Guest name (non-editable) */}
               <div>
@@ -141,10 +177,11 @@ export function RsvpOverlay({
                 </button>
               </div>
             </div>
-          ) : (
-            /* Result state */
+          )}
+
+          {view === 'result' && (
             <div className="text-center py-6">
-              {result === 'confirmed' && (
+              {resultType === 'confirmed' && (
                 <>
                   <CheckCircle className="mx-auto h-12 w-12 text-green-olive" />
                   <p className="mt-4 font-display text-xl text-brown-deep">
@@ -152,7 +189,7 @@ export function RsvpOverlay({
                   </p>
                 </>
               )}
-              {result === 'declined' && (
+              {resultType === 'declined' && (
                 <p className="font-sans text-base text-brown-medium">
                   {RSVP.declineMessage}
                 </p>

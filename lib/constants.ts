@@ -87,6 +87,10 @@ export const RSVP = {
   declineMessage: 'Nous comprenons, vous nous manquerez',
   loadingText: 'Confirmation...',
   errorText: 'Un souci temporaire. Réessayez.',
+  statusConfirmed: (n: number) =>
+    `Vous avez confirmé pour ${n} personne${n > 1 ? 's' : ''}`,
+  statusDeclined: "Vous avez décliné l'invitation",
+  modifyStatusAction: 'Modifier',
 } as const
 
 export const OG = {
