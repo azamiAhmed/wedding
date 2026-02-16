@@ -1,6 +1,6 @@
 # Story 6.2: Animation Scroll-Driven des Alliances
 
-Status: review
+Status: done
 
 ## Story
 
