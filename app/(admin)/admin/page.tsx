@@ -1,12 +1,13 @@
 import { requireAdmin } from '@/lib/auth'
-import { getAllGuests } from '@/lib/db/queries'
+import { getAllGuests, getSiteConfig } from '@/lib/db/queries'
 import { SummaryCounter } from '@/components/admin/summary-counter'
 import { GuestList } from '@/components/admin/guest-list'
 import { AddGuestButton } from '@/components/admin/add-guest-button'
+import { ConfigToggles } from '@/components/admin/config-toggles'
 
 export default async function AdminDashboardPage() {
   await requireAdmin()
-  const guests = await getAllGuests()
+  const [guests, config] = await Promise.all([getAllGuests(), getSiteConfig()])
 
   return (
     <div className="space-y-6">
@@ -15,6 +16,10 @@ export default async function AdminDashboardPage() {
         <AddGuestButton />
       </div>
       <SummaryCounter guests={guests} />
+      <ConfigToggles
+        showVenue={config.show_venue !== 'false'}
+        showProgram={config.show_program !== 'false'}
+      />
       <GuestList guests={guests} />
     </div>
   )

@@ -48,6 +48,15 @@ export async function updateGuest(id: number, data: GuestUpdateInput) {
   return result[0] ?? null
 }
 
+export async function updateSiteConfig(key: string, value: string) {
+  const result = await db
+    .update(siteConfig)
+    .set({ value })
+    .where(eq(siteConfig.key, key))
+    .returning()
+  return result[0] ?? null
+}
+
 export async function updateGuestRsvp(
   slug: string,
   status: Guest['status'],
