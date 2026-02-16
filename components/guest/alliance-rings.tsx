@@ -12,7 +12,6 @@ export function AllianceRings() {
         alt=""
         width={120}
         height={180}
-        priority={false}
       />
       <Image
         className="alliance-ring-right"
@@ -20,7 +19,6 @@ export function AllianceRings() {
         alt=""
         width={120}
         height={180}
-        priority={false}
       />
     </div>
   )

@@ -63,7 +63,7 @@ So that mon parcours soit accompagné d'une animation élégante et immersive.
 ### Architecture du composant
 
 **Fichier :** `components/guest/alliance-rings.tsx`
-**Type :** Client Component (`"use client"`)
+**Type :** Server Component (pas de `"use client"` — rendu pur, pas de hooks)
 **Positionnement :** Container `position: fixed; inset: 0`, images `position: absolute` à l'intérieur. Les images sont en absolute (pas fixed) pour que le named scroll timeline lookup fonctionne via le DOM tree.
 **z-index :** `z-10` — au-dessus du fond, sous le contenu interactif
 
@@ -133,7 +133,7 @@ Claude Opus 4.6
 - Named scroll timeline (`scroll-timeline-name: --guest-scroll`) au lieu de `scroll()` — les éléments `position: absolute` dans un container `position: fixed` ne trouvent pas `<main>` via `scroll()` seul
 - Ring images en `position: absolute` (pas `fixed`) dans le container fixed — le timeline lookup passe par le DOM tree, pas par la containing block chain
 - Pas de rotation dans les keyframes — les photos 3D de bagues sont déformées quand on les rotate
-- Centrage via `left: 50%; top: 50%; margin-left: -60px; margin-top: -90px` — translateX/translateY dans keyframes pour le mouvement
+- Centrage via `left: 50%; top: 50%; margin-left: calc(120px / -2); margin-top: calc(180px / -2)` — translateX/translateY dans keyframes pour le mouvement
 - Responsive : 2 jeux de keyframes (mobile/desktop), switchés par media query sur `animation-name`
 - Mobile : scale finale 0.8, translateX ±30px, translateY +12vh (sous le texte merci)
 - Desktop : scale finale 1.3, translateX ±50px, translateY +25vh (sous le texte merci)
@@ -142,11 +142,15 @@ Claude Opus 4.6
 - Bidirectionnalité native des CSS Scroll-Driven Animations
 - `prefers-reduced-motion: reduce` → `display: none !important`
 - `@supports (animation-timeline: scroll())` → dégradation gracieuse
+- Golden glow en fin de scroll (92-100%) : double `filter: drop-shadow()` — doré (#D4A54A) + blanc (#FFFDF9) pour éclat brillant
+- IMPORTANT : le nombre de fonctions `filter` doit être identique dans TOUS les keyframes (2 `drop-shadow` partout) sinon CSS ne peut pas interpoler et l'animation casse
+- Landscape media query : `@media (orientation: landscape) and (max-height: 500px)` — cible uniquement les mobiles en paysage, PAS les écrans desktop (qui sont toujours en orientation paysage)
+- Story 6.3 (révélation photo couple) annulée — seul le glow a été conservé
 
 ### File List
-- `components/guest/alliance-rings.tsx` — Client Component rendering deux images de bagues (solitaire + bague homme)
+- `components/guest/alliance-rings.tsx` — Server Component rendering deux images de bagues (solitaire + bague homme)
 - `components/guest/merci-section.tsx` — Section finale "Merci" (nouveau fichier)
-- `app/globals.css` — Keyframes responsive (4 keyframes), scroll timeline, positioning, @supports, reduced-motion
+- `app/globals.css` — Keyframes responsive (4 keyframes avec glow intégré), scroll timeline, positioning, @supports, reduced-motion, landscape guard
 - `app/(guest)/layout.tsx` — Ajout classe `guest-scroll-container` pour named scroll timeline
 - `app/(guest)/invite/[slug]/page.tsx` — Import/render `<AllianceRings />` et `<MerciSection />`
 - `lib/constants.ts` — Ajout `merciTitle` et `merciMessage`
