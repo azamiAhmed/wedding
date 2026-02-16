@@ -610,6 +610,96 @@ flowchart TD
 4. **Modification sans punition** — Changer sa réponse est aussi simple que répondre la première fois
 5. **Admin en lecture d'abord** — Le dashboard montre l'essentiel sans action requise
 
+## Epic 6 — Animation des Alliances au Scroll
+
+### Concept Narratif
+
+Deux alliances accompagnent visuellement le parcours de l'invité tout au long du scroll. L'alliance en or (Ghizlaine) et l'alliance en argent/platine (Ahmed) symbolisent le chemin vers l'union. Le scroll devient littéralement la métaphore du rapprochement du couple.
+
+### Spécifications Visuelles
+
+**Style :** Rendu réaliste — reflets métalliques, ombres douces, aspect crédible. Pas de line-art, pas de minimalisme.
+
+| Propriété | Alliance Or (Ghizlaine) | Alliance Argent (Ahmed) |
+|-----------|------------------------|------------------------|
+| Couleur | Or chaud, gradients dorés | Argent/platine, reflets froids |
+| Position initiale | Bord gauche de l'écran | Bord droit de l'écran |
+| Taille initiale (mobile) | ~30px diamètre | ~30px diamètre |
+| Taille initiale (desktop) | ~50px diamètre | ~50px diamètre |
+| Taille finale (entrelacement) | ~120px combiné mobile / ~200px desktop | Idem |
+
+### Comportement au Scroll
+
+**Apparition :** Les alliances n'apparaissent PAS sur le hero. Elles glissent en fondu depuis les bords après la première transition de scroll (post-hero). Cela préserve l'impact émotionnel du hero.
+
+**Pendant les sections de contenu :**
+- Opacité réduite : **30-40%** pour ne pas distraire de la lecture
+- Zone de sécurité : **max 15% de la largeur** de chaque côté (desktop), **max 10%** (mobile)
+- Les alliances tournent lentement sur elles-mêmes, se rapprochent progressivement du centre
+- Animation fluide et continue liée au pourcentage de scroll (pas par étapes)
+
+**Bidirectionnalité :** L'animation est entièrement réversible. Scroll up = les alliances se séparent et retournent vers les bords.
+
+**Révélation finale (dernière section, scroll ~90-100%) :**
+- Opacité passe à **100%**
+- Les alliances arrivent au centre avec un **ralentissement** (easing cubic-bezier avec décélération)
+- Un subtil **éclat doré** (glow) au moment de l'entrelacement
+- La photo du couple apparaît en **fondu progressif (600-800ms)** à l'intérieur de l'espace formé par les deux anneaux unis
+- La photo remplit l'intérieur des alliances (elles servent de cadre)
+
+### Responsive Mobile (Option A retenue)
+
+Sur mobile (375px-428px), les alliances sont :
+- **Plus petites** qu'en desktop
+- **Plus transparentes** (opacité de base ~20-30%)
+- Positionnées davantage **haut/bas** plutôt que strictement gauche/droite, pour s'adapter à l'espace réduit
+- La narration des deux alliances est maintenue (pas de fusion en un seul élément)
+
+### Accessibilité
+
+- `prefers-reduced-motion: reduce` → animations désactivées, alliances affichées statiquement ou masquées
+- Les alliances sont décoratives → `aria-hidden="true"`
+- `pointer-events: none` pour ne pas interférer avec la navigation
+- La photo finale a un `alt` descriptif
+
+### Easing et Timing
+
+| Phase | Easing | Durée |
+|-------|--------|-------|
+| Apparition (fondu) | `ease-out` | 600ms |
+| Rapprochement continu | Linéaire (lié au scroll %) | Continu |
+| Rotation | Linéaire lent | Continu |
+| Entrelacement final | `cubic-bezier(0.25, 0.1, 0.25, 1.0)` (décélération) | 800ms |
+| Éclat doré | `ease-in-out` | 400ms |
+| Fondu photo | `ease-out` | 600-800ms |
+
+## Epic 7 — Landing Page Non-Invités
+
+### Objectif
+
+Accueillir avec chaleur les visiteurs non-invités qui accèdent au site par la racine `/` sans lien d'invitation.
+
+### Ton de voix
+
+Chaleureux et non-rejetant. Le visiteur est peut-être un ami qui n'a pas encore reçu son lien.
+
+**Message :** *"Ce site est réservé aux invités d'Ahmed & Ghizlaine. Si vous souhaitez recevoir votre invitation, n'hésitez pas à les contacter."*
+
+### Design
+
+- Même design system que le site invité (fond crème `#FAF7F2`, Cormorant Garamond pour le titre, Geist pour le corps)
+- Message centré verticalement et horizontalement
+- Prénoms "Ahmed & Ghizlaine" en Cormorant Display L
+- Séparateur doré décoratif (`w-12`, doré `#B8860B`)
+- Pas de photo, pas d'animation — page statique et sobre
+- Pas de lien vers `/admin`
+- Métadonnées `noindex, nofollow`
+
+### Responsive
+
+- Mobile : message centré, padding latéral `px-6`
+- Desktop : message centré, même layout
+
 ## Component Strategy
 
 ### Composants shadcn/ui Utilisés
@@ -666,6 +756,19 @@ flowchart TD
 - Technique : `object-fit: cover` en 100vh, pseudo-élément gradient doré
 - Accessibilité : `alt` descriptif
 
+**`AllianceRings`**
+- Conteneur des deux alliances animées au scroll — or (Ghizlaine, gauche) + argent (Ahmed, droite)
+- États : `hidden` (hero visible) → `visible` (post-hero, opacité 30-40%) → `revealed` (dernière section, opacité 100%, entrelacées)
+- Technique : `position: fixed`, `pointer-events: none`, CSS Scroll-Driven Animations (`animation-timeline: scroll()`), SVG avec gradients réalistes
+- Révélation : éclat doré + fondu photo 600-800ms dans l'espace des anneaux
+- Responsive : Option A mobile (plus petit, plus transparent, repositionné haut/bas)
+- Accessibilité : `aria-hidden="true"`, `prefers-reduced-motion` → masqué ou statique
+
+**`LandingPage`** (page.tsx racine)
+- Page placeholder pour visiteurs non-invités
+- Technique : Server Component pur, metadata `noindex, nofollow`
+- Design : fond crème, Cormorant titre, message chaleureux centré, séparateur doré
+
 ### Composants Custom — Admin
 
 **`AdminDashboard`**
@@ -689,6 +792,8 @@ flowchart TD
 | P0 — MVP critique | `AdminDashboard`, `GuestCard`, `SectionToggle` | Gestion invités fonctionnelle |
 | P1 — MVP enrichi | `Timeline`, `PhotoSection` | Expérience émotionnelle narrative |
 | P2 — Growth | Animations avancées (CSS Scroll-Driven) | Polish et "waouh" |
+| P2 — Growth | `AllianceRings` | Animation narrative des alliances au scroll (Epic 6) |
+| P3 — Quick Win | `LandingPage` (page.tsx racine) | Page placeholder non-invités (Epic 7) |
 
 ### Conventions de Développement
 

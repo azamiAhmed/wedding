@@ -93,6 +93,12 @@ export const RSVP = {
   modifyStatusAction: 'Modifier',
 } as const
 
+export const LANDING = {
+  title: 'Ahmed & Ghizlaine',
+  message:
+    'Ce site est réservé aux invités d\'Ahmed & Ghizlaine. Si vous souhaitez recevoir votre invitation, n\'hésitez pas à les contacter.',
+} as const
+
 export const OG = {
   title: 'Ahmed & Ghizlaine vous invitent',
   description:

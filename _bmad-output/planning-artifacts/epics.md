@@ -1,6 +1,6 @@
 ---
 stepsCompleted: [1, 2, 3, 4]
-status: 'complete'
+status: 'in-progress'
 completedAt: '2026-02-13'
 inputDocuments:
   - '_bmad-output/planning-artifacts/prd.md'
@@ -33,7 +33,7 @@ FR12: L'invité peut voir son nom pré-rempli dans le formulaire RSVP
 FR13: L'invité peut indiquer le nombre de personnes accompagnantes (de 1 à 5)
 FR14: L'invité peut confirmer sa présence ("Je serai là")
 FR15: L'invité peut décliner l'invitation ("Je ne pourrai pas")
-FR16: L'invité peut modifier sa réponse RSVP en revisitant son lien unique
+FR16: L'invité peut modifier sa réponse RSVP (présence et nombre d'accompagnants) en revisitant son lien unique, sans aucune limite de temps
 FR17: Le formulaire RSVP s'affiche en overlay sans quitter la page principale
 FR18: L'invité peut voir son statut RSVP actuel lorsqu'il revient sur son lien
 FR19: Le système conserve et pré-affiche la dernière réponse RSVP de l'invité dans le formulaire
@@ -47,6 +47,10 @@ FR26: L'admin peut voir le nombre de personnes confirmées par invité
 FR27: L'admin peut activer ou désactiver la section "Lieu du mariage"
 FR28: L'admin peut activer ou désactiver la section "Programme de la journée"
 FR29: Le contenu des sections (textes, photos, adresse du lieu, étapes de la timeline) est géré directement dans le code source
+FR31: Deux alliances animées (or pour Ghizlaine, argent/platine pour Ahmed) flottent sur les bords de l'écran et accompagnent le scroll de l'invité
+FR32: Les alliances se rapprochent au fil du scroll par une animation fluide et continue liée au pourcentage de défilement
+FR33: À la dernière section, les alliances s'entrelacent et révèlent la photo du couple dans l'espace intérieur
+FR34: Un visiteur accédant à la racine du site (/) sans lien d'invitation voit une landing page placeholder
 
 ### NonFunctional Requirements
 
@@ -132,6 +136,10 @@ FR26: Epic 4 — Nombre de personnes par invité
 FR27: Epic 4 — Toggle section Lieu
 FR28: Epic 4 — Toggle section Programme
 FR29: Epic 1 — Contenu dans le code source
+FR31: Epic 6 — Alliances animées sur les bords de l'écran
+FR32: Epic 6 — Rapprochement progressif lié au scroll
+FR33: Epic 6 — Entrelacement final et révélation photo
+FR34: Epic 7 — Landing page placeholder non-invités
 
 ## Epic List
 
@@ -154,8 +162,19 @@ Ahmed & Ghizlaine gèrent la liste d'invités, suivent les confirmations et cont
 **FRs couvertes:** FR21, FR22, FR23, FR24, FR25, FR26, FR27, FR28
 **Note:** Parallélisable dès la fin d'Epic 1. N'a pas besoin d'attendre Epic 2/3.
 
+### Epic 6: Animation des Alliances au Scroll
+Deux alliances (or + argent/platine) accompagnent visuellement le parcours de l'invité : elles flottent sur les bords, se rapprochent au fil du scroll, et s'entrelacent à la dernière section pour révéler la photo du couple.
+**FRs couvertes:** FR31, FR32, FR33
+**Note:** Epic la plus ambitieuse techniquement. Nécessite des assets SVG réalistes et une animation scroll-driven performante sur mobile.
+
+### Epic 7: Landing Page Non-Invités
+Un visiteur accédant au site sans lien d'invitation voit une page placeholder élégante l'invitant à contacter Ahmed ou Ghizlaine.
+**FRs couvertes:** FR34
+**Note:** Phase 1 = placeholder simple. Phase 2 potentielle = vraie landing page de mariage (hors scope actuel).
+
 ### Séquence de Déploiement
 Le site ne doit pas être partagé via WhatsApp tant qu'Epic 1 + Epic 2 + Epic 4 ne sont pas complétés. Epic 3 (RSVP) peut être ajouté juste après ou en même temps.
+Epic 6 peut être développée en parallèle après Epic 2. Epic 7 peut être déployée indépendamment.
 
 ## Epic 1: Lien Unique & Page Invité
 
@@ -489,6 +508,10 @@ So that je puisse changer d'avis ou ajuster le nombre de personnes.
 **When** il ouvre l'overlay
 **Then** le formulaire est vierge (nombre par défaut 1), sans message de statut précédent
 
+**Given** un invité qui modifie sa réponse à n'importe quel moment après sa réponse initiale
+**When** la modification est soumise
+**Then** aucune limite de temps ne bloque la soumission — la modification est toujours possible (FR16)
+
 ## Epic 4: Administration
 
 Ahmed & Ghizlaine gèrent la liste d'invités, suivent les confirmations et contrôlent les sections visibles du site.
@@ -628,3 +651,151 @@ So that je puisse contrôler le timing de l'information révélée aux invités.
 **Given** un toggle modifié
 **When** un invité recharge sa page
 **Then** la section apparaît ou disparaît selon la nouvelle valeur en base (pas besoin de redéploiement)
+
+## Epic 6: Animation des Alliances au Scroll
+
+Deux alliances — or (Ghizlaine) et argent/platine (Ahmed) — accompagnent visuellement le parcours de l'invité tout au long du scroll. Elles flottent sur les bords de l'écran, se rapprochent progressivement, et s'entrelacent à la dernière section pour révéler la photo du couple.
+
+### Story 6.1: Assets et Rendu Réaliste des Alliances
+
+As a développeur,
+I want créer les assets SVG des deux alliances avec un rendu réaliste,
+So that les alliances soient visuellement impressionnantes et crédibles sur tous les écrans.
+
+**Acceptance Criteria:**
+
+**Given** l'alliance de Ghizlaine
+**When** elle est rendue à l'écran
+**Then** c'est un anneau en or avec un rendu réaliste incluant reflets, ombres et aspect métallique doré
+
+**Given** l'alliance d'Ahmed
+**When** elle est rendue à l'écran
+**Then** c'est un anneau en argent/platine avec un rendu réaliste incluant reflets, ombres et aspect métallique argenté
+
+**Given** les deux alliances
+**When** elles sont affichées sur un écran Retina (2x) et un écran standard
+**Then** le rendu SVG est net et détaillé à toutes les résolutions sans pixellisation
+
+**Given** les assets SVG
+**When** ils sont chargés
+**Then** le poids total des deux assets est optimisé (< 50KB combiné) pour ne pas impacter le temps de chargement (NFR1)
+
+### Story 6.2: Animation Scroll-Driven des Alliances
+
+As a invité,
+I want voir les deux alliances flotter sur les bords de l'écran et se rapprocher au fil de mon scroll,
+So that mon parcours soit accompagné d'une animation élégante et immersive.
+
+**Acceptance Criteria:**
+
+**Given** la page invité chargée (section hero visible)
+**When** l'invité scrolle après le hero (première transition)
+**Then** les alliances apparaissent en fondu depuis les bords — or (Ghizlaine) à gauche, argent (Ahmed) à droite. Elles ne sont PAS visibles sur le hero pour ne pas diluer l'impact émotionnel d'entrée
+
+**Given** l'invité qui commence à scroller
+**When** le pourcentage de scroll augmente de 0% à 100%
+**Then** les alliances se rapprochent progressivement du centre de l'écran de manière fluide et continue (FR32)
+
+**Given** l'animation en cours
+**When** l'invité scrolle
+**Then** les alliances tournent lentement sur elles-mêmes et grandissent légèrement, le tout synchronisé au pourcentage de scroll
+
+**Given** l'animation sur un smartphone milieu de gamme (iPhone 11, Galaxy A52)
+**When** l'invité scrolle
+**Then** l'animation reste fluide à 60fps sans saccade ni impact sur la performance du scroll (NFR2)
+
+**Given** les alliances en mouvement pendant les sections de contenu (timeline, lieu, programme)
+**When** elles coexistent avec le texte
+**Then** les alliances sont à ~30-40% d'opacité pour ne pas distraire de la lecture. Elles passent à 100% d'opacité uniquement lors de la révélation finale. Zone de sécurité : max 15% de la largeur de chaque côté sur desktop
+
+**Given** l'invité qui scrolle vers le haut (scroll inversé)
+**When** le pourcentage de scroll diminue
+**Then** les alliances se séparent à nouveau de manière fluide — l'animation est entièrement bidirectionnelle pour que l'effet reste cohérent en remontant puis en redescendant
+
+**Given** un navigateur ne supportant pas les CSS Scroll-Driven Animations
+**When** la page s'affiche
+**Then** les alliances sont masquées ou affichées statiquement (dégradation gracieuse)
+
+### Story 6.3: Révélation Finale — Photo du Couple
+
+As a invité arrivant à la dernière section,
+I want voir les deux alliances s'entrelacer et révéler la photo d'Ahmed et Ghizlaine à l'intérieur,
+So that le parcours scroll culmine dans un moment émotionnel fort.
+
+**Acceptance Criteria:**
+
+**Given** l'invité qui atteint la dernière section (scroll ~90-100%)
+**When** les alliances arrivent au centre
+**Then** elles s'entrelacent avec un léger ralentissement (easing cubic-bezier avec décélération) et un subtil éclat doré (glow) au moment de l'union
+
+**Given** les alliances entrelacées
+**When** l'animation d'entrelacement est terminée
+**Then** la photo du couple apparaît en fondu progressif (600-800ms) à l'intérieur de l'espace formé par les deux anneaux unis, comme un voile qui se lève (FR33)
+
+**Given** la photo révélée
+**When** elle est affichée
+**Then** elle remplit l'intérieur des alliances entrelacées (les alliances servent de cadre, la photo ne déborde pas)
+
+**Given** l'emplacement photo
+**When** le développeur intègre une image
+**Then** l'emplacement est générique et adaptable (accepte n'importe quelle photo aux bonnes proportions)
+
+**Given** la révélation sur mobile
+**When** la dernière section est atteinte
+**Then** l'entrelacement et la photo sont visibles et correctement dimensionnés sur petit écran
+
+### Story 6.4: Responsive et Performance Mobile
+
+As a invité sur mobile,
+I want voir l'animation des alliances adaptée à mon petit écran sans perte de fluidité,
+So that l'expérience soit aussi immersive sur mobile que sur desktop.
+
+**Acceptance Criteria:**
+
+**Given** un écran mobile (375px - 428px)
+**When** les alliances sont affichées
+**Then** elles sont plus petites et plus transparentes que sur desktop, positionnées davantage en haut/bas plutôt que strictement gauche/droite, pour s'adapter à l'espace réduit tout en maintenant la narration des deux alliances (Option A mobile)
+
+**Given** le rapprochement des alliances sur mobile
+**When** l'invité scrolle
+**Then** les alliances restent dans les limites de l'écran (zone de sécurité : max 10% de la largeur de chaque côté) et ne recouvrent pas le contenu central
+
+**Given** l'animation sur un appareil avec `prefers-reduced-motion: reduce`
+**When** l'utilisateur a activé ce réglage système
+**Then** les animations de rotation et de déplacement sont désactivées — les alliances sont affichées statiquement
+
+**Given** la page sur tablette (768px - 1024px)
+**When** les alliances sont affichées
+**Then** la taille et le positionnement s'adaptent de manière fluide entre mobile et desktop
+
+**Given** la performance totale de la page avec les alliances
+**When** Lighthouse est exécuté sur mobile
+**Then** le score Performance reste > 85 (NFR5)
+
+## Epic 7: Landing Page Non-Invités
+
+Un visiteur accédant à la racine du site sans lien d'invitation voit une page placeholder l'invitant à contacter Ahmed ou Ghizlaine.
+
+### Story 7.1: Page d'Accueil Placeholder
+
+As a visiteur non-invité,
+I want voir une page d'accueil claire quand j'accède au site sans lien d'invitation,
+So that je comprenne que je dois contacter Ahmed ou Ghizlaine pour recevoir mon invitation.
+
+**Acceptance Criteria:**
+
+**Given** un visiteur qui accède à `/` (racine du site)
+**When** la page se charge
+**Then** une page placeholder s'affiche avec un message chaleureux : "Ce site est réservé aux invités d'Ahmed & Ghizlaine. Si vous souhaitez recevoir votre invitation, n'hésitez pas à les contacter."
+
+**Given** la page placeholder
+**When** elle est affichée
+**Then** elle utilise le même design system que le reste du site (fond crème, typographie Cormorant/Geist, palette dorée) pour rester cohérente
+
+**Given** la page sur mobile
+**When** elle est affichée
+**Then** le message est centré, lisible et correctement espacé sans scroll horizontal
+
+**Given** la page placeholder
+**When** elle est indexée par les moteurs de recherche
+**Then** les balises meta indiquent `noindex, nofollow` pour ne pas référencer le site publiquement
