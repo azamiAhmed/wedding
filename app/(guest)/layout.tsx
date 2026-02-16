@@ -4,7 +4,7 @@ export default function GuestLayout({
   children: React.ReactNode
 }) {
   return (
-    <main className="h-dvh overflow-y-scroll snap-y snap-mandatory landscape:snap-none landscape:overflow-y-auto bg-cream-warm font-sans">
+    <main className="guest-scroll-container h-dvh overflow-y-scroll snap-y snap-mandatory landscape:snap-none landscape:overflow-y-auto bg-cream-warm font-sans">
       {children}
     </main>
   )

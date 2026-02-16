@@ -104,6 +104,122 @@
   animation: rsvpPulse var(--animate-duration-pulse) ease-in-out infinite;
 }
 
+/* === Alliance Rings: Scroll-Driven Animation === */
+
+/* Named scroll timeline on guest scroll container */
+.guest-scroll-container {
+  scroll-timeline-name: --guest-scroll;
+}
+
+/*
+ * Two sets of keyframes: mobile-first + desktop override.
+ * Rings converge from edges → overlap slightly below "Merci" text.
+ * translate(X, Y): X = horizontal convergence, Y = descent below text at end.
+ * No rotation — 3D ring photos look wrong rotated.
+ * Note: animation pacing depends on total scroll height (number of visible sections).
+ */
+
+/* --- Mobile keyframes (default) --- */
+/* Final: scale(0.8) → rings overlap ~30px at the end */
+
+@keyframes allianceLeftMove {
+  0%   { opacity: 0;   transform: translate(-400px, 0) scale(0.25); }
+  8%   { opacity: 0;   transform: translate(-400px, 0) scale(0.25); }
+  15%  { opacity: 0.3; transform: translate(-250px, 0) scale(0.3); }
+  40%  { opacity: 0.3; transform: translate(-150px, 0) scale(0.35); }
+  65%  { opacity: 0.3; transform: translate(-90px, 4vh) scale(0.45); }
+  85%  { opacity: 0.6; transform: translate(-45px, 10vh) scale(0.65); }
+  95%  { opacity: 0.9; transform: translate(-35px, 12vh) scale(0.75); }
+  100% { opacity: 1;   transform: translate(-30px, 12vh) scale(0.8); }
+}
+
+@keyframes allianceRightMove {
+  0%   { opacity: 0;   transform: translate(400px, 0) scale(0.25); }
+  8%   { opacity: 0;   transform: translate(400px, 0) scale(0.25); }
+  15%  { opacity: 0.3; transform: translate(250px, 0) scale(0.3); }
+  40%  { opacity: 0.3; transform: translate(150px, 0) scale(0.35); }
+  65%  { opacity: 0.3; transform: translate(90px, 4vh) scale(0.45); }
+  85%  { opacity: 0.6; transform: translate(45px, 10vh) scale(0.65); }
+  95%  { opacity: 0.9; transform: translate(35px, 12vh) scale(0.75); }
+  100% { opacity: 1;   transform: translate(30px, 12vh) scale(0.8); }
+}
+
+/* --- Desktop keyframes (≥768px) --- */
+/* Final: scale(1.3) → rings overlap ~50px at the end */
+
+@keyframes allianceLeftMoveLg {
+  0%   { opacity: 0;   transform: translate(-800px, 0) scale(0.35); }
+  8%   { opacity: 0;   transform: translate(-800px, 0) scale(0.35); }
+  15%  { opacity: 0.3; transform: translate(-500px, 0) scale(0.4); }
+  40%  { opacity: 0.3; transform: translate(-300px, 0) scale(0.5); }
+  65%  { opacity: 0.3; transform: translate(-180px, 8vh) scale(0.6); }
+  85%  { opacity: 0.6; transform: translate(-80px, 20vh) scale(0.85); }
+  95%  { opacity: 0.9; transform: translate(-58px, 25vh) scale(1.1); }
+  100% { opacity: 1;   transform: translate(-50px, 25vh) scale(1.3); }
+}
+
+@keyframes allianceRightMoveLg {
+  0%   { opacity: 0;   transform: translate(800px, 0) scale(0.35); }
+  8%   { opacity: 0;   transform: translate(800px, 0) scale(0.35); }
+  15%  { opacity: 0.3; transform: translate(500px, 0) scale(0.4); }
+  40%  { opacity: 0.3; transform: translate(300px, 0) scale(0.5); }
+  65%  { opacity: 0.3; transform: translate(180px, 8vh) scale(0.6); }
+  85%  { opacity: 0.6; transform: translate(80px, 20vh) scale(0.85); }
+  95%  { opacity: 0.9; transform: translate(58px, 25vh) scale(1.1); }
+  100% { opacity: 1;   transform: translate(50px, 25vh) scale(1.3); }
+}
+
+/* Default: rings hidden (graceful degradation for unsupported browsers) */
+.alliance-rings-container {
+  display: none;
+}
+
+@supports (animation-timeline: scroll()) {
+  .alliance-rings-container {
+    display: block;
+  }
+
+  .alliance-ring-left,
+  .alliance-ring-right {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    /* Centering: half of width (120px) and height (180px) from component */
+    margin-left: calc(120px / -2);
+    margin-top: calc(180px / -2);
+    opacity: 0;
+  }
+
+  .alliance-ring-left {
+    animation: allianceLeftMove linear both;
+    animation-timeline: --guest-scroll;
+  }
+
+  .alliance-ring-right {
+    animation: allianceRightMove linear both;
+    animation-timeline: --guest-scroll;
+  }
+}
+
+/* Desktop: switch to larger keyframes */
+@media (min-width: 768px) {
+  @supports (animation-timeline: scroll()) {
+    .alliance-ring-left {
+      animation-name: allianceLeftMoveLg;
+    }
+    .alliance-ring-right {
+      animation-name: allianceRightMoveLg;
+    }
+  }
+}
+
+/* Landscape: disable rings — snap is off, scroll behavior differs */
+@media (orientation: landscape) {
+  .alliance-rings-container {
+    display: none !important;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .scroll-reveal {
     animation: none !important;
@@ -113,6 +229,10 @@
 
   .rsvp-pulse {
     animation: none !important;
+  }
+
+  .alliance-rings-container {
+    display: none !important;
   }
 }
 

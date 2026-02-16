@@ -10,6 +10,8 @@ export const COUPLE = {
   timelineTitle: 'Notre Histoire',
   venueTitle: 'Lieu de la Cérémonie',
   programTitle: 'Programme de la Journée',
+  merciTitle: 'Merci',
+  merciMessage: 'Votre présence est notre plus belle bénédiction.',
 } as const
 
 export interface TimelineEvent {
