@@ -6,10 +6,11 @@ import { Switch } from '@/components/ui/switch'
 interface ConfigTogglesProps {
   showVenue: boolean
   showProgram: boolean
+  showMerci: boolean
 }
 
 interface ToggleItem {
-  key: 'show_venue' | 'show_program'
+  key: 'show_venue' | 'show_program' | 'show_merci'
   label: string
   description: string
 }
@@ -25,12 +26,18 @@ const toggles: ToggleItem[] = [
     label: 'Section Programme',
     description: 'Visible pour les invités',
   },
+  {
+    key: 'show_merci',
+    label: 'Section Merci',
+    description: 'Visible pour les invités',
+  },
 ]
 
-export function ConfigToggles({ showVenue, showProgram }: ConfigTogglesProps) {
+export function ConfigToggles({ showVenue, showProgram, showMerci }: ConfigTogglesProps) {
   const [values, setValues] = useState<Record<string, boolean>>({
     show_venue: showVenue,
     show_program: showProgram,
+    show_merci: showMerci,
   })
   const [loading, setLoading] = useState<string | null>(null)
 

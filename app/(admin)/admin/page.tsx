@@ -19,6 +19,7 @@ export default async function AdminDashboardPage() {
       <ConfigToggles
         showVenue={config.show_venue !== 'false'}
         showProgram={config.show_program !== 'false'}
+        showMerci={config.show_merci !== 'false'}
       />
       <GuestList guests={guests} />
     </div>

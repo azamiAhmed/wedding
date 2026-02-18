@@ -10,6 +10,8 @@ export const COUPLE = {
   timelineTitle: 'Notre Histoire',
   venueTitle: 'Lieu de la Cérémonie',
   programTitle: 'Programme de la Journée',
+  merciTitle: 'Merci',
+  merciMessage: 'Votre présence est notre plus belle bénédiction.',
 } as const
 
 export interface TimelineEvent {
@@ -91,6 +93,12 @@ export const RSVP = {
     `Vous avez confirmé pour ${n} personne${n > 1 ? 's' : ''}`,
   statusDeclined: "Vous avez décliné l'invitation",
   modifyStatusAction: 'Modifier',
+} as const
+
+export const LANDING = {
+  title: 'Ahmed & Ghizlaine',
+  message:
+    'Ce site est réservé aux invités d\'Ahmed & Ghizlaine. Si vous souhaitez recevoir votre invitation, n\'hésitez pas à les contacter.',
 } as const
 
 export const OG = {

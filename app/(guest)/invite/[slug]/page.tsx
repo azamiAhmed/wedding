@@ -8,6 +8,8 @@ import { VenueSection } from '@/components/guest/venue-section'
 import { ProgramSection } from '@/components/guest/program-section'
 import { TimelineSection } from '@/components/guest/timeline-section'
 import { RsvpOverlay } from '@/components/guest/rsvp-overlay'
+import { AllianceRings } from '@/components/guest/alliance-rings'
+import { MerciSection } from '@/components/guest/merci-section'
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -36,6 +38,7 @@ export default async function InvitePage({
   const config = await getSiteConfig()
   const showVenue = config.show_venue !== 'false'
   const showProgram = config.show_program !== 'false'
+  const showMerci = config.show_merci !== 'false'
 
   return (
     <>
@@ -44,6 +47,8 @@ export default async function InvitePage({
       <TimelineSection />
       {showVenue && <VenueSection />}
       {showProgram && <ProgramSection />}
+      {showMerci && <MerciSection />}
+      <AllianceRings />
       <RsvpOverlay
         slug={slug}
         guestFirstName={guest.firstName}

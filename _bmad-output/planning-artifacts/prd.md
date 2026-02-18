@@ -231,7 +231,7 @@ Ciblage : navigateurs modernes uniquement (2 dernières versions majeures). Pas 
 - **FR13 :** L'invité peut indiquer le nombre de personnes accompagnantes (de 1 à 5)
 - **FR14 :** L'invité peut confirmer sa présence ("Je serai là")
 - **FR15 :** L'invité peut décliner l'invitation ("Je ne pourrai pas")
-- **FR16 :** L'invité peut modifier sa réponse RSVP en revisitant son lien unique
+- **FR16 :** L'invité peut modifier sa réponse RSVP (présence et nombre d'accompagnants) en revisitant son lien unique, sans aucune limite de temps
 - **FR17 :** Le formulaire RSVP s'affiche en overlay sans quitter la page principale
 - **FR18 :** L'invité peut voir son statut RSVP actuel lorsqu'il revient sur son lien
 - **FR19 :** Le système conserve et pré-affiche la dernière réponse RSVP de l'invité dans le formulaire
@@ -257,6 +257,16 @@ Ciblage : navigateurs modernes uniquement (2 dernières versions majeures). Pas 
 ### Gestion du Contenu
 
 - **FR29 :** Le contenu des sections (textes, photos, adresse du lieu, étapes de la timeline) est géré directement dans le code source
+
+### Animation des Alliances au Scroll
+
+- **FR31 :** Deux alliances animées (or pour Ghizlaine, argent/platine pour Ahmed) flottent sur les bords de l'écran et accompagnent le scroll de l'invité
+- **FR32 :** Les alliances se rapprochent au fil du scroll par une animation fluide et continue liée au pourcentage de défilement
+- **FR33 :** À la dernière section, les alliances s'entrelacent et révèlent la photo du couple dans l'espace intérieur
+
+### Landing Page Non-Invités
+
+- **FR34 :** Un visiteur accédant à la racine du site (/) sans lien d'invitation voit une landing page placeholder l'invitant à contacter Ahmed ou Ghizlaine
 
 ## Exigences Non-Fonctionnelles
 

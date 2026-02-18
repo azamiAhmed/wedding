@@ -24,6 +24,7 @@ async function seed() {
     .values([
       { key: 'show_venue', value: 'true' },
       { key: 'show_program', value: 'true' },
+      { key: 'show_merci', value: 'true' },
     ])
     .onConflictDoNothing()
 

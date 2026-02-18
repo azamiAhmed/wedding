@@ -20,7 +20,7 @@ _This document builds collaboratively through step-by-step discovery. Sections a
 
 ### Vue d'Ensemble des Exigences
 
-**Exigences Fonctionnelles (29 FRs) :**
+**Exigences Fonctionnelles (33 FRs) :**
 
 | Catégorie | FRs | Implication architecturale |
 |-----------|-----|---------------------------|
@@ -32,6 +32,8 @@ _This document builds collaboratively through step-by-step discovery. Sections a
 | Admin Invités (FR21-26) | Login, CRUD, statuts, modification manuelle | API admin protégée, auth simple, endpoints CRUD |
 | Admin Config (FR27-28) | Toggles sections | API config, persistance état sections |
 | Contenu (FR29) | Contenu dans le code | Pas de CMS, contenu hardcodé |
+| Animation Alliances (FR31-33) | Deux alliances animées au scroll, entrelacement final, révélation photo | CSS Scroll-Driven Animations, assets SVG réalistes, scroll-progress tracking, optimisation mobile |
+| Landing Page (FR34) | Page placeholder pour visiteurs non-invités | Route `/` publique, noindex/nofollow, pas d'auth |
 
 **Exigences Non-Fonctionnelles :**
 
@@ -204,6 +206,49 @@ components/
   admin/    → GuestTable, ConfigToggles, LoginForm, GuestForm
   ui/       → shadcn/ui (Button, Dialog, Input, Select, Table, Badge, Card)
 ```
+
+### Animation des Alliances au Scroll (FR31-33)
+
+**Approche technique** — CSS Scroll-Driven Animations natives (`animation-timeline: scroll()`) comme technologie principale. Compatible avec les navigateurs cibles (Safari 16.4+, Chrome 111+). Fallback JS avec `IntersectionObserver` + interpolation `scrollY` si nécessaire.
+
+**Assets SVG :**
+- Deux fichiers SVG distincts : alliance or (Ghizlaine) et alliance argent/platine (Ahmed)
+- Rendu réaliste avec gradients SVG (`<linearGradient>`, `<radialGradient>`), filtres (`<feGaussianBlur>`, `<feSpecularLighting>`) pour reflets et ombres
+- Poids cible : < 25KB par alliance (< 50KB total)
+- Stockage : `public/images/rings/` — `ring-gold.svg` et `ring-silver.svg`
+
+**Scroll-progress tracking :**
+- L'animation est liée au pourcentage de scroll global de la page (0% = hero, 100% = dernière section)
+- Propriétés animées : `translateX` (rapprochement bords → centre), `rotate` (rotation lente), `scale` (croissance progressive), `opacity` (30-40% → 100% à la fin)
+- L'animation est **bidirectionnelle** — scroll up = alliances se séparent
+- Easing final : `cubic-bezier` avec décélération pour l'entrelacement
+
+**Composants :**
+
+| Composant | Fichier | Type | Rôle |
+|-----------|---------|------|------|
+| `AllianceRings` | `components/guest/alliance-rings.tsx` | Client | Conteneur des deux alliances, gère le scroll-progress |
+| `RingAsset` | Inline dans `AllianceRings` | — | Rendu SVG avec props (type: gold/silver, style) |
+
+**Performance mobile :**
+- `will-change: transform, opacity` sur les éléments animés
+- `contain: layout style` pour isoler le repaint
+- `prefers-reduced-motion: reduce` → alliances masquées ou statiques
+- Test cible : 60fps sur iPhone 11 / Galaxy A52
+
+**Intégration avec le scroll-snap :**
+- Les alliances sont positionnées en `position: fixed` avec `pointer-events: none` pour ne pas interférer avec le scroll-snap et le contenu
+- z-index inférieur au contenu principal mais supérieur au fond
+
+### Landing Page Non-Invités (FR34)
+
+**Route** — `app/page.tsx` (racine du site). Page publique, aucune auth requise.
+
+**Architecture :**
+- Server Component pur — aucune interactivité, aucune donnée dynamique
+- Métadonnées : `noindex, nofollow` via `metadata` export Next.js
+- Même design system que le site invité (fond crème, Cormorant/Geist, palette dorée)
+- Pas de lien vers `/admin` (sécurité)
 
 ### Infrastructure & Deployment
 
@@ -414,6 +459,8 @@ wedding/
 │   ├── globals.css                         # Tailwind CSS + @theme inline (design tokens)
 │   ├── not-found.tsx                       # 404 global
 │   │
+│   ├── page.tsx                             # Landing page non-invités (FR34)
+│   │
 │   ├── (guest)/                            # Route group — layout cinématique invité
 │   │   ├── layout.tsx                      # Layout invité (scroll-snap, fond crème, polices)
 │   │   └── invite/
@@ -452,7 +499,8 @@ wedding/
 │   │   ├── venue.tsx                       # Lieu (conditionnel — toggle admin)
 │   │   ├── program.tsx                     # Programme (conditionnel — toggle admin)
 │   │   ├── rsvp-button.tsx                 # Bouton flottant "Je serai là" (Client)
-│   │   └── rsvp-overlay.tsx                # Overlay RSVP stepper (Client)
+│   │   ├── rsvp-overlay.tsx                # Overlay RSVP stepper (Client)
+│   │   └── alliance-rings.tsx              # Alliances animées au scroll (Client — FR31-33)
 │   ├── admin/
 │   │   ├── login-form.tsx                  # Formulaire connexion (Client)
 │   │   ├── guest-table.tsx                 # Tableau invités avec statuts
@@ -483,6 +531,7 @@ wedding/
 │
 ├── public/
 │   └── images/                             # Photos couple (hero, timeline, OG)
+│       └── rings/                          # SVG alliances (ring-gold.svg, ring-silver.svg)
 │
 ├── drizzle/                                # Migrations Drizzle Kit (auto-générées)
 │   └── migrations/
@@ -518,6 +567,7 @@ wedding/
 | `program.tsx` | Server | Rendu conditionnel côté serveur |
 | `rsvp-button.tsx` | Client | `onClick`, animation pulse |
 | `rsvp-overlay.tsx` | Client | `useState` (stepper), `fetch` (PUT RSVP) |
+| `alliance-rings.tsx` | Client | `useEffect` (scroll listener), `useRef`, animations CSS |
 | `login-form.tsx` | Client | `useState`, `fetch` (POST login) |
 | `guest-form.tsx` | Client | `useState`, `fetch` (POST/PUT guest) |
 | `config-toggles.tsx` | Client | `useState`, `fetch` (PUT config) |
@@ -543,6 +593,8 @@ Browser → Route Handler → Zod validation → Drizzle query → Neon DB
 | Admin Invités (FR21-26) | `(admin)/admin/page.tsx`, `components/admin/*`, `api/admin/guests/*` |
 | Admin Config (FR27-28) | `components/admin/config-toggles.tsx`, `api/admin/config/route.ts` |
 | Contenu hardcodé (FR29) | Directement dans les composants `guest/` |
+| Animation alliances (FR31-33) | `components/guest/alliance-rings.tsx`, `public/images/rings/` |
+| Landing page (FR34) | `app/page.tsx` |
 
 ### Flux Applicatifs
 
@@ -589,7 +641,7 @@ Aucune contradiction détectée.
 
 ### Requirements Coverage ✅
 
-**29/29 Exigences Fonctionnelles couvertes :**
+**33/33 Exigences Fonctionnelles couvertes :**
 
 | FR | Support architectural |
 |----|----------------------|
@@ -601,6 +653,8 @@ Aucune contradiction détectée.
 | FR21-26 (Admin invités) | API CRUD + `guest-table.tsx` + `guest-form.tsx` |
 | FR27-28 (Admin config) | `config-toggles.tsx` + API config |
 | FR29 (Contenu code) | Directement dans composants `guest/` |
+| FR31-33 (Alliances scroll) | `alliance-rings.tsx` + CSS Scroll-Driven Animations + SVG assets |
+| FR34 (Landing page) | `app/page.tsx` + metadata noindex |
 
 **NFRs couvertes :**
 - Performance (LCP < 3s) → SSR + `next/image` priority + Vercel CDN ✅
