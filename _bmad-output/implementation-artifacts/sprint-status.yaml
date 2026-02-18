@@ -76,11 +76,11 @@ development_status:
   # Epic 5: SUPPRIMÉE — fusionnée dans Story 3.4 (FR16)
 
   # Epic 6: Animation des Alliances au Scroll
-  epic-6: in-progress
+  epic-6: done
   6-1-assets-rendu-realiste-alliances: done
   6-2-animation-scroll-driven-alliances: done
   6-3-revelation-finale-photo-couple: cancelled
-  6-4-responsive-performance-mobile: backlog
+  6-4-responsive-performance-mobile: done  # couverte par 6.2
   epic-6-retrospective: optional
 
   # Epic 7: Landing Page Non-Invités
