@@ -96,7 +96,7 @@ development_status:
   # Epic 8: Page Save the Date — Contenu & Cadre Doré
   epic-8: in-progress
   8-1-fondation-layout-police-tokens-css: done
-  8-2-contenu-save-the-date-html-semantique: backlog
+  8-2-contenu-save-the-date-html-semantique: ready-for-dev
   8-3-cadre-dore-svg-decoratif: backlog
   8-4-responsive-accessibilite-validation: backlog
   epic-8-retrospective: optional
