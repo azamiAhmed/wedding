@@ -61,6 +61,15 @@
   --animate-duration-pulse: 2000ms;
   --animate-ease-overlay: cubic-bezier(0.32, 0.72, 0, 1);
   --animate-fade-in-up: fadeInUp var(--animate-duration-entry) ease-out both;
+
+  /* Save the Date — Animation tokens */
+  --animation-act1: 1500ms;
+  --animation-act2: 1200ms;
+  --animation-pause: 300ms;
+  --animation-act3: 2000ms;
+  --easing-flight: cubic-bezier(0.25, 0.1, 0.25, 1.0);
+  --easing-land: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --easing-reveal: cubic-bezier(0.0, 0.0, 0.2, 1);
 }
 
 @keyframes fadeInUp {

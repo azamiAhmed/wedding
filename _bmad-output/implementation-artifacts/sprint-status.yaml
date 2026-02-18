@@ -1,4 +1,4 @@
-# generated: 2026-02-13
+# generated: 2026-02-18
 # project: wedding
 # project_key: NOKEY
 # tracking_system: file-system
@@ -33,7 +33,7 @@
 # - SM typically creates next story after previous one is 'done' to incorporate learnings
 # - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
 
-generated: 2026-02-13
+generated: 2026-02-18
 project: wedding
 project_key: NOKEY
 tracking_system: file-system
@@ -87,3 +87,29 @@ development_status:
   epic-7: done
   7-1-landing-page-placeholder: done
   epic-7-retrospective: optional
+
+  # ============================================
+  # SAVE THE DATE ANIMÉ (Pigeon Voyageur)
+  # Source: epics-save-the-date.md
+  # ============================================
+
+  # Epic 8: Page Save the Date — Contenu & Cadre Doré
+  epic-8: in-progress
+  8-1-fondation-layout-police-tokens-css: done
+  8-2-contenu-save-the-date-html-semantique: backlog
+  8-3-cadre-dore-svg-decoratif: backlog
+  8-4-responsive-accessibilite-validation: backlog
+  epic-8-retrospective: optional
+
+  # Epic 9: Animation Pigeon Voyageur — Le Spectacle en 3 Actes
+  epic-9: backlog
+  9-1-sceau-ag-svg-monogramme: backlog
+  9-2-enveloppe-svg-animation-ouverture: backlog
+  9-3-pigeon-voyageur-svg-animation-vol: backlog
+  9-4-orchestration-animation-timeline: backlog
+  epic-9-retrospective: optional
+
+  # Epic 10: Open Graph — Aperçu WhatsApp
+  epic-10: backlog
+  10-1-image-open-graph-satori: backlog
+  epic-10-retrospective: optional
