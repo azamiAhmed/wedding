@@ -103,6 +103,8 @@ export const OG = {
 
 export const SAVE_THE_DATE = {
   title: 'Ahmed & Ghizlaine',
+  groom: 'Ahmed',
+  bride: 'Ghizlaine',
   date: '17 Octobre 2026',
   dateTime: '2026-10-17',
   city: 'Casablanca',

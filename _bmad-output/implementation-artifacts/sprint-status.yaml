@@ -102,11 +102,11 @@ development_status:
   epic-8-retrospective: optional
 
   # Epic 9: Animation Pigeon Voyageur — Le Spectacle en 3 Actes
-  epic-9: in-progress
+  epic-9: done
   9-1-sceau-ag-svg-monogramme: done
   9-2-enveloppe-svg-animation-ouverture: done
   9-3-pigeon-voyageur-svg-animation-vol: done
-  9-4-orchestration-animation-timeline: backlog
+  9-4-orchestration-animation-timeline: done
   epic-9-retrospective: optional
 
   # Epic 10: Open Graph — Aperçu WhatsApp

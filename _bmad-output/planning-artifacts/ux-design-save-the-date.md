@@ -9,7 +9,7 @@ inputDocuments:
 # UX Design Specification — Save the Date Animé (Pigeon Voyageur)
 
 **Auteur :** Mister Azami
-**Date :** 2026-02-18
+**Date :** 2026-02-19 (mise à jour)
 
 ---
 
@@ -17,7 +17,7 @@ inputDocuments:
 
 ### Vision Projet
 
-Animation "Save the Date" sur la landing page publique (`/`) du site de mariage. Un pigeon voyageur stylisé livre une enveloppe cachetée A&G qui s'ouvre pour révéler la date, le lieu et un message poétique. Page autonome, accessible à tous, sans lien avec le parcours RSVP des invités.
+Animation "Save the Date" sur la landing page publique (`/`) du site de mariage. Un pigeon voyageur Lottie (animation frame-by-frame greyscale) survole la scène et dépose une enveloppe cachetée A&G qui s'ouvre pour révéler la date, le lieu et un message poétique. La page utilise une image d'arrière-plan AVIF plein-écran. Page autonome, accessible à tous, sans lien avec le parcours RSVP des invités.
 
 ### Utilisateurs Cibles
 
@@ -41,7 +41,7 @@ Animation "Save the Date" sur la landing page publique (`/`) du site de mariage.
 
 2. **Cohabitation de deux styles visuels** — Le pigeon flat/illustré (Save the Date) et les alliances réalistes (invitation) vivent sur des pages différentes, ce qui atténue la dissonance, mais l'identité visuelle globale (palette dorée, crème, Cormorant) doit unifier les deux.
 
-3. **Preload des assets** — L'animation se joue au chargement. Les SVG du pigeon et de l'enveloppe doivent être chargés avant le premier frame, sinon flash blanc. Stratégie de preload ou fond crème de transition nécessaire.
+3. **Preload des assets** — L'animation se joue au chargement. Le JSON Lottie du pigeon (~40Ko gzippé) est chargé via `fetch` au runtime. Tous les éléments animés (pigeon, enveloppe, textes) démarrent à `opacity: 0` pour éviter tout flash. Les animations ne démarrent qu'après le chargement du Lottie via la classe `.scene-ready`.
 
 ### Opportunités Design
 
@@ -64,11 +64,11 @@ L'utilisateur décrirait l'expérience : *"J'ai ouvert le lien et un truc magnif
 | Aspect | Décision |
 |--------|----------|
 | Page | Landing publique `/` — accessible à tous, sans authentification |
-| Type | Page autonome, Server Component avec Client Component minimal pour l'orchestration d'animation |
+| Type | Page autonome, Server Component racine + Client Component `SaveTheDateScene` pour l'orchestration (chargement Lottie, gating `.scene-ready`, verrouillage pigeon post-animation) |
 | Input | Aucun — expérience 100% passive, zéro JS interactif |
 | Durée | 4-5 secondes d'animation, puis contenu statique permanent |
 | Post-animation | Contenu reste affiché, pas de scroll, pas de CTA sur la page |
-| Replay | L'animation se rejoue à chaque visite — pas de mécanisme "déjà vu". Le replay EST la valeur de partage |
+| Replay | L'animation se rejoue à chaque rechargement — pas de mécanisme "déjà vu". Le replay EST la valeur de partage |
 | CTA implicite | L'Open Graph WhatsApp (image enveloppe dorée + "Ahmed & Ghizlaine — Save the Date") est le vrai déclencheur de visite, pas un bouton sur la page |
 | Dépendances | Zéro API, zéro base de données, zéro état client persistant |
 
@@ -306,33 +306,37 @@ Le mot "interaction" est presque un abus de langage ici — l'expérience est co
 
 **Typographie :**
 
-| Usage | Police | Taille | Poids |
-|-------|--------|--------|-------|
-| "Ahmed & Ghizlaine" | Cormorant Garamond | Display XL (48px mobile / 80px desktop) | 300 (Light) |
-| "17 Octobre 2026" | Cormorant Garamond | Display L (36px mobile / 56px desktop) | 400 (Regular) |
-| "Casablanca" | Cormorant Garamond | Display M (28px mobile / 40px desktop) | 400 (Regular) |
-| Message poétique | Geist Sans | Body L (18px) | 400 (Regular), italique |
+| Usage | Police | Taille (clamp fluid) | Poids |
+|-------|--------|---------------------|-------|
+| "Ghizlaine" (ligne 1) | Cormorant Garamond | `clamp(2.25rem, 6vw+0.25rem, 3.5rem)` → 36px mobile / 56px desktop | 300 (Light) |
+| "&" (ligne 2) | Cormorant Garamond | `clamp(1.5rem, 3vw+0.25rem, 2.25rem)` → 24px mobile / 36px desktop | 300 (Light), couleur Doré Marocain |
+| "Ahmed" (ligne 3) | Cormorant Garamond | `clamp(2.25rem, 6vw+0.25rem, 3.5rem)` → 36px mobile / 56px desktop | 300 (Light) |
+| "17 Octobre 2026" | Cormorant Garamond | `clamp(1.75rem, 4vw+0.25rem, 2.75rem)` → 28px mobile / 44px desktop | 400 (Regular) |
+| "Casablanca" | Cormorant Garamond | `clamp(1.5rem, 3vw+0.25rem, 2.25rem)` → 24px mobile / 36px desktop | 400 (Regular) |
+| Message poétique | Geist Sans | `clamp(1rem, 1.5vw+0.5rem, 1.25rem)` → 16px mobile / 20px desktop | 400 (Regular), italique |
+
+**Note :** Les prénoms sont affichés sur 3 lignes séparées (Ghizlaine / & / Ahmed) pour un impact visuel plus fort.
 
 ### Technologie d'Animation
 
-**CSS Animations + CSS Motion Path** — Zéro dépendance, performance maximale.
+**Approche hybride : Lottie (`lottie-react`) pour le pigeon + CSS Animations pour l'orchestration.**
 
-| Critère | CSS Animations | Framer Motion | Lottie |
-|---------|---------------|---------------|--------|
-| Bundle ajouté | **0 Ko** | ~35 Ko gzippé | ~50 Ko gzippé |
-| GPU acceleration | **Native** | Via `transform` | Canvas/SVG renderer |
-| Séquencement 3 actes | `animation-delay` | `variants` + `stagger` | Timeline After Effects |
-| Trajectoire courbe pigeon | `offset-path` (Motion Path) | `animate` custom | Intégrée au fichier |
-| Client Component requis | **Non** (CSS pur) | Oui (hydration React) | Oui (player JS) |
-| Compatibilité cible | Safari 15.4+, Chrome ✅ | Tous navigateurs | Tous navigateurs |
+| Aspect | Technologie | Raison |
+|--------|-------------|--------|
+| Pigeon (animation de vol) | **Lottie** via `lottie-react` | Animation frame-by-frame complexe (9 poses, 1084 formes) impossible à reproduire en CSS/SVG pur |
+| Trajectoire du pigeon | **CSS keyframes** (`pigeon-lifecycle-*`) | Trajectoire en arc + dépôt + départ gérés par `transform: translate()` |
+| Enveloppe, texte, séquencement | **CSS Animations** + `animation-delay` | GPU-accelerated, séquencement précis, zéro JS |
+| Orchestration générale | **Client Component** `SaveTheDateScene` | Gating `.scene-ready` après chargement Lottie, fallback 3s, verrouillage pigeon post-animation |
+| `prefers-reduced-motion` | **CSS** `@media` | Pigeon et enveloppe masqués, texte affiché à `opacity: 1` directement |
 
-**Décision : CSS Animations pures.** Raisons :
-1. **0 Ko de bundle additionnel** — performance maximale, rien à charger
-2. **GPU-accelerated nativement** — 60fps garanti sur les appareils cibles
-3. **Pas de Client Component** — la page reste un Server Component avec CSS pur
-4. **CSS Motion Path (`offset-path`)** — permet les trajectoires courbes du pigeon, supporté par tous les navigateurs cibles
-5. **`animation-delay`** — séquencement précis des 3 actes sans orchestrateur JS
-6. **`prefers-reduced-motion`** — géré en CSS pur via `@media`, zéro JS nécessaire
+**Détails Lottie :**
+- Fichier : `/design/pigeon.json` (~40Ko gzippé, 247Ko brut après optimisation)
+- Format : 9 poses frame-by-frame, 141×110 canvas, 60fps, palette greyscale (15 tons de gris)
+- Chargement : `fetch()` au runtime dans un `useEffect`, animation CSS démarre après `onReady`
+- Package : `lottie-react` (~28Ko gzippé)
+
+**Pourquoi pas CSS pur pour le pigeon :**
+Le pigeon Lottie contient 1084 formes et 21 122 vertices — impossible à reproduire ou à animer en SVG/CSS pur. L'approche hybride (Lottie pour le rendu du pigeon, CSS pour sa trajectoire et le séquencement) combine la richesse visuelle du Lottie avec la précision du timing CSS.
 
 ### Stratégie de Personnalisation
 
@@ -423,51 +427,54 @@ L'utilisateur décrirait cette expérience à un ami : *"Tu ouvres le lien et y'
 | Lieu | 3900-4100ms | "Casablanca" apparaît. Cormorant M. | `animation-delay: 3900ms`, 200ms |
 | Séparateur | 4100-4200ms | Trait doré horizontal (`w-12`, `#B8860B`) — respiration visuelle, ancrage dans l'univers du site principal. | `animation-delay: 4100ms`, 100ms |
 | Message | 4200-4600ms | *« Une date à retenir… »* apparaît. Geist Sans italique. | `animation-delay: 4200ms`, 400ms |
-| Stabilisation | 4600-5000ms | Tout est visible. L'enveloppe en arrière-plan se désature progressivement et s'atténue (opacité ~20-25%, à valider sur appareil réel). Le texte reste net et centré. | `opacity` transition sur l'enveloppe |
+| Stabilisation | 4600-5000ms | Tout est visible. L'enveloppe a déjà disparu (opacity 0 entre 3200-3800ms). Le texte reste net et centré sur l'image d'arrière-plan. | — |
 
 ### État Final
 
 | Élément | État | Visibilité |
 |---------|------|------------|
-| Pigeon | Disparu (fade-out complet) | Invisible |
-| Enveloppe ouverte | Désaturée, très légère en arrière-plan | ~20-25% opacité (valider sur appareil réel, pas en simulateur) |
-| "Ahmed & Ghizlaine" | Cormorant XL, Brun Profond, centré | Pleine visibilité |
-| "17 Octobre 2026" | Cormorant L, Brun Profond, centré | Pleine visibilité |
-| "Casablanca" | Cormorant M, Brun Profond, centré | Pleine visibilité |
+| Pigeon | Disparu (fade-out complet + classe `.pigeon-done` verrouillée via JS après 3.6s) | Invisible, immunisé aux changements de breakpoint |
+| Enveloppe | Disparue complètement (`opacity: 0`) après ouverture (entre 3200ms et 3800ms) | Invisible |
+| "Ghizlaine" | Cormorant `clamp(2.25rem…3.5rem)`, Brun Profond, centré, ligne 1 | Pleine visibilité |
+| "&" | Cormorant `clamp(1.5rem…2.25rem)`, Doré Marocain, centré, ligne 2 | Pleine visibilité |
+| "Ahmed" | Cormorant `clamp(2.25rem…3.5rem)`, Brun Profond, centré, ligne 3 | Pleine visibilité |
+| "17 Octobre 2026" | Cormorant `clamp(1.75rem…2.75rem)`, Brun Profond, centré | Pleine visibilité |
+| "Casablanca" | Cormorant `clamp(1.5rem…2.25rem)`, Brun Profond, centré | Pleine visibilité |
 | Séparateur doré | Trait horizontal `w-12`, Doré Marocain | Pleine visibilité |
-| Message poétique | Geist Sans italique, Brun Moyen, centré | Pleine visibilité |
-| Fond | Crème `#FAF7F2` | Permanent |
+| Message poétique | Geist Sans italique `clamp(1rem…1.25rem)`, Brun Moyen, centré | Pleine visibilité |
+| Fond | Image `arriere-plan.avif` en `cover`, fallback Crème `#FAF7F2` | Permanent |
 
 ### État `prefers-reduced-motion`
 
 Quand l'utilisateur a activé "Réduire les animations" :
-- **Pas d'animation** — aucun pigeon, aucune enveloppe animée
-- **Pas d'enveloppe en arrière-plan** — sans le contexte narratif de l'animation, l'enveloppe serait confuse
-- **Affichage direct** : texte centré + séparateur doré sur fond crème
+- **Pas d'animation** — pigeon et enveloppe masqués (`display: none !important`)
+- **Textes visibles immédiatement** — `opacity: 1 !important` sur `.text-line-1` à `.text-line-5` (contrebalance le `opacity: 0` par défaut des éléments animés)
+- **Affichage direct** : texte centré + séparateur doré sur image d'arrière-plan
 - L'expérience reste élégante et complète, simplement statique
 
 ### Diagramme de Timeline
 
 ```
-0s        1s        2s        3s        4s        5s
-|---------|---------|---------|---------|---------|
-[===== Acte 1 =====]
-  pigeon: vol arc    ralenti
-                    [==== Acte 2 ====]
-                     dépôt   envol ↑ fade
-                     300ms   900ms
-                                    [P]
-                                    300ms
-                                      [====== Acte 3 ======]
-                                       ouverture  texte    stab.
-                                                  A&G|date|lieu|—|msg
+0s        1s        2s        3s        3.5s      4s        4.6s      5s
+|---------|---------|---------|---------|---------|---------|---------|
+[========= Pigeon Lottie + CSS trajectory (3500ms) =========]
+  entrée arc    →    dépôt centre    pause    envol ↑ fade → .pigeon-done @3.6s
+
+[============= Enveloppe lifecycle (5000ms) =================........]
+  hidden (0-1.5s)    visible (1.5s)    opening (3s)   disparue (3.2-3.8s)
+
+                                        [== Acte 3 — Texte ==============]
+                                         seal  flap  Ghiz|&|Ahmed|date|lieu|—|msg
+                                         3.0s  3.2s  3.5s      →      4.6s
 ```
 
 ### Notes d'Implémentation
 
-- **`offset-path` + fallback** : Implémenter `offset-path` pour la trajectoire courbe du pigeon. Prévoir un fallback en keyframes `translate` + `rotate` classiques si Safari pose problème avec `offset-rotate: auto`.
-- **Séquencement CSS pur** : Toutes les `animation-delay` sont calculées à partir de `t=0` (chargement). Zéro JS orchestrateur.
-- **Validation sur appareils réels** : L'opacité de l'enveloppe finale (20-25%) et le micro-rebond du dépôt doivent être testés sur iPhone SE, iPhone 14, Galaxy A52 — pas en simulateur.
+- **Lottie + CSS hybride** : Le pigeon utilise `lottie-react` pour le rendu frame-by-frame, et des keyframes CSS (`pigeon-lifecycle-mobile` / `pigeon-lifecycle-desktop`) pour la trajectoire. Les deux keyframes déposent le pigeon au même point (`translate(0, 0)` = centre du conteneur).
+- **Gating `.scene-ready`** : Toutes les animations CSS sont scopées sous `.scene-ready`. La classe est ajoutée par le Client Component `SaveTheDateScene` après : (1) callback `onReady` du Lottie chargé + 2 `requestAnimationFrame`, OU (2) fallback timeout 3s.
+- **Anti-flash** : Tous les éléments animés ont `opacity: 0` par défaut en CSS. Ils ne deviennent visibles que via les animations déclenchées par `.scene-ready`.
+- **Anti-breakpoint-flash** : Le pigeon reçoit la classe `.pigeon-done` (`opacity: 0 !important; animation: none !important`) 3.6s après `.scene-ready`, empêchant tout re-flash lors d'un changement de breakpoint CSS.
+- **Validation sur appareils réels** : Tester la trajectoire du pigeon et les tailles typographiques sur iPhone SE, iPhone 14 Pro Max, Galaxy A52 — pas en simulateur.
 
 ## Visual Design Foundation
 
@@ -479,10 +486,8 @@ Quand l'utilisateur a activé "Réduire les animations" :
 
 | Élément | Couleur(s) | Détail |
 |---------|-----------|--------|
-| Fond de page | `#FAF7F2` Crème Chaud | Visible dès le chargement, permanent |
-| Pigeon — corps principal | `#B8860B` Doré Marocain | Silhouette en aplat doré |
-| Pigeon — plumage/détails | `#D4A54A` Doré Lumineux | Nuances très subtiles sur les ailes, ventre légèrement plus clair |
-| Pigeon — ombre portée | `#E8D5A8` Voile Doré | Ombre douce projetée, légèreté |
+| Fond de page | Image AVIF `arriere-plan.avif` (740×1111px, 40Ko) en `bg-cover bg-center`, fallback `#FAF7F2` Crème Chaud | Image visible dès le chargement, permanent |
+| Pigeon (Lottie) | Greyscale (15 tons de gris) | Animation frame-by-frame détaillée, palette neutre intégrée au fichier Lottie |
 | Enveloppe — surface | `#FFFDF9` Blanc Cassé | Aplat principal, léger grain quasi-imperceptible |
 | Enveloppe — plis/bords | `#E8D5A8` Voile Doré | Ombres de pli très discrètes, profondeur subtile |
 | Enveloppe — bordure | `#D4A54A` Doré Lumineux | Liseré fin doré sur les bords |
@@ -493,17 +498,20 @@ Quand l'utilisateur a activé "Réduire les animations" :
 
 ### Pigeon — Spécifications Visuelles
 
-**Principe : 2-3 couleurs, flat premium**
+**Principe : Animation Lottie frame-by-frame, greyscale détaillé**
 
 | Propriété | Spécification |
 |-----------|---------------|
-| Style | Flat design premium — formes pleines, pas de contour (outline) |
-| Palette | 2-3 couleurs max : Doré Marocain (corps), Doré Lumineux (plumage subtil), Voile Doré (ombre) |
-| Plumage | Nuances très subtiles entre les aplats — différence de ton, pas de dégradé visible. Le passage doré foncé → doré clair suffit à suggérer le volume |
-| Silhouette | Reconnaissable en < 0.5s : posture de vol, ailes déployées, enveloppe visible dans le bec |
-| Ombre portée | Ombre douce en Voile Doré, projetée légèrement en bas — donne de la profondeur sans surcharger |
-| Taille | ~80-100px de large sur mobile, ~150-180px sur desktop |
-| À éviter | Dégradés brillants, contours noirs, détails hyper-réalistes (plumes individuelles), style cartoon |
+| Format | Lottie JSON (`/design/pigeon.json`), chargé via `fetch()` au runtime |
+| Style | Animation frame-by-frame (9 poses distinctes), rendu vectoriel détaillé (1084 formes, 21 122 vertices) |
+| Palette | Greyscale — 15 tons de gris, du blanc pur au gris foncé. Pas de couleur dorée sur le pigeon lui-même |
+| Canvas | 141×110 pixels natif, 60fps |
+| Silhouette | Reconnaissable en < 0.5s : pigeon en vol avec battements d'ailes fluides |
+| Taille rendue | `h-20 w-24` mobile (80×96px), `sm:h-32 sm:w-40` (128×160px), `lg:h-40 lg:w-48` (160×192px) |
+| Positionnement | Centré dans le cadre via wrapper `absolute inset-0 flex items-center justify-center`. La trajectoire CSS déplace le pigeon par rapport au centre |
+| Trajectoire | Keyframes CSS `pigeon-lifecycle-mobile` / `pigeon-lifecycle-desktop` — arc depuis le haut-gauche, dépôt au centre (`translate(0,0)`), départ vers le haut-droite |
+| Poids | ~40Ko gzippé (optimisé : nombres arrondis à 2 décimales, métadonnées supprimées) |
+| Boucle | Animation Lottie en `loop`, la trajectoire CSS gère l'apparition/disparition |
 
 ### Enveloppe — Spécifications Visuelles
 
@@ -536,15 +544,17 @@ Quand l'utilisateur a activé "Réduire les animations" :
 
 ### Système Typographique (État Final)
 
-**Héritage du site principal — appliqué au contenu révélé :**
+**Héritage du site principal — appliqué au contenu révélé. Tailles fluides via `clamp()` :**
 
-| Ligne | Police | Taille mobile | Taille desktop | Poids | Couleur |
-|-------|--------|--------------|----------------|-------|---------|
-| "Ahmed & Ghizlaine" | Cormorant Garamond | 48px / 3rem | 80px / 5rem | 300 (Light) | `#2C2418` |
-| "17 Octobre 2026" | Cormorant Garamond | 36px / 2.25rem | 56px / 3.5rem | 400 (Regular) | `#2C2418` |
-| "Casablanca" | Cormorant Garamond | 28px / 1.75rem | 40px / 2.5rem | 400 (Regular) | `#2C2418` |
-| Séparateur doré | — | `w-12` (48px) | `w-12` (48px) | — | `#B8860B` |
-| Message poétique | Geist Sans | 18px / 1.125rem | 18px / 1.125rem | 400 (Regular), italique | `#6B5D4F` |
+| Ligne | Police | clamp(min, fluid, max) | ~Mobile (375px) | ~Desktop (1440px) | Poids | Couleur |
+|-------|--------|----------------------|-----------------|-------------------|-------|---------|
+| "Ghizlaine" (l.1) | Cormorant | `clamp(2.25rem, 6vw+0.25rem, 3.5rem)` | 36px | 56px | 300 (Light) | `#2C2418` |
+| "&" (l.2) | Cormorant | `clamp(1.5rem, 3vw+0.25rem, 2.25rem)` | 24px | 36px | 300 (Light) | `#B8860B` (Doré Marocain) |
+| "Ahmed" (l.3) | Cormorant | `clamp(2.25rem, 6vw+0.25rem, 3.5rem)` | 36px | 56px | 300 (Light) | `#2C2418` |
+| "17 Octobre 2026" | Cormorant | `clamp(1.75rem, 4vw+0.25rem, 2.75rem)` | 28px | 44px | 400 (Regular) | `#2C2418` |
+| "Casablanca" | Cormorant | `clamp(1.5rem, 3vw+0.25rem, 2.25rem)` | 24px | 36px | 400 (Regular) | `#2C2418` |
+| Séparateur doré | — | `w-12` (48px) | 48px | 48px | — | `#B8860B` |
+| Message poétique | Geist Sans | `clamp(1rem, 1.5vw+0.5rem, 1.25rem)` | 16px | 20px | 400 (Regular), italique | `#6B5D4F` |
 
 ### Système d'Espacement & Layout
 
@@ -556,7 +566,7 @@ Quand l'utilisateur a activé "Réduire les animations" :
 | Hauteur du bloc texte | ~60% de la hauteur visible | Texte étalé, respiration entre les lignes, pas compressé |
 | Espacement entre lignes | `space-lg` (32px) entre prénoms ↔ date, `space-md` (16px) entre date ↔ lieu, `space-md` (16px) entre lieu ↔ séparateur, `space-md` (16px) entre séparateur ↔ message | Hiérarchie par l'espacement : les prénoms "respirent" le plus |
 | Marges latérales | `px-6` mobile, `px-8` desktop | Cohérent avec le site principal |
-| Enveloppe en arrière-plan | `absolute` centrée, ~20-25% opacité, `z-index` derrière le texte | Symbole maintenu sans concurrencer la lisibilité |
+| Enveloppe | `absolute inset-0 flex items-center justify-center` (z-0), disparaît complètement après ouverture | Animation narrative, ne reste pas en fond |
 
 **Layout — Pendant l'animation :**
 
@@ -590,74 +600,67 @@ Trois variations de composition explorées dans l'esthétique établie (pigeon f
 | **B — Cadre Doré** | Cadre décoratif fin doré avec coins arabesques, évoque le faire-part encadré | Mesurée — un élément décoratif structurant |
 | C — Atmosphère Lumineuse | Halo doré central en gradient radial, le pigeon vole "vers la lumière" | Subtile — ambiance sans élément tangible |
 
-### Direction Retenue : B — Cadre Doré
+### Direction Retenue : Épure + Image d'Arrière-Plan
 
-Le cadre doré est retenu car il renforce la métaphore centrale du Save the Date :
+La direction initiale (cadre doré avec bordure et arabesques) a été simplifiée après itération. Le cadre est désormais un **conteneur de layout invisible** (pas de bordure, pas de décoration). L'élégance vient de l'image d'arrière-plan et de la typographie.
 
-- **Faire-part physique digitalisé** — Le cadre évoque un carton d'invitation encadré, ancrant l'animation dans un objet tangible
-- **Structure visuelle** — Le cadre délimite la zone d'animation et crée un "écran dans l'écran", concentrant l'attention
-- **Cohérence avec le sceau A&G** — Les coins arabesques du cadre répondent aux entrelacs géométriques du sceau, créant une unité visuelle
-- **Élégance sans surcharge** — Un seul élément décoratif, fin et discret, qui élève sans alourdir
+- **Image d'arrière-plan** — `arriere-plan.avif` (740×1111px, 40Ko) couvre tout le viewport en `background-size: cover`, avec `bg-cream-warm` comme fallback
+- **Espace comme luxe** — Pas de bordure visible, le contenu flotte sur l'image d'arrière-plan
+- **Cadre invisible** — `GoldenFrame` est un conteneur `relative` pour le positionnement des éléments animés (pigeon, enveloppe, texte), sans rendu visuel propre
 
-### Spécifications du Cadre Doré
+### Spécifications du Layout
 
 | Propriété | Spécification |
 |-----------|---------------|
-| Type | Filet fin doré (1-2px) avec coins décoratifs arabesques |
-| Couleur | Doré Marocain `#B8860B` pour le filet, Doré Lumineux `#D4A54A` pour les coins |
-| Coins | Motifs arabesques géométriques fins — étoiles ou entrelacs, cohérents avec le sceau A&G |
-| Position | Centré, avec marge de ~24px (mobile) / ~48px (desktop) par rapport aux bords de l'écran |
-| Taille | Occupe ~85% de la largeur et ~80% de la hauteur visible |
-| Opacité pendant l'animation | 100% — le cadre est visible dès le début, il "accueille" le pigeon |
-| Opacité état final | 100% — le cadre reste, il encadre le texte comme un faire-part |
-| `prefers-reduced-motion` | Le cadre est affiché immédiatement (pas d'animation d'apparition) |
-| Technique | SVG inline ou pseudo-éléments CSS avec `border` + coins en SVG |
+| Arrière-plan | Image AVIF (`/design/arriere-plan.avif`), 740×1111px portrait, 40Ko, `bg-cover bg-center bg-no-repeat` |
+| Fallback | `bg-cream-warm` (`#FAF7F2`) affiché pendant le chargement de l'image |
+| Conteneur d'animation | `GoldenFrame` : `relative mx-auto flex min-h-[80dvh] w-[85%] lg:w-[70%] flex-col justify-center` |
+| Bordure | Aucune — supprimée au profit de l'épure |
+| Coins arabesques | Supprimés |
+| Padding page | `px-6` mobile, `sm:px-8` desktop |
 
 ### Composition Globale
 
 **Pendant l'animation :**
 ```
 ┌─────────────────────────────────┐
-│  ╔═══════════════════════════╗  │
-│  ║  ┌──╮                    ║  │  Coins arabesques
-│  ║   🕊️ ──→  ✉️             ║  │  Pigeon vole dans le cadre
-│  ║                           ║  │
-│  ║                           ║  │
-│  ╚═══════════════════════════╝  │
+│         arriere-plan.avif       │
+│                                 │
+│       🕊️ ──→  ✉️               │  Pigeon Lottie vole vers le centre
+│                                 │
+│                                 │
 │                                 │
 └─────────────────────────────────┘
-        fond crème #FAF7F2
+   bg-cover bg-center bg-no-repeat
 ```
 
 **État final :**
 ```
 ┌─────────────────────────────────┐
-│  ╔═══════════════════════════╗  │
-│  ║                           ║  │
-│  ║    Ahmed & Ghizlaine      ║  │  Cormorant XL
-│  ║                           ║  │
-│  ║    17 Octobre 2026        ║  │  Cormorant L
-│  ║                           ║  │
-│  ║       Casablanca          ║  │  Cormorant M
-│  ║         ────              ║  │  Séparateur doré
-│  ║    « Une date à           ║  │  Geist Sans italic
-│  ║      retenir... »         ║  │
-│  ║                           ║  │
-│  ║      [ ✉️ ~20% ]          ║  │  Enveloppe en fond
-│  ╚═══════════════════════════╝  │
+│         arriere-plan.avif       │
 │                                 │
+│          Ghizlaine              │  Cormorant clamp(2.25rem…3.5rem)
+│              &                  │  Doré Marocain
+│            Ahmed                │  Cormorant clamp(2.25rem…3.5rem)
+│                                 │
+│       17 Octobre 2026           │  Cormorant clamp(1.75rem…2.75rem)
+│         Casablanca              │  Cormorant clamp(1.5rem…2.25rem)
+│           ────                  │  Séparateur doré
+│    « Une date à retenir… »      │  Geist Sans italic
+│                                 │
+│    (enveloppe disparue)         │  Enveloppe opacity: 0 après ouverture
 └─────────────────────────────────┘
 ```
 
 ### Principes de Composition
 
-1. **Le cadre est permanent** — Il apparaît dès le chargement (pas d'animation d'entrée pour le cadre). Il "est là" quand le pigeon arrive, comme une scène de théâtre.
+1. **L'image d'arrière-plan est permanente** — Elle couvre tout le viewport dès le chargement (`bg-cover bg-center`), créant l'atmosphère avant même que l'animation ne démarre.
 
-2. **Le cadre ne concurrence pas l'animation** — Filet fin (1-2px), pas épais. Les coins arabesques sont discrets. Le pigeon et l'enveloppe restent les stars.
+2. **Le contenu flotte sur l'image** — Pas de cadre visible, pas de bordure. La typographie et le séparateur doré suffisent à structurer visuellement.
 
-3. **Le cadre structure l'état final** — Après l'animation, le cadre donne au texte un écrin visuel. Le résultat ressemble à un faire-part physique premium affiché à l'écran.
+3. **L'enveloppe disparaît** — Après ouverture, l'enveloppe s'efface complètement (`opacity: 0`) entre 3200ms et 3800ms. Le texte prend toute la place.
 
-4. **Responsive** — Sur mobile, le cadre a moins de marge (24px) pour maximiser l'espace intérieur. Sur desktop, les marges sont plus généreuses (48px) pour l'effet "tableau encadré".
+4. **Responsive** — Le conteneur invisible (`GoldenFrame`) occupe `w-[85%]` sur mobile et `w-[70%]` sur desktop. Le padding page (`px-6` / `sm:px-8`) crée les marges.
 
 ## User Journey Flows
 
@@ -737,8 +740,7 @@ flowchart TD
 
 | Pattern | Application | Justification |
 |---------|-------------|---------------|
-| Fond crème immédiat | Le fond `#FAF7F2` est en CSS, chargé en 0ms | Jamais de flash blanc, même sur connexion lente |
-| Cadre doré dès le chargement | SVG inline ou CSS pur, pas de dépendance asset | L'écran est élégant avant même l'animation |
+| Fond crème + image immédiate | Le fond `#FAF7F2` est en CSS (0ms), l'image AVIF (40Ko) charge rapidement après | Jamais de flash blanc, même sur connexion lente |
 | Pas de loader / spinner | Aucun indicateur de chargement visible | Le chargement est invisible — l'écran "attend" avec grâce |
 | Fallback textuel garanti | Le texte est dans le HTML, pas généré par JS | Même si tout casse, la date du mariage est lisible |
 | Replay = valeur de partage | L'animation se rejoue à chaque visite | Le destinataire d'un partage WhatsApp vit la même expérience |
@@ -760,34 +762,45 @@ Aucun. Le Save the Date est une page d'animation sans interaction — pas de `Di
 ### Composants Custom — Save the Date
 
 **`SaveTheDatePage`** (page.tsx racine `/`)
-- Orchestrateur principal : assemble tous les composants dans le layout
-- Technique : Server Component, metadata `noindex, nofollow`, Open Graph dédié
-- Responsabilité : layout `min-h-dvh`, fond crème, centrage vertical, gestion `prefers-reduced-motion` via CSS
-- Charge les polices Cormorant Garamond + Geist Sans via `next/font/google`
+- Conteneur principal : layout + image d'arrière-plan + metadata
+- Technique : Server Component, metadata `noindex, nofollow`
+- Responsabilité : layout `min-h-dvh flex flex-col justify-center`, image d'arrière-plan (`arriere-plan.avif` en `bg-cover bg-center`), fallback `bg-cream-warm`, padding `px-6 sm:px-8`
+- Délègue l'orchestration d'animation à `SaveTheDateScene` (Client Component)
 
 **`GoldenFrame`**
-- Cadre doré décoratif avec coins arabesques géométriques
-- Technique : SVG inline ou pseudo-éléments CSS, `border` 1-2px Doré Marocain, coins en SVG
-- États : un seul état — toujours visible, dès le chargement
-- Props : `className` pour le responsive (marge 24px mobile / 48px desktop)
-- Accessibilité : `aria-hidden="true"` (décoratif)
-- Réutilisable : potentiellement sur d'autres pages si besoin d'encadrement élégant
+- Conteneur de layout invisible (pas de bordure, pas de décoration visuelle)
+- Technique : `div` avec `relative mx-auto flex min-h-[80dvh] w-[85%] lg:w-[70%] flex-col justify-center`
+- Rôle : positionnement des éléments absolus (pigeon, enveloppe) et centrage du contenu texte
+- Props : `children: ReactNode`
+- Note : la bordure et les coins arabesques ont été supprimés après itération
 
-**`PigeonVoyageur`**
-- SVG du pigeon stylisé flat premium avec animation de vol
-- Technique : SVG inline avec `offset-path` pour la trajectoire courbe (fallback keyframes `translate` + `rotate`), keyframes CSS pour les battements d'ailes
-- États : `flying` (Acte 1, entrée arc gracieux) → `landing` (Acte 2, dépôt 300ms) → `departing` (Acte 2, envol vertical + fade-out)
-- Props : aucune — animation auto-démarrante au chargement
-- Accessibilité : `aria-hidden="true"` (décoratif), `pointer-events: none`
-- `prefers-reduced-motion` : masqué (`display: none`)
+**`SaveTheDateScene`** _(Client Component — nouveau)_
+- Orchestrateur principal de toutes les animations
+- Technique : `'use client'`, gère le chargement Lottie, la classe `.scene-ready`, le verrouillage pigeon
+- Responsabilités :
+  - Attend le callback `onReady` du pigeon (Lottie chargé) puis ajoute `.scene-ready` après 2 `requestAnimationFrame`
+  - Fallback : ajoute `.scene-ready` après 3s même si le Lottie ne charge pas
+  - Après 3.6s, ajoute `.pigeon-done` sur le pigeon pour empêcher le re-flash au changement de breakpoint
+  - Force le restart des animations CSS lors du HMR (dev) via `classList.remove`
+
+**`PigeonVoyageur`** _(Client Component)_
+- Animation Lottie du pigeon chargée dynamiquement
+- Technique : `lottie-react` avec `fetch('/design/pigeon.json')` dans un `useEffect`. Classe CSS `pigeon-container` pour la trajectoire
+- Positionnement : dans un wrapper centré (`absolute inset-0 flex items-center justify-center`), les keyframes CSS déplacent le pigeon par rapport au centre du cadre
+- Keyframes : `pigeon-lifecycle-mobile` (< 640px) / `pigeon-lifecycle-desktop` (≥ 640px), durée 3500ms. Le point de dépôt est `translate(0, 0)` = centre du cadre = position de l'enveloppe
+- Props : `className`, `onReady` (callback quand le Lottie est chargé)
+- Accessibilité : `aria-hidden="true"`, `pointer-events: none`
+- `prefers-reduced-motion` : masqué (`display: none !important`)
 
 **`Envelope`**
 - SVG de l'enveloppe avec animation d'ouverture
-- Technique : SVG inline, rabat en `transform: rotateX()` avec `var(--easing-reveal)`, opacité finale ~20-25%
-- États : `hidden` (avant dépôt) → `sealed` (sceau A&G visible, Acte 2) → `opening` (rabat se soulève, Acte 3) → `ghost` (désaturée en arrière-plan, état final)
-- Props : aucune — transitions pilotées par `animation-delay`
+- Technique : SVG inline (corps, rabat, plis), `transform: rotateX()` sur le rabat avec `var(--easing-reveal)`, opacité finale 0%
+- États : `hidden` (opacity 0, 0-1500ms) → `visible` (opacity 1, 1500ms-3200ms) → `opening` (rabat se soulève, 3200ms) → `disparue` (opacity 0 entre 3200-3800ms, état final)
+- Positionnement : centré via wrapper `absolute inset-0 flex items-center justify-center`
+- Taille : `h-28 w-[168px]` mobile, `sm:h-44 sm:w-[264px]`, `lg:h-[200px] lg:w-[300px]`
+- Props : `className`
 - Accessibilité : `aria-hidden="true"` (décoratif)
-- `prefers-reduced-motion` : masqué (`display: none`)
+- `prefers-reduced-motion` : masqué (`display: none !important`)
 
 **`SealAG`**
 - SVG du sceau monogramme A&G avec entrelacs arabesques géométriques
@@ -797,13 +810,14 @@ Aucun. Le Save the Date est une page d'animation sans interaction — pas de `Di
 - Accessibilité : `aria-hidden="true"` (décoratif)
 - Réutilisable : peut être exporté pour l'image Open Graph statique
 
-**`SaveTheDateContent`**
-- Bloc de texte révélé : prénoms, date, lieu, séparateur doré, message poétique
-- Technique : éléments HTML sémantiques (`h1`, `time`, `address`, `blockquote`), animation CSS `opacity` + `translateY` avec `animation-delay` séquentiels
-- États : `hidden` (avant Acte 3) → `revealing` (apparition ligne par ligne, 200ms entre chaque) → `visible` (état final permanent)
-- Props : aucune — contenu hardcodé (Server Component, strings en dur ou via `lib/constants.ts`)
+**`SaveTheDateContent`** _(Server Component)_
+- Bloc de texte révélé : prénoms sur 3 lignes (Ghizlaine / & / Ahmed), date, lieu, séparateur doré, message poétique
+- Technique : éléments HTML sémantiques (`h1` avec 3 `span.block`, `time`, `address`, `blockquote`), classes `.text-line-1` à `.text-line-5`, animation CSS `text-reveal` (`opacity` + `translateY`) avec `animation-delay` séquentiels (3500-4600ms)
+- Tailles fluides : toutes en `clamp()` pour adaptation mobile-desktop sans breakpoint
+- États : `hidden` (`opacity: 0` par défaut CSS) → `revealing` (apparition ligne par ligne, 200ms entre chaque, déclenché par `.scene-ready`) → `visible` (état final permanent)
+- Props : aucune — contenu via `lib/constants.ts` (convention FR29). Champs `bride`, `groom`, `date`, `city`, `message`
 - Accessibilité : sémantique HTML native, contenu lisible par screen reader sans dépendre de l'animation
-- `prefers-reduced-motion` : affiché directement sans animation
+- `prefers-reduced-motion` : `opacity: 1 !important` — affiché directement sans animation
 
 **`GoldenSeparator`**
 - Trait doré horizontal décoratif (hérité du site principal)
@@ -814,18 +828,22 @@ Aucun. Le Save the Date est une page d'animation sans interaction — pas de `Di
 ### Architecture des Composants
 
 ```
-SaveTheDatePage (Server Component)
-├── GoldenFrame (SVG/CSS — permanent)
-│   ├── PigeonVoyageur (SVG — animé puis masqué)
-│   │   └── [enveloppe dans le bec — partie du SVG pigeon]
-│   ├── Envelope (SVG — animé puis ghost)
-│   │   └── SealAG (SVG — visible puis brisé)
-│   └── SaveTheDateContent (HTML sémantique — révélé puis permanent)
-│       ├── h1 "Ahmed & Ghizlaine"
-│       ├── time "17 Octobre 2026"
-│       ├── address "Casablanca"
-│       ├── GoldenSeparator
-│       └── blockquote "Une date à retenir..."
+SaveTheDatePage (Server Component — page.tsx /)
+│   background: arriere-plan.avif + bg-cream-warm fallback
+│
+└── SaveTheDateScene (Client Component — orchestrateur)
+    │   Gère: .scene-ready, chargement Lottie, .pigeon-done
+    │
+    └── GoldenFrame (Server Component — conteneur layout invisible)
+        ├── [wrapper centré] → Envelope (SVG — animé puis invisible)
+        │                       └── SealAG (SVG — visible puis brisé)
+        ├── [wrapper centré] → PigeonVoyageur (Client — Lottie + CSS trajectory)
+        └── SaveTheDateContent (Server Component — texte révélé puis permanent)
+            ├── h1: span "Ghizlaine" / span "&" / span "Ahmed"
+            ├── time "17 Octobre 2026"
+            ├── address "Casablanca"
+            ├── GoldenSeparator
+            └── blockquote "Une date à retenir..."
 ```
 
 ### Stratégie d'Implémentation
@@ -846,10 +864,11 @@ SaveTheDatePage (Server Component)
 |-----------|-------|
 | Emplacement | `components/save-the-date/` — dossier dédié |
 | Nommage | PascalCase : `PigeonVoyageur.tsx`, `GoldenFrame.tsx`, etc. |
-| Server/Client | Tous Server Components sauf si CSS animations nécessitent un Client Component minimal |
+| Server/Client | Server Components par défaut. `SaveTheDateScene` et `PigeonVoyageur` sont Client Components (`'use client'`) pour l'orchestration et le chargement Lottie |
 | Props | Minimales — la plupart des composants sont auto-suffisants (pas de props) |
 | Styles | Tailwind CSS classes + CSS custom properties pour les tokens d'animation |
-| Assets SVG | Inline dans les composants (pas de fichiers SVG séparés dans `/public`) — garantit le chargement immédiat |
+| Assets SVG | Inline dans les composants (enveloppe, sceau). Exception : le pigeon est un fichier Lottie JSON dans `/public/design/pigeon.json`, chargé via `fetch()` |
+| Assets images | `/public/design/arriere-plan.avif` — image d'arrière-plan plein-écran |
 | Strings | Hardcodées ou via `lib/constants.ts` (convention FR29 du projet) |
 
 ## UX Consistency Patterns
@@ -858,11 +877,13 @@ SaveTheDatePage (Server Component)
 
 | Pattern | Règle | Application |
 |---------|-------|-------------|
-| Séquencement par `animation-delay` | Toutes les animations sont calculées depuis `t=0` (chargement). Pas d'orchestrateur JS, pas de chaînage événementiel. | Acte 1 à `0ms`, Acte 2 à `1500ms`, pause à `2700ms`, Acte 3 à `3000ms` |
+| Séquencement par `animation-delay` | Toutes les animations sont calculées depuis `t=0` (ajout de `.scene-ready`). Le Client Component `SaveTheDateScene` ajoute la classe après chargement du Lottie. | Pigeon `0ms`, enveloppe visible `~1500ms` (30% de 5000ms), ouverture `3000ms`, texte `3500-4600ms` |
 | Easing naturel | Chaque type de mouvement a son easing dédié. Jamais de `linear` sur un élément vivant, jamais de `ease` générique. | Vol = `--easing-flight`, dépôt = `--easing-land` (rebond), ouverture = `--easing-reveal` |
 | Un seul élément en mouvement à la fois | À chaque instant, l'œil suit UN élément. Pas de mouvements simultanés concurrents. | Le pigeon vole seul → l'enveloppe s'ouvre seule → le texte apparaît séquentiellement |
-| `animation-fill-mode: forwards` | Tous les éléments conservent leur état final après l'animation. Pas de retour à l'état initial. | Le pigeon reste invisible, l'enveloppe reste ghost, le texte reste visible |
-| Durée totale stricte | 5000ms maximum pour l'ensemble de l'animation. Pas de dépassement. | Budget vérifié : 1500 + 1200 + 300 + 2000 = 5000ms |
+| `animation-fill-mode: both` | Tous les éléments conservent leur état final après l'animation (`forwards`) et appliquent l'état initial pendant le délai (`backwards`). Le pigeon est en plus verrouillé via la classe `.pigeon-done` (JS) pour éviter les re-flash au changement de breakpoint. | Le pigeon reste invisible, l'enveloppe disparue, le texte reste visible |
+| Durée totale stricte | ~5000ms pour l'ensemble de l'animation. Pigeon 3500ms, texte 3500-4600ms, stabilisation jusqu'à 5000ms. | Budget vérifié |
+| Gating `.scene-ready` | Toutes les animations CSS sont scopées sous `.scene-ready .element`. La classe est ajoutée par JS après chargement Lottie (+ 2 rAF) ou fallback 3s. | Empêche le flash SSR → animation |
+| Éléments cachés par défaut | `.pigeon-container`, `.envelope-container`, `.text-line-1` à `.text-line-5` ont `opacity: 0` en CSS de base. Les animations les rendent visibles. | Empêche le flash au rechargement |
 
 **Easing Reference :**
 
@@ -877,15 +898,15 @@ SaveTheDatePage (Server Component)
 
 | Situation | Ce que voit l'utilisateur | Ce qui se passe techniquement |
 |-----------|--------------------------|-------------------------------|
-| Chargement instantané (< 500ms) | Fond crème + cadre doré → animation démarre | HTML + CSS inline chargés, SVG inline prêts |
-| Chargement normal (500ms-2s) | Fond crème + cadre doré pendant ~1s → animation | Le cadre et le fond sont le "loading state" élégant |
-| Chargement lent (2s-10s) | Fond crème + cadre doré, attente invisible | L'écran est statique mais beau — pas de spinner, pas de skeleton |
-| Timeout (> 10s) | Fond crème + cadre doré + texte statique direct | Fallback : contenu affiché sans animation ni enveloppe |
+| Chargement instantané (< 500ms) | Image arrière-plan + fond crème → Lottie chargé → animation démarre | HTML + CSS + image AVIF chargés, Lottie fetch rapide |
+| Chargement normal (500ms-2s) | Image arrière-plan visible, éléments animés cachés (opacity 0) → animation | L'image d'arrière-plan est le "loading state" élégant |
+| Chargement lent (2s-3s) | Image arrière-plan, attente invisible | L'écran est statique mais beau — pas de spinner |
+| Timeout (> 3s) | Fallback JS déclenche `.scene-ready` même sans Lottie. Animation CSS démarre, pigeon sans Lottie (container vide), enveloppe + texte apparaissent normalement | L'information est toujours accessible |
 
 **Règles :**
 - **Jamais de spinner, jamais de loader, jamais de barre de progression** — l'attente doit être invisible
-- **Le fond crème `#FAF7F2` + cadre doré sont le loading state** — un écran élégant, pas un écran vide
-- **Le contenu HTML est toujours dans le DOM** — masqué par CSS (`opacity: 0`) jusqu'à l'animation, mais présent pour le fallback
+- **L'image d'arrière-plan + fond crème sont le loading state** — un écran élégant, pas un écran vide
+- **Le contenu HTML est toujours dans le DOM** — masqué par CSS (`opacity: 0`) jusqu'à l'animation via `.scene-ready`, mais présent pour les screen readers et le fallback
 
 ### Patterns de Dégradation
 
@@ -920,7 +941,7 @@ SaveTheDatePage (Server Component)
 | Pattern Save the Date | Pattern équivalent site principal | Cohérence |
 |----------------------|----------------------------------|-----------|
 | Fond crème `#FAF7F2` | Même fond sur toutes les pages | ✅ Identique |
-| Cadre doré avec arabesques | Séparateur doré `w-12` | ✅ Même palette, même esprit décoratif |
+| Séparateur doré `w-12` | Séparateur doré `w-12` du site principal | ✅ Composant réutilisé tel quel |
 | Typographie Cormorant XL/L/M | Mêmes niveaux sur le site invité | ✅ Identique |
 | Séparateur doré | `GoldenSeparator` existant | ✅ Composant réutilisé |
 | `prefers-reduced-motion` | Même pattern sur le site invité (animations désactivées) | ✅ Comportement cohérent |
@@ -956,15 +977,16 @@ Breakpoints Tailwind CSS 4 par défaut — pas de custom.
 
 | Composant | Mobile (< 640px) | Desktop (1024px+) |
 |-----------|------------------|-------------------|
-| `GoldenFrame` | Marge 24px, occupe ~85% largeur | Marge 48px, occupe ~70% largeur — plus d'espace autour |
-| `PigeonVoyageur` | ~80-100px de large | ~150-180px de large |
-| `Envelope` | ~120px de large | ~200px de large |
-| `SealAG` | ~30-40px diamètre | ~50-60px diamètre |
-| Cormorant XL (prénoms) | 48px / 3rem | 80px / 5rem |
-| Cormorant L (date) | 36px / 2.25rem | 56px / 3.5rem |
-| Cormorant M (lieu) | 28px / 1.75rem | 40px / 2.5rem |
-| Bloc texte | ~60% hauteur visible | ~60% hauteur visible (identique) |
-| Zone d'animation | Centrée dans le cadre | Centrée dans le cadre (identique) |
+| `GoldenFrame` | `w-[85%]`, `min-h-[80dvh]` | `lg:w-[70%]`, `min-h-[80dvh]` |
+| `PigeonVoyageur` | `h-20 w-24` (80×96px) | `lg:h-40 lg:w-48` (160×192px) |
+| `Envelope` | `h-28 w-[168px]` | `lg:h-[200px] lg:w-[300px]` |
+| `SealAG` | `h-8 w-8` (32px) | `lg:h-14 lg:w-14` (56px) |
+| Prénoms (clamp) | 36px | 56px |
+| Date (clamp) | 28px | 44px |
+| Lieu (clamp) | 24px | 36px |
+| Message (clamp) | 16px | 20px |
+| Pigeon trajectoire | `pigeon-lifecycle-mobile` — arc compact (offset ±120-250px) | `pigeon-lifecycle-desktop` — arc large (offset ±180-350px) |
+| Zone d'animation | Centrée dans le conteneur — pigeon et enveloppe en `absolute inset-0 flex items-center justify-center` | Identique — même positionnement centré |
 
 ### Gestion de l'Orientation
 
