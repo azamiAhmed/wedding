@@ -9,11 +9,9 @@ export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
 export default async function Image() {
-  const cormorantFont = await fetch(
-    new URL(
-      'https://fonts.gstatic.com/s/cormorantgaramond/v16/co3YmX5slCNuHLi8bLeY9MK7whWMhyjQEl5fuY.woff2'
-    )
-  ).then((res) => res.arrayBuffer())
+  const cormorantFont = readFileSync(
+    join(process.cwd(), 'public', 'fonts', 'cormorant-garamond-light.ttf')
+  )
 
   const heroData = readFileSync(join(process.cwd(), 'public', 'images', 'hero.jpg'))
   const heroBase64 = `data:image/jpeg;base64,${heroData.toString('base64')}`

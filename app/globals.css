@@ -61,6 +61,12 @@
   --animate-duration-pulse: 2000ms;
   --animate-ease-overlay: cubic-bezier(0.32, 0.72, 0, 1);
   --animate-fade-in-up: fadeInUp var(--animate-duration-entry) ease-out both;
+
+  /* Save the Date — Animation tokens */
+  --animation-pigeon: 3500ms;
+  --animation-scene: 5000ms;
+  --easing-flight: cubic-bezier(0.25, 0.1, 0.25, 1.0);
+  --easing-reveal: cubic-bezier(0.0, 0.0, 0.2, 1);
 }
 
 @keyframes fadeInUp {
@@ -224,6 +230,148 @@
   }
 }
 
+/* === Save the Date: Pigeon Voyageur Animation Keyframes === */
+
+/* Pigeon lifecycle — mobile: arc relative to center (0,0 = envelope) */
+@keyframes pigeon-lifecycle-mobile {
+  0%   { transform: translate(-120px, -200px) rotate(-12deg); opacity: 0; }
+  5%   { transform: translate(-90px, -150px) rotate(-10deg); opacity: 1; }
+  15%  { transform: translate(-50px, -80px) rotate(-8deg); opacity: 1; }
+  30%  { transform: translate(-20px, -30px) rotate(-4deg); opacity: 1; }
+  45%  { transform: translate(-5px, -5px) rotate(-1deg); opacity: 1; }
+  55%  { transform: translate(0px, 0px) rotate(0deg); opacity: 1; }
+  68%  { transform: translate(0px, 0px) rotate(0deg); opacity: 1; }
+  82%  { transform: translate(30px, -100px) rotate(-7deg); opacity: 0.5; }
+  100% { transform: translate(80px, -250px) rotate(-12deg); opacity: 0; }
+}
+
+/* Pigeon lifecycle — desktop: wider sweeping arc, same center deposit (0,0) */
+@keyframes pigeon-lifecycle-desktop {
+  0%   { transform: translate(-300px, -200px) rotate(-12deg); opacity: 0; }
+  5%   { transform: translate(-230px, -140px) rotate(-10deg); opacity: 1; }
+  15%  { transform: translate(-130px, -60px) rotate(-7deg); opacity: 1; }
+  30%  { transform: translate(-50px, -15px) rotate(-3deg); opacity: 1; }
+  45%  { transform: translate(-10px, -3px) rotate(0deg); opacity: 1; }
+  55%  { transform: translate(0px, 0px) rotate(0deg); opacity: 1; }
+  68%  { transform: translate(0px, 0px) rotate(0deg); opacity: 1; }
+  82%  { transform: translate(60px, -120px) rotate(-8deg); opacity: 0.5; }
+  100% { transform: translate(180px, -350px) rotate(-12deg); opacity: 0; }
+}
+
+/* === Save the Date: Envelope Animation Keyframes === */
+
+@keyframes seal-break {
+  from { transform: scale(1); opacity: 1; }
+  to { transform: scale(0); opacity: 0; }
+}
+
+@keyframes envelope-open {
+  from { transform: rotateX(0deg); }
+  to { transform: rotateX(180deg); }
+}
+
+/* Envelope full lifecycle: invisible → visible at deposit → disappear */
+@keyframes envelope-lifecycle {
+  0% { opacity: 0; }
+  30% { opacity: 0; }
+  30.01% { opacity: 1; }
+  64% { opacity: 1; }
+  76% { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+/* === Save the Date: Text Reveal Keyframe === */
+
+@keyframes text-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* === Save the Date: Orchestrated Animation Timeline === */
+/* All animations gated by .scene-ready — waits for Lottie load + hydration */
+
+/* Elements hidden by default — prevents flash before animations start */
+.pigeon-container,
+.envelope-container,
+.text-line-1,
+.text-line-2,
+.text-line-3,
+.text-line-4,
+.text-line-5 {
+  opacity: 0;
+}
+
+/* Pigeon full lifecycle — single combined keyframe */
+@media (prefers-reduced-motion: no-preference) {
+  .scene-ready .pigeon-container {
+    animation: pigeon-lifecycle-mobile var(--animation-pigeon) var(--easing-flight) both;
+  }
+
+  @media (min-width: 640px) {
+    .scene-ready .pigeon-container {
+      animation: pigeon-lifecycle-desktop var(--animation-pigeon) var(--easing-flight) both;
+    }
+  }
+}
+
+/* Pigeon locked hidden after animation — prevents breakpoint re-flash */
+.pigeon-done {
+  opacity: 0 !important;
+  animation: none !important;
+}
+
+/* Envelope orchestrated animations */
+@media (prefers-reduced-motion: no-preference) {
+  .scene-ready .envelope-container {
+    perspective: 800px;
+    animation: envelope-lifecycle var(--animation-scene) both;
+  }
+
+  .scene-ready .envelope-seal {
+    animation: seal-break 300ms var(--easing-reveal) both;
+    animation-delay: 3000ms;
+  }
+
+  .scene-ready .envelope-flap {
+    transform-origin: top center;
+    backface-visibility: hidden;
+    animation: envelope-open 500ms var(--easing-reveal) forwards;
+    animation-delay: 3200ms;
+  }
+
+  /* Text reveal — sequential line-by-line appearance (Acte 3) */
+  .scene-ready .text-line-1 {
+    animation: text-reveal 200ms var(--easing-reveal) both;
+    animation-delay: 3500ms;
+  }
+
+  .scene-ready .text-line-2 {
+    animation: text-reveal 200ms var(--easing-reveal) both;
+    animation-delay: 3700ms;
+  }
+
+  .scene-ready .text-line-3 {
+    animation: text-reveal 200ms var(--easing-reveal) both;
+    animation-delay: 3900ms;
+  }
+
+  .scene-ready .text-line-4 {
+    animation: text-reveal 100ms var(--easing-reveal) both;
+    animation-delay: 4100ms;
+  }
+
+  .scene-ready .text-line-5 {
+    animation: text-reveal 400ms var(--easing-reveal) both;
+    animation-delay: 4200ms;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .scroll-reveal {
     animation: none !important;
@@ -237,6 +385,23 @@
 
   .alliance-rings-container {
     display: none !important;
+  }
+
+  .envelope-container {
+    display: none !important;
+  }
+
+  .pigeon-container {
+    display: none !important;
+  }
+
+  /* Text elements default to opacity: 0 for animation — restore for reduced motion */
+  .text-line-1,
+  .text-line-2,
+  .text-line-3,
+  .text-line-4,
+  .text-line-5 {
+    opacity: 1 !important;
   }
 }
 
