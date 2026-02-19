@@ -35,7 +35,7 @@ Pas un simple texte "Save the Date" — une micro-narration animée en 3 actes (
 ### Contexte
 
 - S'intègre à la landing page existante du site de mariage (Next.js 16, Vercel)
-- Assets nécessaires : illustrations SVG/Lottie du pigeon et de l'enveloppe
+- Assets utilisés : animation Lottie du pigeon (oiseau.json mobile, pigeon.json desktop), SVG inline pour enveloppe et sceau
 - Respecte le thème visuel existant (palette dorée, typographie élégante)
 
 ## Critères de Succès
@@ -118,15 +118,15 @@ Pas un simple texte "Save the Date" — une micro-narration animée en 3 actes (
 
 ### Style Visuel
 
-- Pigeon : illustration stylisée flat design, cohérente avec la palette dorée/blanche du site existant
+- Pigeon : animation Lottie frame-by-frame, recolorée en palette aquarelle florale (mauves, blush, cream), avec effet CSS watercolor
 - Enveloppe : style élégant avec sceau doré A&G en calligraphie orientale/marocaine
 - Ambiance : mélange d'élégance raffinée et de charme ludique/fantaisiste
-- Typographie du contenu révélé : cohérente avec les polices du site (Geist Sans)
+- Typographie : Cormorant Garamond (Display) + Geist Sans. Couleurs texte différenciées par rôle : prénoms en brun profond, date en mauve profond, lieu en olive profond, message en mauve doux
 
 ### Contraintes Techniques
 
 - Implémentation en React/Next.js 16 (Server Component par défaut, Client Component si interactivité nécessaire)
-- Animation via CSS animations, Framer Motion, ou Lottie (selon complexité)
+- Animation via Lottie (`lottie-react`) pour le pigeon + CSS animations pour l'orchestration et les transitions
 - Assets en SVG ou format Lottie — pas de GIF ni de vidéo
 - Pas de dépendance à des services tiers payants
 
@@ -134,10 +134,12 @@ Pas un simple texte "Save the Date" — une micro-narration animée en 3 actes (
 
 | Asset | Format | Description |
 |-------|--------|-------------|
-| Pigeon voyageur | SVG ou Lottie | Illustration stylisée flat, palette dorée/blanche, animation de vol |
+| Pigeon voyageur | Lottie JSON | Deux fichiers Lottie (oiseau.json mobile, pigeon.json desktop), palette aquarelle florale |
 | Enveloppe fermée | SVG | Enveloppe élégante avec sceau doré A&G calligraphié |
 | Enveloppe ouverte | SVG | État ouvert de l'enveloppe (rabat soulevé) |
 | Sceau A&G | SVG | Initiales en calligraphie orientale/marocaine, doré |
+| Arrière-plans | JPEG | Deux images responsive: arriere plan 4.jpeg (mobile), arriere plan 2.jpg (desktop) |
+| Police Cormorant | TTF | cormorant-garamond-light.ttf pour Satori OG |
 
 **Note :** Les assets doivent être créés ou sourcés. Options : création manuelle SVG, génération via outil d'illustration, ou adaptation de ressources libres de droits.
 

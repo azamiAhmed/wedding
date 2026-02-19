@@ -49,19 +49,20 @@ This document provides the complete epic and story breakdown for the Save the Da
 
 **Architecture :**
 - Brownfield — pas de starter template, intégration dans la base existante
-- CSS pur, zéro JS, zéro `"use client"` — Server Component intégral
-- `offset-path` avec fallback `@supports` en keyframes `translate` + `rotate`
+- Approche hybride : Lottie (`lottie-react`) pour le pigeon + CSS Animations pour l'orchestration. `SaveTheDateScene` et `PigeonVoyageur` sont des Client Components.
+- Keyframes `translate` + `rotate` (offset-path non utilisé)
 - Tous les keyframes et tokens dans `globals.css`
-- SVG inline dans les composants (pas dans `/public`)
+- SVG inline pour enveloppe/sceau. Pigeon via Lottie JSON dans `/public/design/`
 - Ajout Cormorant Garamond (300, 400) dans `app/layout.tsx`
 - Progressive enhancement : contenu visible par défaut, animation en override `@media (prefers-reduced-motion: no-preference)`
 - `opengraph-image.tsx` avec Satori (1200×630, enveloppe fermée + sceau)
 - Dossier composants dédié : `components/save-the-date/`
 - `aria-hidden="true"` sur tous les éléments décoratifs (pigeon, enveloppe, sceau, cadre)
 - `animation-fill-mode: both` sur le texte (pas `backwards` seul)
+- Dépendance: `lottie-react` ~28Ko gzippé
 
 **UX Design :**
-- Direction visuelle "Cadre Doré" : filet fin doré (1-2px) avec coins arabesques géométriques
+- Direction visuelle "Épure + Image d'Arrière-Plan" : cadre invisible, fond responsive (mobile: arriere plan 4.jpeg, desktop: arriere plan 2.jpg)
 - Timeline précise : 5000ms total (Acte 1: 1500ms, Acte 2: 1200ms, Pause: 300ms, Acte 3: 2000ms)
 - 3 tokens easing : `--easing-flight`, `--easing-land` (rebond), `--easing-reveal`
 - 4 tokens durée : `--animation-act1/2/pause/3`
@@ -69,7 +70,9 @@ This document provides the complete epic and story breakdown for the Save the Da
 - Enveloppe : Blanc Cassé, grain quasi-imperceptible, liseré doré, 120px mobile / 200px desktop
 - Sceau A&G : monogramme latin + entrelacs arabesques, cercle doré, 30-40px mobile / 50-60px desktop
 - Layout : `min-h-dvh`, centrage flex, bloc texte ~60% hauteur visible
-- État final : enveloppe ghost ~20-25% opacité derrière le texte
+- État final : enveloppe disparue (opacity: 0)
+- Couleurs texte différenciées : date mauve profond #6B3A4E, lieu olive profond #4A5E3A, message mauve doux #7A5A6A
+- Pigeon recoloré en palette aquarelle florale + effet CSS watercolor
 - `prefers-reduced-motion` : pas de pigeon, pas d'enveloppe — texte + cadre + séparateur uniquement
 - Pas de spinner ni loader : fond crème `#FAF7F2` + cadre doré = loading state élégant
 - Open Graph WhatsApp : `og:title` "Ahmed & Ghizlaine — Save the Date", `og:description` "17 Octobre 2026 · Casablanca"
@@ -171,6 +174,8 @@ So that l'écran évoque un faire-part physique premium et structure visuellemen
 **And** le cadre est responsive (`sm:`, `md:`, `lg:` breakpoints Tailwind)
 **And** le cadre est visible en mode `prefers-reduced-motion` (élément statique)
 
+> **Note d'implémentation :** Le cadre doré (filet + coins arabesques) a été retiré lors des itérations de design. `GoldenFrame` est désormais un conteneur de layout invisible (sans bordure ni ornement visible). La direction visuelle a évolué vers "Épure + Image d'Arrière-Plan" avec des fonds responsives.
+
 ### Story 1.4: Responsive & Accessibilité — Validation Complète
 
 As a invité sur mobile ou desktop,
@@ -228,6 +233,8 @@ So that le cachet personnalisé renforce le sentiment d'invitation sur mesure.
 **And** le composant est exporté en PascalCase : `export function SealAG()`
 **And** le poids du SVG contribue au budget total < 150 Ko (NFR-2)
 
+> **Note d'implémentation :** Implémentation conforme au plan. SVG inline dans le composant comme prévu.
+
 ### Story 2.2: Enveloppe — SVG + Animation Ouverture & Brisure du Sceau (Acte 3)
 
 As a invité,
@@ -253,6 +260,8 @@ So that l'ouverture crée l'anticipation et la solennité de la révélation.
 **And** le SVG est inline dans `components/save-the-date/envelope.tsx`
 **And** le composant est un Server Component, porte `aria-hidden="true"`
 **And** en mode `prefers-reduced-motion` : l'enveloppe est en `display: none`
+
+> **Note d'implémentation :** L'enveloppe a été enrichie par rapport au plan initial : coins arrondis (rx=8), ombre portée (drop shadow), animation de trajectoire qui suit le pigeon. L'enveloppe disparaît complètement (opacity: 0) au lieu de rester en ghost 20-25%.
 
 ### Story 2.3: Pigeon Voyageur — SVG + Animation Vol & Dépôt (Actes 1 & 2)
 
@@ -282,6 +291,8 @@ So that la narration du messager crée l'émerveillement et porte la charge émo
 **And** le composant est un Server Component, porte `aria-hidden="true"`, `pointer-events: none`
 **And** en mode `prefers-reduced-motion` : le pigeon est en `display: none`
 **And** `animation-fill-mode: forwards` — le pigeon reste invisible après l'envol
+
+> **Note d'implémentation :** Lottie (`lottie-react`) a été utilisé à la place du SVG inline. Deux fichiers Lottie différents selon la résolution : `oiseau.json` (mobile) et `pigeon.json` (desktop), stockés dans `/public/design/`. `PigeonVoyageur` est un Client Component (`"use client"`).
 
 ### Story 2.4: Orchestration Animation — Timeline 5000ms & Progressive Enhancement
 
@@ -317,6 +328,8 @@ So that je vis un spectacle de 3 actes sans saccade ni incohérence.
 **And** 60fps sans jank sur appareils cibles (NFR-1)
 **And** les tokens d'easing et de durée sont utilisés (`var(--easing-*)`, `var(--animation-*)`) — jamais de valeurs hardcodées
 
+> **Note d'implémentation :** Le Client Component `SaveTheDateScene` gère le gating via la classe `.scene-ready`. Les classes `.pigeon-done` et `.envelope-done` sont ajoutées dynamiquement pour empêcher le re-flash lors des changements de breakpoint.
+
 ## Epic 3: Open Graph — Aperçu WhatsApp
 
 Quand le lien `/` est partagé sur WhatsApp, un aperçu visuel attractif s'affiche : enveloppe dorée fermée avec sceau A&G sur fond crème, titre "Ahmed & Ghizlaine — Save the Date", description "17 Octobre 2026 · Casablanca". L'aperçu suscite la curiosité et donne envie d'ouvrir le lien.
@@ -346,3 +359,5 @@ So that ma curiosité est piquée et j'ai envie d'ouvrir le lien pour découvrir
 **And** le SVG est simplifié/dupliqué pour la compatibilité Satori (pas les mêmes composants React que l'animation)
 **And** la page conserve `noindex, nofollow` dans les metadata
 **And** l'image ne révèle pas tout le contenu — l'enveloppe fermée crée la curiosité
+
+> **Note d'implémentation :** Une police TTF locale (`cormorant-garamond-light.ttf`) est utilisée à la place d'une URL Google Fonts pour Satori. L'image OG est générée en prerender statique. Un favicon a également été ajouté dans le cadre de cette story.
