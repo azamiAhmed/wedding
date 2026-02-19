@@ -1,8 +1,14 @@
 import type { Metadata } from 'next'
 import { SaveTheDateScene } from '@/components/save-the-date/save-the-date-scene'
+import { SAVE_THE_DATE_OG } from '@/lib/constants'
 
 export const metadata: Metadata = {
   robots: { index: false, follow: false },
+  openGraph: {
+    title: SAVE_THE_DATE_OG.title,
+    description: SAVE_THE_DATE_OG.description,
+    type: 'website',
+  },
 }
 
 export default function SaveTheDatePage() {

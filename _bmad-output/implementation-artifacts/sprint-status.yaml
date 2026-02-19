@@ -110,6 +110,6 @@ development_status:
   epic-9-retrospective: optional
 
   # Epic 10: Open Graph — Aperçu WhatsApp
-  epic-10: backlog
-  10-1-image-open-graph-satori: backlog
+  epic-10: done
+  10-1-image-open-graph-satori: done
   epic-10-retrospective: optional
