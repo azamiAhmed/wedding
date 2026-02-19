@@ -233,6 +233,41 @@
   }
 }
 
+/* === Save the Date: Envelope Animation Keyframes === */
+
+@keyframes seal-break {
+  from { transform: scale(1); opacity: 1; }
+  to { transform: scale(0); opacity: 0; }
+}
+
+@keyframes envelope-open {
+  from { transform: rotateX(0deg); }
+  to { transform: rotateX(180deg); }
+}
+
+@keyframes envelope-ghost {
+  from { opacity: 1; }
+  to { opacity: 0.2; }
+}
+
+/* Envelope animation classes — active only when animations are allowed */
+@media (prefers-reduced-motion: no-preference) {
+  .envelope-container {
+    perspective: 800px;
+    animation: envelope-ghost 400ms ease-out forwards;
+  }
+
+  .envelope-seal {
+    animation: seal-break 300ms var(--easing-reveal) forwards;
+  }
+
+  .envelope-flap {
+    transform-origin: top center;
+    backface-visibility: hidden;
+    animation: envelope-open 500ms var(--easing-reveal) forwards;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .scroll-reveal {
     animation: none !important;
@@ -245,6 +280,10 @@
   }
 
   .alliance-rings-container {
+    display: none !important;
+  }
+
+  .envelope-container {
     display: none !important;
   }
 }
