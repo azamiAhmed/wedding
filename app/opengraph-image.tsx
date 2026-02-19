@@ -1,12 +1,9 @@
 import { ImageResponse } from 'next/og'
 import { readFileSync } from 'fs'
 import { join } from 'path'
-import { SAVE_THE_DATE_OG } from '@/lib/constants'
 
 export const runtime = 'nodejs'
-export const alt = SAVE_THE_DATE_OG.title
 export const size = { width: 1200, height: 630 }
-export const contentType = 'image/png'
 
 export default async function Image() {
   const cormorantFont = readFileSync(
@@ -125,13 +122,12 @@ export default async function Image() {
             />
           </svg>
 
-          {/* Seal A&G — positioned on top of envelope center */}
+          {/* Seal A&G — centered on flap closure point (180,136 in 360×240 envelope) */}
           <div
             style={{
               position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
+              top: 96,
+              left: 140,
               display: 'flex',
             }}
           >
