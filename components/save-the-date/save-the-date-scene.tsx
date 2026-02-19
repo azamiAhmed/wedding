@@ -45,15 +45,25 @@ export function SaveTheDateScene() {
     return () => clearTimeout(timeout)
   }, [ready])
 
+  // Hide envelope permanently after animation — prevents re-flash on breakpoint change
+  useEffect(() => {
+    if (!ready) return
+    const timeout = setTimeout(() => {
+      const envelope = wrapperRef.current?.querySelector('.envelope-container')
+      if (envelope) envelope.classList.add('envelope-done')
+    }, 5100)
+    return () => clearTimeout(timeout)
+  }, [ready])
+
   return (
     <div ref={wrapperRef} className={ready ? 'scene-ready' : ''}>
       <GoldenFrame>
-        <div className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center">
-          <Envelope className="h-28 w-[168px] sm:h-44 sm:w-[264px] lg:h-[200px] lg:w-[300px]" />
+        <div className="envelope-wrapper pointer-events-none absolute inset-0 z-0 flex items-center justify-center">
+          <Envelope className="h-28 w-[168px] sm:h-44 sm:w-[264px] lg:h-[100px] lg:w-[150px]" />
         </div>
         <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
           <PigeonVoyageur
-            className="h-20 w-24 sm:h-32 sm:w-40 lg:h-40 lg:w-48"
+            className="h-56 w-60 sm:h-80 sm:w-96 lg:h-48 lg:w-[13rem]"
             onReady={handlePigeonReady}
           />
         </div>

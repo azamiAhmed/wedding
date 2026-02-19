@@ -33,6 +33,9 @@
   --color-brown-medium: #6B5D4F;
   --color-red-soft: #C45B4A;
   --color-green-olive: #6B8F5E;
+  --color-mauve-deep: #6B3A4E;
+  --color-olive-deep: #4A5E3A;
+  --color-mauve-soft: #7A5A6A;
 
   /* Fonts */
   --font-sans: var(--font-geist-sans);
@@ -270,14 +273,37 @@
   to { transform: rotateX(180deg); }
 }
 
-/* Envelope full lifecycle: invisible → visible at deposit → disappear */
-@keyframes envelope-lifecycle {
-  0% { opacity: 0; }
-  30% { opacity: 0; }
-  30.01% { opacity: 1; }
-  64% { opacity: 1; }
-  76% { opacity: 0; }
-  100% { opacity: 0; }
+/* Envelope lifecycle — mobile: follows pigeon at beak, deposits, grows, fades */
+/* Timeline synced to 5000ms scene: pigeon deposits at ~38.5% (1925ms) */
+@keyframes envelope-lifecycle-mobile {
+  /* Phase 1: Follow pigeon — mini envelope at beak */
+  0%    { opacity: 0; transform: translate(-100px, -185px) rotate(-12deg) scale(0.12); }
+  3.5%  { opacity: 1; transform: translate(-70px, -135px) rotate(-10deg) scale(0.12); }
+  10%   { opacity: 1; transform: translate(-30px, -65px) rotate(-8deg) scale(0.12); }
+  21%   { opacity: 1; transform: translate(0px, -15px) rotate(-4deg) scale(0.12); }
+  31%   { opacity: 1; transform: translate(15px, 10px) rotate(-1deg) scale(0.12); }
+  /* Phase 2: Deposit at center — grow to full size */
+  38%   { opacity: 1; transform: translate(0, 0) rotate(0deg) scale(0.15); }
+  50%   { opacity: 1; transform: translate(0, 0) rotate(0deg) scale(1); }
+  /* Phase 3: Full size — visible for seal break + flap open */
+  64%   { opacity: 1; transform: translate(0, 0) scale(1); }
+  /* Phase 4: Fade out as text appears */
+  76%   { opacity: 0; transform: translate(0, 0) scale(1); }
+  100%  { opacity: 0; transform: translate(0, 0) scale(1); }
+}
+
+/* Envelope lifecycle — desktop: wider arc matching pigeon-lifecycle-desktop */
+@keyframes envelope-lifecycle-desktop {
+  0%    { opacity: 0; transform: translate(-275px, -185px) rotate(-12deg) scale(0.12); }
+  3.5%  { opacity: 1; transform: translate(-205px, -125px) rotate(-10deg) scale(0.12); }
+  10%   { opacity: 1; transform: translate(-105px, -45px) rotate(-7deg) scale(0.12); }
+  21%   { opacity: 1; transform: translate(-25px, 0px) rotate(-3deg) scale(0.12); }
+  31%   { opacity: 1; transform: translate(15px, 12px) rotate(0deg) scale(0.12); }
+  38%   { opacity: 1; transform: translate(0, 0) rotate(0deg) scale(0.15); }
+  50%   { opacity: 1; transform: translate(0, 0) rotate(0deg) scale(1); }
+  64%   { opacity: 1; transform: translate(0, 0) scale(1); }
+  76%   { opacity: 0; transform: translate(0, 0) scale(1); }
+  100%  { opacity: 0; transform: translate(0, 0) scale(1); }
 }
 
 /* === Save the Date: Text Reveal Keyframe === */
@@ -293,6 +319,16 @@
   }
 }
 
+/* === Save the Date: Responsive background image === */
+.landing-bg {
+  background-image: url('/images/rings/arriere plan 4.jpeg');
+}
+@media (min-width: 1024px) {
+  .landing-bg {
+    background-image: url('/images/rings/arriere plan 2.jpg');
+  }
+}
+
 /* === Save the Date: Orchestrated Animation Timeline === */
 /* All animations gated by .scene-ready — waits for Lottie load + hydration */
 
@@ -305,6 +341,12 @@
 .text-line-4,
 .text-line-5 {
   opacity: 0;
+}
+
+/* Watercolor painting effect on pigeon */
+.pigeon-container {
+  filter: saturate(0.85) contrast(0.92) blur(0.3px);
+  mix-blend-mode: multiply;
 }
 
 /* Pigeon full lifecycle — single combined keyframe */
@@ -326,11 +368,26 @@
   animation: none !important;
 }
 
+/* Envelope locked hidden after animation — prevents breakpoint re-flash */
+.envelope-done {
+  opacity: 0 !important;
+  animation: none !important;
+}
+
 /* Envelope orchestrated animations */
 @media (prefers-reduced-motion: no-preference) {
-  .scene-ready .envelope-container {
+  .scene-ready .envelope-wrapper {
     perspective: 800px;
-    animation: envelope-lifecycle var(--animation-scene) both;
+  }
+
+  .scene-ready .envelope-container {
+    animation: envelope-lifecycle-mobile var(--animation-scene) var(--easing-flight) both;
+  }
+
+  @media (min-width: 640px) {
+    .scene-ready .envelope-container {
+      animation: envelope-lifecycle-desktop var(--animation-scene) var(--easing-flight) both;
+    }
   }
 
   .scene-ready .envelope-seal {

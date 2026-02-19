@@ -13,7 +13,9 @@ export function PigeonVoyageur({ className, onReady }: PigeonVoyageurProps) {
   const [animationData, setAnimationData] = useState<Record<string, any> | null>(null)
 
   useEffect(() => {
-    fetch('/design/pigeon.json')
+    const isDesktop = window.matchMedia('(min-width: 1024px)').matches
+    const src = isDesktop ? '/design/pigeon.json' : '/design/oiseau.json'
+    fetch(src)
       .then((res) => res.json())
       .then((data) => {
         setAnimationData(data)

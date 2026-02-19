@@ -13,9 +13,9 @@ export function Envelope({ className }: { className?: string }) {
         xmlns="http://www.w3.org/2000/svg"
         className="envelope-body h-full w-full"
       >
-        {/* Subtle grain texture */}
+        {/* Subtle grain texture + shadow */}
         <defs>
-          <filter id="envelope-grain">
+          <filter id="envelope-grain" x="-5%" y="-5%" width="110%" height="110%">
             <feTurbulence
               type="fractalNoise"
               baseFrequency="0.9"
@@ -30,59 +30,92 @@ export function Envelope({ className }: { className?: string }) {
             />
             <feBlend in="SourceGraphic" in2="gray" mode="soft-light" />
           </filter>
+          <filter id="envelope-shadow" x="-10%" y="-10%" width="120%" height="125%">
+            <feDropShadow dx="0" dy="2" stdDeviation="3" floodColor="#B8960B" floodOpacity="0.15" />
+          </filter>
         </defs>
 
-        {/* Main body */}
+        {/* Main body — rounded corners */}
         <rect
           x="1"
           y="1"
           width="178"
           height="118"
-          rx="2"
+          rx="8"
+          ry="8"
           fill="#FFFDF9"
           stroke="#D4A54A"
           strokeWidth="0.8"
+          filter="url(#envelope-shadow)"
+        />
+        {/* Paper texture overlay */}
+        <rect
+          x="1"
+          y="1"
+          width="178"
+          height="118"
+          rx="8"
+          ry="8"
+          fill="#FFFDF9"
           filter="url(#envelope-grain)"
         />
 
         {/* Inner fold lines — diagonal creases from top corners to center */}
         <line
-          x1="1"
-          y1="1"
+          x1="8"
+          y1="4"
           x2="90"
           y2="55"
           stroke="#E8D5A8"
           strokeWidth="0.5"
-          opacity="0.4"
+          opacity="0.35"
+          strokeLinecap="round"
         />
         <line
-          x1="179"
-          y1="1"
+          x1="172"
+          y1="4"
           x2="90"
           y2="55"
           stroke="#E8D5A8"
           strokeWidth="0.5"
-          opacity="0.4"
+          opacity="0.35"
+          strokeLinecap="round"
         />
 
         {/* Bottom fold lines */}
         <line
-          x1="1"
-          y1="119"
+          x1="8"
+          y1="116"
           x2="90"
           y2="65"
           stroke="#E8D5A8"
           strokeWidth="0.3"
-          opacity="0.3"
+          opacity="0.25"
+          strokeLinecap="round"
         />
         <line
-          x1="179"
-          y1="119"
+          x1="172"
+          y1="116"
           x2="90"
           y2="65"
           stroke="#E8D5A8"
           strokeWidth="0.3"
-          opacity="0.3"
+          opacity="0.25"
+          strokeLinecap="round"
+        />
+
+        {/* Subtle inner border for depth */}
+        <rect
+          x="5"
+          y="5"
+          width="170"
+          height="110"
+          rx="5"
+          ry="5"
+          fill="none"
+          stroke="#E8D5A8"
+          strokeWidth="0.3"
+          opacity="0.2"
         />
       </svg>
 
@@ -94,8 +127,9 @@ export function Envelope({ className }: { className?: string }) {
           xmlns="http://www.w3.org/2000/svg"
           className="h-full w-full"
         >
-          <polygon
-            points="1,0 179,0 90,68"
+          {/* Flap with rounded top corners via path */}
+          <path
+            d="M8,0 L172,0 Q179,0 179,4 L90,68 L1,4 Q1,0 8,0 Z"
             fill="#FFFDF9"
             stroke="#D4A54A"
             strokeWidth="0.8"
@@ -103,22 +137,24 @@ export function Envelope({ className }: { className?: string }) {
           />
           {/* Flap fold crease */}
           <line
-            x1="1"
-            y1="0"
+            x1="8"
+            y1="1"
             x2="90"
             y2="68"
             stroke="#E8D5A8"
             strokeWidth="0.3"
-            opacity="0.25"
+            opacity="0.2"
+            strokeLinecap="round"
           />
           <line
-            x1="179"
-            y1="0"
+            x1="172"
+            y1="1"
             x2="90"
             y2="68"
             stroke="#E8D5A8"
             strokeWidth="0.3"
-            opacity="0.25"
+            opacity="0.2"
+            strokeLinecap="round"
           />
         </svg>
       </div>
