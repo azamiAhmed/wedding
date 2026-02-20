@@ -113,6 +113,122 @@
   animation: rsvpPulse var(--animate-duration-pulse) ease-in-out infinite;
 }
 
+/* === Desktop: Parallax Overlays & Entry Animations === */
+
+@media (min-width: 1024px) {
+  .section-info,
+  .section-timeline,
+  .section-venue,
+  .section-program,
+  .section-merci {
+    position: relative;
+    isolation: isolate;
+  }
+
+  /* Overlay crème en dégradé continu — --overlay-bg est un linear-gradient complet
+     généré en JS (page.tsx). Le bas d'une section a la même opacité que le haut
+     de la suivante → transition seamless, aucune ligne de démarcation. */
+  .section-info::before,
+  .section-timeline::before,
+  .section-venue::before,
+  .section-program::before,
+  .section-merci::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: var(--overlay-bg, rgba(250, 247, 242, 0.85));
+  }
+}
+
+/* --- Keyframes d'entrée différenciés (desktop) --- */
+
+@keyframes entryFadeStagger {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes entrySlideFromLeft {
+  from { opacity: 0; transform: translateX(-60px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes entrySlideFromRight {
+  from { opacity: 0; transform: translateX(60px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes entryScaleReveal {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* --- Overrides desktop : animations d'entrée par section --- */
+@media (min-width: 1024px) {
+  @supports (animation-timeline: view()) {
+    /*
+     * Info : fade stagger via animation-range offsets progressifs
+     * DOM : <section.section-info> children are:
+     *   h2 (child 1, not .scroll-reveal)
+     *   div.scroll-reveal (child 2 — separator)
+     *   p.scroll-reveal (child 3 — message)
+     *   p.scroll-reveal (child 4 — submessage)
+     * ⚠️ FRAGILE: indices must be updated if children are added/reordered
+     */
+    .section-info .scroll-reveal {
+      animation-name: entryFadeStagger;
+    }
+    .section-info .scroll-reveal:nth-child(2) {
+      animation-range: entry 0% entry 50%;
+    }
+    .section-info .scroll-reveal:nth-child(3) {
+      animation-range: entry 5% entry 55%;
+    }
+    .section-info .scroll-reveal:nth-child(4) {
+      animation-range: entry 10% entry 60%;
+    }
+
+    /*
+     * Timeline desktop : slide depuis les côtés alternés
+     * DOM : div.hidden.md:block.relative children are:
+     *   div (child 1 — gold center line, NOT an <article>)
+     *   article.scroll-reveal (child 2 — La Rencontre, isLeft=true)
+     *   article.scroll-reveal (child 3 — Les Fiançailles, isLeft=false)
+     *   article.scroll-reveal (child 4 — Le Jour J, isLeft=true)
+     * Using article:nth-of-type() to count ONLY <article> elements,
+     * ignoring the <div> gold line:
+     *   nth-of-type(odd) = articles 1,3 = isLeft = slide from left
+     *   nth-of-type(even) = article 2 = isRight = slide from right
+     */
+    .section-timeline article.scroll-reveal:nth-of-type(odd) {
+      animation-name: entrySlideFromLeft;
+      animation-range: entry 70% cover 30%;
+    }
+    .section-timeline article.scroll-reveal:nth-of-type(even) {
+      animation-name: entrySlideFromRight;
+      animation-range: entry 70% cover 30%;
+    }
+
+    /* Venue : scale reveal */
+    .section-venue .scroll-reveal {
+      animation-name: entryScaleReveal;
+      animation-range: entry 0% entry 50%;
+    }
+
+    /*
+     * Program : scale reveal (PAS bounce — bounce imperceptible avec snap scroll)
+     * Les 5 event cards sont enfants d'un wrapper <div class="mt-10 w-full space-y-8">,
+     * pas enfants directs de .section-program. Le stagger naturel vient de
+     * l'espacement vertical (space-y-8) qui décale les view() triggers.
+     */
+    .section-program .scroll-reveal {
+      animation-name: entryScaleReveal;
+      animation-range: entry 0% entry 50%;
+    }
+  }
+}
+
 /* === Alliance Rings: Scroll-Driven Animation === */
 
 /* Named scroll timeline on guest scroll container */

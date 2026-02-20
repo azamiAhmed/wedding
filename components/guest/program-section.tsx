@@ -46,7 +46,7 @@ function ProgramIcon({
 export function ProgramSection() {
   return (
     <section
-      className="min-h-dvh snap-start flex flex-col justify-center px-6 lg:px-12 py-16 lg:py-20 bg-cream-warm"
+      className="section-program min-h-dvh snap-start flex flex-col justify-center px-6 lg:px-12 py-16 lg:py-20 bg-cream-warm lg:bg-transparent"
       role="region"
       aria-label={COUPLE.programTitle}
     >

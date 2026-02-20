@@ -30,7 +30,7 @@ function EventCard({
 export function TimelineSection() {
   return (
     <section
-      className="min-h-dvh snap-start flex flex-col items-center justify-center bg-cream-warm px-6 lg:px-12 py-16 lg:py-20"
+      className="section-timeline min-h-dvh snap-start flex flex-col justify-center bg-cream-warm lg:bg-transparent px-6 lg:px-12 py-16 lg:py-20"
       role="region"
       aria-label={COUPLE.timelineTitle}
     >

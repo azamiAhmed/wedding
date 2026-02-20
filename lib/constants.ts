@@ -105,11 +105,11 @@ export const SAVE_THE_DATE = {
   title: 'Ahmed & Ghizlaine',
   groom: 'Ahmed',
   bride: 'Ghizlaine',
-  date: '17 Octobre 2026',
+  date: 'Le 17 octobre 2026',
   dateTime: '2026-10-17',
-  city: 'Casablanca',
+  city: 'À Casablanca, Maroc',
   message:
-    'Une date à retenir, une histoire à écrire ensemble\u2026 les détails suivront bientôt.',
+    'Sous les étoiles et les lumières de Casablanca, une promesse sera célébrée... Save the date !',
 } as const
 
 export const SAVE_THE_DATE_OG = {

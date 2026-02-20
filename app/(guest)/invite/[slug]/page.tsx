@@ -23,6 +23,13 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
+/* Dégradé d'opacité continu sur les overlays desktop (Info → Merci).
+   Chaque section a un ::before en linear-gradient dont le bas correspond
+   exactement au haut de la section suivante → transition seamless, aucune
+   ligne de démarcation visible. S'adapte au nombre de sections visibles. */
+const OVERLAY_START = 0.92
+const OVERLAY_END = 0.35
+
 export default async function InvitePage({
   params,
 }: {
@@ -40,14 +47,37 @@ export default async function InvitePage({
   const showProgram = config.show_program !== 'false'
   const showMerci = config.show_merci !== 'false'
 
+  const overlaySections = [
+    { key: 'info', show: true, el: <InfoSection /> },
+    { key: 'timeline', show: true, el: <TimelineSection /> },
+    { key: 'venue', show: showVenue, el: <VenueSection /> },
+    { key: 'program', show: showProgram, el: <ProgramSection /> },
+    { key: 'merci', show: showMerci, el: <MerciSection /> },
+  ]
+
+  const visible = overlaySections.filter((s) => s.show)
+  const count = visible.length
+  const step = count > 0 ? (OVERLAY_START - OVERLAY_END) / count : 0
+
   return (
     <>
       <HeroSection guestName={guest.firstName} />
-      <InfoSection />
-      <TimelineSection />
-      {showVenue && <VenueSection />}
-      {showProgram && <ProgramSection />}
-      {showMerci && <MerciSection />}
+      {visible.map((section, i) => {
+        const top = OVERLAY_START - step * i
+        const bottom = OVERLAY_START - step * (i + 1)
+        return (
+          <div
+            key={section.key}
+            style={
+              {
+                '--overlay-bg': `linear-gradient(to bottom,rgba(250,247,242,${top}),rgba(250,247,242,${bottom}))`,
+              } as React.CSSProperties
+            }
+          >
+            {section.el}
+          </div>
+        )
+      })}
       <AllianceRings />
       <RsvpOverlay
         slug={slug}
