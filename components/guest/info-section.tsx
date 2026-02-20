@@ -3,7 +3,7 @@ import { COUPLE } from '@/lib/constants'
 export function InfoSection() {
   return (
     <section
-      className="min-h-dvh snap-start flex flex-col justify-center px-6 lg:px-12 bg-cream-warm"
+      className="section-info min-h-dvh snap-start flex flex-col justify-center px-6 lg:px-12 bg-cream-warm lg:bg-transparent"
       role="region"
       aria-label="Informations"
     >

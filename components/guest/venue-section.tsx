@@ -3,7 +3,7 @@ import { COUPLE, VENUE } from '@/lib/constants'
 export function VenueSection() {
   return (
     <section
-      className="min-h-dvh snap-start flex flex-col justify-center px-6 lg:px-12 py-16 lg:py-20 bg-white-broken"
+      className="section-venue min-h-dvh snap-start flex flex-col justify-center px-6 lg:px-12 py-16 lg:py-20 bg-white-broken lg:bg-transparent"
       role="region"
       aria-label={COUPLE.venueTitle}
     >
