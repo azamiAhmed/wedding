@@ -189,8 +189,10 @@ Ciblage : navigateurs modernes uniquement (2 dernières versions majeures). Pas 
 
 ### Phase 3 — Vision (Si le temps le permet)
 
-- Micro-vidéo loop en landing
-- Monogramme A&G animé
+- Micro-vidéo loop en landing ✅ (implémenté — vidéo hero en boucle)
+- Monogramme A&G animé ✅ (implémenté — sceau A&G SVG dans le Save the Date + favicon)
+- Save the Date animé avec pigeon voyageur ✅ (implémenté — Epics 8-10)
+- Open Graph WhatsApp pour Save the Date ✅ (implémenté — Satori + police TTF locale)
 - Perspective inversée ("Vous êtes attendu(e)")
 - Compte à rebours évolutif (intensification visuelle à l'approche du mariage)
 
@@ -267,6 +269,25 @@ Ciblage : navigateurs modernes uniquement (2 dernières versions majeures). Pas 
 ### Landing Page Non-Invités
 
 - **FR34 :** Un visiteur accédant à la racine du site (/) sans lien d'invitation voit une landing page placeholder l'invitant à contacter Ahmed ou Ghizlaine
+
+### Save the Date Animé (Pigeon Voyageur)
+
+- **FR35 :** L'invité voit une animation de pigeon voyageur stylisé (Lottie, palette aquarelle florale) entrant dans l'écran au chargement de la page /
+- **FR36 :** Le pigeon dépose une enveloppe cachetée au centre de l'écran puis s'envole hors de l'écran
+- **FR37 :** L'enveloppe porte un sceau doré avec les initiales "A&G" dans un style calligraphie orientale/marocaine
+- **FR38 :** L'enveloppe s'ouvre avec une animation fluide pour révéler le contenu Save the Date
+- **FR39 :** Le contenu révélé affiche : les prénoms du couple (Ahmed & Ghizlaine), la date (17 Octobre 2026), le lieu (Casablanca), et le message « Une date à retenir, une histoire à écrire ensemble… les détails suivront bientôt. »
+- **FR40 :** L'animation se joue une seule fois au chargement — le contenu reste ensuite affiché de manière statique
+- **FR41 :** L'animation complète (3 actes) dure entre 4 et 5 secondes
+- **FR42 :** Si `prefers-reduced-motion` est activé, l'animation est désactivée et le contenu Save the Date s'affiche directement dans son état final
+- **FR43 :** Le contenu textuel du Save the Date est accessible aux lecteurs d'écran via un balisage sémantique approprié
+- **FR44 :** L'animation Save the Date remplace la landing page non-invités (FR34) et s'affiche sur la page /
+- **FR45 :** L'animation est responsive et s'adapte aux écrans mobile (360px) et desktop (jusqu'à 1920px)
+
+### Open Graph Save the Date
+
+- **FR46 :** Le lien / affiche un aperçu Open Graph sur WhatsApp avec l'enveloppe fermée + sceau A&G, titre "Ahmed & Ghizlaine — Save the Date", description "17 Octobre 2026 · Casablanca"
+- **FR47 :** Un favicon personnalisé (sceau A&G simplifié, 48x48) est affiché dans l'onglet du navigateur
 
 ## Exigences Non-Fonctionnelles
 

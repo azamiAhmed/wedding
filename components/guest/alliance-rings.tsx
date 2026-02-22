@@ -10,15 +10,15 @@ export function AllianceRings() {
         className="alliance-ring-left"
         src="/images/rings/solitaire-blanc.png"
         alt=""
-        width={120}
-        height={180}
+        width={90}
+        height={135}
       />
       <Image
         className="alliance-ring-right"
         src="/images/rings/bague-homme.png"
         alt=""
-        width={120}
-        height={180}
+        width={90}
+        height={135}
       />
     </div>
   )

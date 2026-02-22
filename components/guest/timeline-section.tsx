@@ -13,14 +13,14 @@ function EventCard({
     <div className={className}>
       <time
         dateTime={event.dateTime}
-        className="block font-sans text-sm text-brown-medium uppercase tracking-wider mb-1"
+        className="block font-sans text-base text-brown-medium uppercase tracking-wider mb-1"
       >
         {event.date}
       </time>
       <h3 className={`font-display ${titleSize} text-brown-deep mb-2`}>
         {event.title}
       </h3>
-      <p className="font-sans text-base text-brown-medium leading-relaxed">
+      <p className="font-sans text-lg text-brown-medium leading-relaxed">
         {event.description}
       </p>
     </div>
@@ -34,7 +34,7 @@ export function TimelineSection() {
       role="region"
       aria-label={COUPLE.timelineTitle}
     >
-      <h2 className="motion-safe:animate-fade-in-up font-display text-4xl md:text-[3.5rem] text-brown-deep text-center leading-tight mb-12 md:mb-16">
+      <h2 className="motion-safe:animate-fade-in-up font-display text-[2.5rem] md:text-[3.5rem] text-brown-deep text-center leading-tight mb-12 md:mb-16">
         {COUPLE.timelineTitle}
       </h2>
 
@@ -46,12 +46,10 @@ export function TimelineSection() {
           {TIMELINE_EVENTS.map((event, i) => (
             <article
               key={event.title}
-              className={i < TIMELINE_EVENTS.length - 1 ? 'pb-12' : ''}
+              className={`scroll-reveal relative ${i < TIMELINE_EVENTS.length - 1 ? 'pb-12' : ''}`}
             >
-              <div className="absolute left-0 mt-1.5 h-4 w-4 rounded-full bg-gold-moroccan border-2 border-cream-warm" />
-              <div className="scroll-reveal">
-                <EventCard event={event} titleSize="text-xl" />
-              </div>
+              <div className="absolute -left-8 top-1.5 h-4 w-4 rounded-full bg-gold-moroccan border-2 border-cream-warm" />
+              <EventCard event={event} titleSize="text-2xl" />
             </article>
           ))}
         </div>

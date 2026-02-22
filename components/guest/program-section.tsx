@@ -50,7 +50,7 @@ export function ProgramSection() {
       role="region"
       aria-label={COUPLE.programTitle}
     >
-      <h2 className="motion-safe:animate-fade-in-up font-display text-2xl md:text-[2.5rem] font-light text-brown-deep text-center leading-tight">
+      <h2 className="motion-safe:animate-fade-in-up font-display text-3xl md:text-[2.5rem] font-light text-brown-deep text-center leading-tight">
         {COUPLE.programTitle}
       </h2>
 
@@ -62,10 +62,10 @@ export function ProgramSection() {
             <div className="mx-auto w-fit">
               <ProgramIcon icon={event.icon} />
             </div>
-            <p className="mt-3 font-display text-lg md:text-xl text-brown-deep text-center">
+            <p className="mt-3 font-display text-xl md:text-xl text-brown-deep text-center">
               {event.title}
             </p>
-            <p className="mt-1 font-sans text-sm md:text-base text-brown-medium text-center">
+            <p className="mt-1 font-sans text-base md:text-base text-brown-medium text-center">
               {event.description}
             </p>
           </div>

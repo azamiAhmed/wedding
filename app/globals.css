@@ -23,19 +23,19 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
 
-  /* Wedding color tokens */
-  --color-cream-warm: #FAF7F2;
-  --color-gold-moroccan: #B8860B;
-  --color-brown-deep: #2C2418;
-  --color-gold-luminous: #D4A54A;
-  --color-gold-veil: #E8D5A8;
-  --color-white-broken: #FFFDF9;
-  --color-brown-medium: #6B5D4F;
-  --color-red-soft: #C45B4A;
-  --color-green-olive: #6B8F5E;
-  --color-mauve-deep: #6B3A4E;
-  --color-olive-deep: #4A5E3A;
-  --color-mauve-soft: #7A5A6A;
+  /* Wedding color tokens — palette florale aquarelle */
+  --color-cream-warm: #FDF8F6;
+  --color-gold-moroccan: #C77B95;
+  --color-brown-deep: #3A2434;
+  --color-gold-luminous: #D4A0B0;
+  --color-gold-veil: #F0D5DD;
+  --color-white-broken: #FFFBFC;
+  --color-brown-medium: #7A6070;
+  --color-red-soft: #D4708A;
+  --color-green-olive: #7A9B7A;
+  --color-mauve-deep: #8B4A6E;
+  --color-olive-deep: #5A7A5A;
+  --color-mauve-soft: #A07A9B;
 
   /* Fonts */
   --font-sans: var(--font-geist-sans);
@@ -105,8 +105,8 @@
 }
 
 @keyframes rsvpPulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(184, 134, 11, 0.4); }
-  50% { box-shadow: 0 0 0 8px rgba(184, 134, 11, 0); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(199, 123, 149, 0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(199, 123, 149, 0); }
 }
 
 .rsvp-pulse {
@@ -164,70 +164,72 @@
   to { opacity: 1; transform: scale(1); }
 }
 
-/* --- Overrides desktop : animations d'entrée par section --- */
-@media (min-width: 1024px) {
-  @supports (animation-timeline: view()) {
-    /*
-     * Info : fade stagger via animation-range offsets progressifs
-     * DOM : <section.section-info> children are:
-     *   h2 (child 1, not .scroll-reveal)
-     *   div.scroll-reveal (child 2 — separator)
-     *   p.scroll-reveal (child 3 — message)
-     *   p.scroll-reveal (child 4 — submessage)
-     * ⚠️ FRAGILE: indices must be updated if children are added/reordered
-     */
-    .section-info .scroll-reveal {
-      animation-name: entryFadeStagger;
-    }
-    .section-info .scroll-reveal:nth-child(2) {
-      animation-range: entry 0% entry 50%;
-    }
-    .section-info .scroll-reveal:nth-child(3) {
-      animation-range: entry 5% entry 55%;
-    }
-    .section-info .scroll-reveal:nth-child(4) {
-      animation-range: entry 10% entry 60%;
-    }
-
-    /*
-     * Timeline desktop : slide depuis les côtés alternés
-     * DOM : div.hidden.md:block.relative children are:
-     *   div (child 1 — gold center line, NOT an <article>)
-     *   article.scroll-reveal (child 2 — La Rencontre, isLeft=true)
-     *   article.scroll-reveal (child 3 — Les Fiançailles, isLeft=false)
-     *   article.scroll-reveal (child 4 — Le Jour J, isLeft=true)
-     * Using article:nth-of-type() to count ONLY <article> elements,
-     * ignoring the <div> gold line:
-     *   nth-of-type(odd) = articles 1,3 = isLeft = slide from left
-     *   nth-of-type(even) = article 2 = isRight = slide from right
-     */
-    .section-timeline article.scroll-reveal:nth-of-type(odd) {
-      animation-name: entrySlideFromLeft;
-      animation-range: entry 70% cover 30%;
-    }
-    .section-timeline article.scroll-reveal:nth-of-type(even) {
-      animation-name: entrySlideFromRight;
-      animation-range: entry 70% cover 30%;
-    }
-
-    /* Venue : scale reveal */
-    .section-venue .scroll-reveal {
-      animation-name: entryScaleReveal;
-      animation-range: entry 0% entry 50%;
-    }
-
-    /*
-     * Program : scale reveal (PAS bounce — bounce imperceptible avec snap scroll)
-     * Les 5 event cards sont enfants d'un wrapper <div class="mt-10 w-full space-y-8">,
-     * pas enfants directs de .section-program. Le stagger naturel vient de
-     * l'espacement vertical (space-y-8) qui décale les view() triggers.
-     */
-    .section-program .scroll-reveal {
-      animation-name: entryScaleReveal;
-      animation-range: entry 0% entry 50%;
-    }
+/* --- Animations temporelles déclenchées par IntersectionObserver (.in-view) ---
+ * Le snap scroll rend les animations view() inutilisables (tout apparaît d'un coup).
+ * On désactive view() et on utilise des animations CSS classiques
+ * avec stagger, déclenchées quand la section reçoit la classe .in-view.
+ * Rejouées si on quitte puis revient à la section.
+ */
+@supports (animation-timeline: view()) {
+  /* Désactiver scroll-driven — caché par défaut */
+  .scroll-reveal {
+    animation: none;
+    opacity: 0;
+    transform: translateY(24px);
   }
 }
+
+/* Info : fade stagger */
+.section-info.in-view .scroll-reveal {
+  animation: entryFadeStagger 700ms ease-out both;
+}
+.section-info.in-view .scroll-reveal:nth-child(2) { animation-delay: 100ms; }
+.section-info.in-view .scroll-reveal:nth-child(3) { animation-delay: 300ms; }
+.section-info.in-view .scroll-reveal:nth-child(4) { animation-delay: 500ms; }
+
+/* Timeline : fade stagger mobile, slide desktop */
+.section-timeline.in-view article.scroll-reveal {
+  animation: entryFadeStagger 800ms ease-out both;
+}
+.section-timeline.in-view article.scroll-reveal:nth-of-type(1) { animation-delay: 200ms; }
+.section-timeline.in-view article.scroll-reveal:nth-of-type(2) { animation-delay: 500ms; }
+.section-timeline.in-view article.scroll-reveal:nth-of-type(3) { animation-delay: 800ms; }
+
+@media (min-width: 1024px) {
+  .section-timeline.in-view article.scroll-reveal:nth-of-type(odd) {
+    animation-name: entrySlideFromLeft;
+  }
+  .section-timeline.in-view article.scroll-reveal:nth-of-type(even) {
+    animation-name: entrySlideFromRight;
+  }
+}
+
+/* Venue : scale reveal */
+.section-venue.in-view .scroll-reveal {
+  animation: entryScaleReveal 700ms ease-out both;
+}
+.section-venue.in-view .scroll-reveal:nth-child(2) { animation-delay: 0ms; }
+.section-venue.in-view .scroll-reveal:nth-child(3) { animation-delay: 150ms; }
+.section-venue.in-view .scroll-reveal:nth-child(4) { animation-delay: 300ms; }
+.section-venue.in-view .scroll-reveal:nth-child(5) { animation-delay: 450ms; }
+.section-venue.in-view .scroll-reveal:nth-child(6) { animation-delay: 600ms; }
+
+/* Program : scale reveal staggeré */
+.section-program.in-view .scroll-reveal {
+  animation: entryScaleReveal 700ms ease-out both;
+}
+.section-program.in-view .scroll-reveal:nth-child(1) { animation-delay: 100ms; }
+.section-program.in-view .scroll-reveal:nth-child(2) { animation-delay: 250ms; }
+.section-program.in-view .scroll-reveal:nth-child(3) { animation-delay: 400ms; }
+.section-program.in-view .scroll-reveal:nth-child(4) { animation-delay: 550ms; }
+.section-program.in-view .scroll-reveal:nth-child(5) { animation-delay: 700ms; }
+
+/* Merci : fade stagger */
+.section-merci.in-view .scroll-reveal {
+  animation: entryFadeStagger 700ms ease-out both;
+}
+.section-merci.in-view .scroll-reveal:nth-child(2) { animation-delay: 100ms; }
+.section-merci.in-view .scroll-reveal:nth-child(3) { animation-delay: 300ms; }
 
 /* === Alliance Rings: Scroll-Driven Animation === */
 
@@ -237,65 +239,61 @@
 }
 
 /*
- * Two sets of keyframes: mobile-first + desktop override.
- * Rings converge from edges → overlap slightly below "Merci" text.
- * translate(X, Y): X = horizontal convergence, Y = descent below text at end.
- * No rotation — 3D ring photos look wrong rotated.
- * Note: animation pacing depends on total scroll height (number of visible sections).
+ * Alliance rings — scroll-driven descent + convergence.
+ * 0-82%: descent on the sides
+ * 82-100%: convergence toward center with glow
  */
 
 /* --- Mobile keyframes (default) --- */
-/* Final: scale(0.8) → rings overlap ~30px at the end */
 
 @keyframes allianceLeftMove {
-  0%   { opacity: 0;   transform: translate(-400px, 0) scale(0.25); filter: drop-shadow(0 0 0 rgba(212, 165, 74, 0)) drop-shadow(0 0 0 rgba(255, 253, 249, 0)); }
-  8%   { opacity: 0;   transform: translate(-400px, 0) scale(0.25); filter: drop-shadow(0 0 0 rgba(212, 165, 74, 0)) drop-shadow(0 0 0 rgba(255, 253, 249, 0)); }
-  15%  { opacity: 0.3; transform: translate(-250px, 0) scale(0.3); filter: drop-shadow(0 0 0 rgba(212, 165, 74, 0)) drop-shadow(0 0 0 rgba(255, 253, 249, 0)); }
-  40%  { opacity: 0.3; transform: translate(-150px, 0) scale(0.35); filter: drop-shadow(0 0 0 rgba(212, 165, 74, 0)) drop-shadow(0 0 0 rgba(255, 253, 249, 0)); }
-  65%  { opacity: 0.3; transform: translate(-90px, 4vh) scale(0.45); filter: drop-shadow(0 0 0 rgba(212, 165, 74, 0)) drop-shadow(0 0 0 rgba(255, 253, 249, 0)); }
-  85%  { opacity: 0.6; transform: translate(-45px, 10vh) scale(0.65); filter: drop-shadow(0 0 0 rgba(212, 165, 74, 0)) drop-shadow(0 0 0 rgba(255, 253, 249, 0)); }
-  92%  { opacity: 0.8; transform: translate(-33px, 11vh) scale(0.72); filter: drop-shadow(0 0 8px rgba(212, 165, 74, 0.6)) drop-shadow(0 0 3px rgba(255, 253, 249, 0.3)); }
-  96%  { opacity: 0.9; transform: translate(-31px, 12vh) scale(0.76); filter: drop-shadow(0 0 14px rgba(212, 165, 74, 0.8)) drop-shadow(0 0 5px rgba(255, 253, 249, 0.5)); }
-  100% { opacity: 1;   transform: translate(-30px, 12vh) scale(0.8); filter: drop-shadow(0 0 18px rgba(212, 165, 74, 0.9)) drop-shadow(0 0 6px rgba(255, 253, 249, 0.5)); }
+  0%   { opacity: 0;    transform: translate(-42vw, -40vh) scale(0.4); }
+  8%   { opacity: 0.2;  transform: translate(-42vw, -38vh) scale(0.45); }
+  25%  { opacity: 0.2;  transform: translate(-42vw, -28vh) scale(0.45); }
+  50%  { opacity: 0.25; transform: translate(-42vw, -12vh) scale(0.5); }
+  75%  { opacity: 0.3;  transform: translate(-42vw, 4vh) scale(0.55); }
+  82%  { opacity: 0.35; transform: translate(-42vw, 12vh) scale(0.6); }
+  90%  { opacity: 0.6;  transform: translate(-20vw, 22vh) scale(0.65); }
+  96%  { opacity: 0.85; transform: translate(-40px, 22vh) scale(0.74); }
+  100% { opacity: 1;    transform: translate(-25px, 22vh) scale(0.8); }
 }
 
 @keyframes allianceRightMove {
-  0%   { opacity: 0;   transform: translate(400px, 0) scale(0.25); filter: drop-shadow(0 0 0 rgba(212, 165, 74, 0)) drop-shadow(0 0 0 rgba(255, 253, 249, 0)); }
-  8%   { opacity: 0;   transform: translate(400px, 0) scale(0.25); filter: drop-shadow(0 0 0 rgba(212, 165, 74, 0)) drop-shadow(0 0 0 rgba(255, 253, 249, 0)); }
-  15%  { opacity: 0.3; transform: translate(250px, 0) scale(0.3); filter: drop-shadow(0 0 0 rgba(212, 165, 74, 0)) drop-shadow(0 0 0 rgba(255, 253, 249, 0)); }
-  40%  { opacity: 0.3; transform: translate(150px, 0) scale(0.35); filter: drop-shadow(0 0 0 rgba(212, 165, 74, 0)) drop-shadow(0 0 0 rgba(255, 253, 249, 0)); }
-  65%  { opacity: 0.3; transform: translate(90px, 4vh) scale(0.45); filter: drop-shadow(0 0 0 rgba(212, 165, 74, 0)) drop-shadow(0 0 0 rgba(255, 253, 249, 0)); }
-  85%  { opacity: 0.6; transform: translate(45px, 10vh) scale(0.65); filter: drop-shadow(0 0 0 rgba(212, 165, 74, 0)) drop-shadow(0 0 0 rgba(255, 253, 249, 0)); }
-  92%  { opacity: 0.8; transform: translate(33px, 11vh) scale(0.72); filter: drop-shadow(0 0 8px rgba(212, 165, 74, 0.6)) drop-shadow(0 0 3px rgba(255, 253, 249, 0.3)); }
-  96%  { opacity: 0.9; transform: translate(31px, 12vh) scale(0.76); filter: drop-shadow(0 0 14px rgba(212, 165, 74, 0.8)) drop-shadow(0 0 5px rgba(255, 253, 249, 0.5)); }
-  100% { opacity: 1;   transform: translate(30px, 12vh) scale(0.8); filter: drop-shadow(0 0 18px rgba(212, 165, 74, 0.9)) drop-shadow(0 0 6px rgba(255, 253, 249, 0.5)); }
+  0%   { opacity: 0;    transform: translate(42vw, -40vh) scale(0.4); }
+  8%   { opacity: 0.2;  transform: translate(42vw, -38vh) scale(0.45); }
+  25%  { opacity: 0.2;  transform: translate(42vw, -28vh) scale(0.45); }
+  50%  { opacity: 0.25; transform: translate(42vw, -12vh) scale(0.5); }
+  75%  { opacity: 0.3;  transform: translate(42vw, 4vh) scale(0.55); }
+  82%  { opacity: 0.35; transform: translate(42vw, 12vh) scale(0.6); }
+  90%  { opacity: 0.6;  transform: translate(20vw, 22vh) scale(0.65); }
+  96%  { opacity: 0.85; transform: translate(40px, 22vh) scale(0.74); }
+  100% { opacity: 1;    transform: translate(25px, 22vh) scale(0.8); }
 }
 
 /* --- Desktop keyframes (≥768px) --- */
-/* Final: scale(1.3) → rings overlap ~50px at the end */
 
 @keyframes allianceLeftMoveLg {
-  0%   { opacity: 0;   transform: translate(-800px, 0) scale(0.35); filter: drop-shadow(0 0 0 rgba(212, 165, 74, 0)) drop-shadow(0 0 0 rgba(255, 253, 249, 0)); }
-  8%   { opacity: 0;   transform: translate(-800px, 0) scale(0.35); filter: drop-shadow(0 0 0 rgba(212, 165, 74, 0)) drop-shadow(0 0 0 rgba(255, 253, 249, 0)); }
-  15%  { opacity: 0.3; transform: translate(-500px, 0) scale(0.4); filter: drop-shadow(0 0 0 rgba(212, 165, 74, 0)) drop-shadow(0 0 0 rgba(255, 253, 249, 0)); }
-  40%  { opacity: 0.3; transform: translate(-300px, 0) scale(0.5); filter: drop-shadow(0 0 0 rgba(212, 165, 74, 0)) drop-shadow(0 0 0 rgba(255, 253, 249, 0)); }
-  65%  { opacity: 0.3; transform: translate(-180px, 8vh) scale(0.6); filter: drop-shadow(0 0 0 rgba(212, 165, 74, 0)) drop-shadow(0 0 0 rgba(255, 253, 249, 0)); }
-  85%  { opacity: 0.6; transform: translate(-80px, 20vh) scale(0.85); filter: drop-shadow(0 0 0 rgba(212, 165, 74, 0)) drop-shadow(0 0 0 rgba(255, 253, 249, 0)); }
-  92%  { opacity: 0.8; transform: translate(-55px, 23vh) scale(1.0); filter: drop-shadow(0 0 12px rgba(212, 165, 74, 0.6)) drop-shadow(0 0 4px rgba(255, 253, 249, 0.3)); }
-  96%  { opacity: 0.9; transform: translate(-52px, 25vh) scale(1.15); filter: drop-shadow(0 0 20px rgba(212, 165, 74, 0.8)) drop-shadow(0 0 8px rgba(255, 253, 249, 0.5)); }
-  100% { opacity: 1;   transform: translate(-50px, 25vh) scale(1.3); filter: drop-shadow(0 0 28px rgba(212, 165, 74, 0.9)) drop-shadow(0 0 10px rgba(255, 253, 249, 0.6)); }
+  0%   { opacity: 0;    transform: translate(-44vw, -40vh) scale(0.5); }
+  8%   { opacity: 0.2;  transform: translate(-44vw, -38vh) scale(0.55); }
+  25%  { opacity: 0.2;  transform: translate(-44vw, -26vh) scale(0.55); }
+  50%  { opacity: 0.25; transform: translate(-44vw, -8vh) scale(0.6); }
+  75%  { opacity: 0.3;  transform: translate(-44vw, 8vh) scale(0.65); }
+  82%  { opacity: 0.35; transform: translate(-44vw, 16vh) scale(0.75); }
+  90%  { opacity: 0.6;  transform: translate(-22vw, 22vh) scale(0.9); }
+  96%  { opacity: 0.85; transform: translate(-50px, 22vh) scale(1.15); }
+  100% { opacity: 1;    transform: translate(-35px, 22vh) scale(1.3); }
 }
 
 @keyframes allianceRightMoveLg {
-  0%   { opacity: 0;   transform: translate(800px, 0) scale(0.35); filter: drop-shadow(0 0 0 rgba(212, 165, 74, 0)) drop-shadow(0 0 0 rgba(255, 253, 249, 0)); }
-  8%   { opacity: 0;   transform: translate(800px, 0) scale(0.35); filter: drop-shadow(0 0 0 rgba(212, 165, 74, 0)) drop-shadow(0 0 0 rgba(255, 253, 249, 0)); }
-  15%  { opacity: 0.3; transform: translate(500px, 0) scale(0.4); filter: drop-shadow(0 0 0 rgba(212, 165, 74, 0)) drop-shadow(0 0 0 rgba(255, 253, 249, 0)); }
-  40%  { opacity: 0.3; transform: translate(300px, 0) scale(0.5); filter: drop-shadow(0 0 0 rgba(212, 165, 74, 0)) drop-shadow(0 0 0 rgba(255, 253, 249, 0)); }
-  65%  { opacity: 0.3; transform: translate(180px, 8vh) scale(0.6); filter: drop-shadow(0 0 0 rgba(212, 165, 74, 0)) drop-shadow(0 0 0 rgba(255, 253, 249, 0)); }
-  85%  { opacity: 0.6; transform: translate(80px, 20vh) scale(0.85); filter: drop-shadow(0 0 0 rgba(212, 165, 74, 0)) drop-shadow(0 0 0 rgba(255, 253, 249, 0)); }
-  92%  { opacity: 0.8; transform: translate(55px, 23vh) scale(1.0); filter: drop-shadow(0 0 12px rgba(212, 165, 74, 0.6)) drop-shadow(0 0 4px rgba(255, 253, 249, 0.3)); }
-  96%  { opacity: 0.9; transform: translate(52px, 25vh) scale(1.15); filter: drop-shadow(0 0 20px rgba(212, 165, 74, 0.8)) drop-shadow(0 0 8px rgba(255, 253, 249, 0.5)); }
-  100% { opacity: 1;   transform: translate(50px, 25vh) scale(1.3); filter: drop-shadow(0 0 28px rgba(212, 165, 74, 0.9)) drop-shadow(0 0 10px rgba(255, 253, 249, 0.6)); }
+  0%   { opacity: 0;    transform: translate(44vw, -40vh) scale(0.5); }
+  8%   { opacity: 0.2;  transform: translate(44vw, -38vh) scale(0.55); }
+  25%  { opacity: 0.2;  transform: translate(44vw, -26vh) scale(0.55); }
+  50%  { opacity: 0.25; transform: translate(44vw, -8vh) scale(0.6); }
+  75%  { opacity: 0.3;  transform: translate(44vw, 8vh) scale(0.65); }
+  82%  { opacity: 0.35; transform: translate(44vw, 16vh) scale(0.75); }
+  90%  { opacity: 0.6;  transform: translate(22vw, 22vh) scale(0.9); }
+  96%  { opacity: 0.85; transform: translate(50px, 22vh) scale(1.15); }
+  100% { opacity: 1;    transform: translate(35px, 22vh) scale(1.3); }
 }
 
 /* Default: rings hidden (graceful degradation for unsupported browsers) */
@@ -313,9 +311,9 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    /* Centering: half of width (120px) and height (180px) from component */
-    margin-left: calc(120px / -2);
-    margin-top: calc(180px / -2);
+    /* Centering: half of width (90px) and height (135px) from component */
+    margin-left: calc(90px / -2);
+    margin-top: calc(135px / -2);
     opacity: 0;
   }
 
@@ -342,8 +340,13 @@
   }
 }
 
-/* Landscape mobile only: disable rings — snap is off, scroll behavior differs */
+/* Landscape mobile only: disable snap + rings — too cramped for full-screen sections */
 @media (orientation: landscape) and (max-height: 500px) {
+  .guest-scroll-container {
+    scroll-snap-type: none;
+    overflow-y: auto;
+  }
+
   .alliance-rings-container {
     display: none !important;
   }
@@ -582,24 +585,24 @@
   --radius: 0.5rem;
 
   /* shadcn semantic tokens — wedding palette */
-  --background: #FAF7F2;
-  --foreground: #2C2418;
-  --card: #FFFDF9;
-  --card-foreground: #2C2418;
-  --popover: #FFFDF9;
-  --popover-foreground: #2C2418;
-  --primary: #B8860B;
-  --primary-foreground: #FFFDF9;
-  --secondary: #E8D5A8;
-  --secondary-foreground: #2C2418;
-  --muted: #E8D5A8;
-  --muted-foreground: #6B5D4F;
-  --accent: #E8D5A8;
-  --accent-foreground: #2C2418;
-  --destructive: #C45B4A;
-  --border: #E8D5A8;
-  --input: #E8D5A8;
-  --ring: #B8860B;
+  --background: #FDF8F6;
+  --foreground: #3A2434;
+  --card: #FFFBFC;
+  --card-foreground: #3A2434;
+  --popover: #FFFBFC;
+  --popover-foreground: #3A2434;
+  --primary: #C77B95;
+  --primary-foreground: #FFFBFC;
+  --secondary: #F0D5DD;
+  --secondary-foreground: #3A2434;
+  --muted: #F0D5DD;
+  --muted-foreground: #7A6070;
+  --accent: #F0D5DD;
+  --accent-foreground: #3A2434;
+  --destructive: #D4708A;
+  --border: #F0D5DD;
+  --input: #F0D5DD;
+  --ring: #C77B95;
 }
 
 @layer base {
