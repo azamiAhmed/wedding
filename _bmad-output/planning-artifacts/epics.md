@@ -96,7 +96,7 @@ NFR17: Pas de dépendance à des services tiers payants
 - CSS Scroll-Driven Animations natives pour révélation au scroll (zéro JS)
 - Polices : Cormorant Garamond (display) + Geist Sans (body) via next/font/google
 - Design tokens centralisés dans @theme inline de Tailwind CSS 4
-- Palette : crème chaud #FAF7F2, doré marocain #B8860B, brun profond #2C2418
+- Palette florale aquarelle : crème rosé #FDF8F6, rose pétale #C77B95, prune profond #3A2434
 - shadcn/ui composants : Button, Dialog, Input, Select, Table, Badge, Card
 
 **UX — Responsive & Accessibilité :**
@@ -139,7 +139,20 @@ FR29: Epic 1 — Contenu dans le code source
 FR31: Epic 6 — Alliances animées sur les bords de l'écran
 FR32: Epic 6 — Rapprochement progressif lié au scroll
 FR33: Epic 6 — Entrelacement final et révélation photo
-FR34: Epic 7 — Landing page placeholder non-invités
+FR34: Epic 7 — Landing page placeholder non-invités (remplacée par Save the Date)
+FR35: Epic 8/9 — Pigeon voyageur Lottie entre dans l'écran
+FR36: Epic 9 — Pigeon dépose enveloppe et s'envole
+FR37: Epic 9 — Sceau doré A&G calligraphie
+FR38: Epic 9 — Enveloppe s'ouvre avec animation fluide
+FR39: Epic 8 — Contenu révélé (prénoms, date, lieu, message)
+FR40: Epic 9 — Animation joue une fois, contenu reste statique
+FR41: Epic 9 — Animation complète 4-5 secondes
+FR42: Epic 8 — prefers-reduced-motion fallback
+FR43: Epic 8 — Accessibilité lecteurs d'écran
+FR44: Epic 8 — Remplace la landing page (haut de /)
+FR45: Epic 8 — Responsive 360px-1920px
+FR46: Epic 10 — Aperçu OG WhatsApp (enveloppe + sceau)
+FR47: Epic 10 — Favicon personnalisé (sceau A&G)
 
 ## Epic List
 
@@ -172,9 +185,37 @@ Un visiteur accédant au site sans lien d'invitation voit une page placeholder �
 **FRs couvertes:** FR34
 **Note:** Phase 1 = placeholder simple. Phase 2 potentielle = vraie landing page de mariage (hors scope actuel).
 
+### Epic 8: Page Save the Date — Contenu & Cadre Doré
+L'invité qui ouvre le lien `/` voit le contenu Save the Date (prénoms, date, lieu, message poétique) sur un écran crème élégant avec fond responsive. L'expérience est parfaite pour les utilisateurs `prefers-reduced-motion` et accessible à tous les lecteurs d'écran.
+**FRs couvertes:** FR35, FR39, FR42, FR43, FR44, FR45
+**Note:** Inclut la fondation CSS (tokens animation/couleur, polices), le contenu sémantique, le cadre doré (évolué vers conteneur invisible), et la validation responsive/accessibilité. Remplace la landing non-invités d'Epic 7.
+
+### Epic 9: Animation Pigeon Voyageur
+L'invité vit une micro-narration animée de 5 secondes : un pigeon stylisé Lottie entre en vol, dépose une enveloppe cachetée A&G, s'envole, puis l'enveloppe s'ouvre pour révéler le contenu Save the Date.
+**FRs couvertes:** FR35, FR36, FR37, FR38, FR40, FR41
+**Note:** Pigeon via Lottie (`lottie-react`), enveloppe et sceau en SVG inline. Orchestration via Client Component `SaveTheDateScene` + gating CSS `.scene-ready`.
+
+### Epic 10: Open Graph & Favicon Save the Date
+Quand le lien `/` est partagé sur WhatsApp, un aperçu visuel attractif s'affiche : enveloppe dorée fermée + sceau A&G sur fond crème. Un favicon personnalisé (sceau A&G) apparaît dans l'onglet du navigateur.
+**FRs couvertes:** FR46, FR47
+**Note:** Satori (`ImageResponse`) avec police TTF locale (`readFileSync`). Runtime `nodejs`, prerender statique.
+
 ### Séquence de Déploiement
 Le site ne doit pas être partagé via WhatsApp tant qu'Epic 1 + Epic 2 + Epic 4 ne sont pas complétés. Epic 3 (RSVP) peut être ajouté juste après ou en même temps.
 Epic 6 peut être développée en parallèle après Epic 2. Epic 7 peut être déployée indépendamment.
+Epics 8-10 (Save the Date) sont indépendantes du parcours invité et peuvent être développées en parallèle.
+
+### Statut actuel (tous les Epics terminés)
+- Epic 1: ✅ done (Stories 1.1–1.3)
+- Epic 2: ✅ done (Stories 2.1–2.5)
+- Epic 3: ✅ done (Stories 3.1–3.4) — FR16 enrichi (sans limite de temps)
+- Epic 4: ✅ done (Stories 4.1–4.5)
+- Epic 5: ❌ SUPPRIMÉE — fusionnée dans Story 3.4 (FR16)
+- Epic 6: ✅ done (Stories 6.1–6.2, 6.3 cancelled, 6.4 couverte par 6.2)
+- Epic 7: ✅ done (Story 7.1) — remplacée par Save the Date (Epic 8)
+- Epic 8: ✅ done (Stories 8.1–8.4)
+- Epic 9: ✅ done (Stories 9.1–9.4)
+- Epic 10: ✅ done (Story 10.1)
 
 ## Epic 1: Lien Unique & Page Invité
 
@@ -202,7 +243,7 @@ So that toutes les futures stories ont une fondation solide pour s'appuyer.
 
 **Given** le design system défini dans le UX spec
 **When** je configure `globals.css` avec les design tokens `@theme inline`
-**Then** la palette (crème #FAF7F2, doré #B8860B, brun #2C2418), les polices (Cormorant Garamond + Geist Sans) et les spacing tokens sont disponibles dans tout le projet
+**Then** la palette florale (crème rosé #FDF8F6, rose pétale #C77B95, prune profond #3A2434), les polices (Cormorant Garamond + Geist Sans) et les spacing tokens sont disponibles dans tout le projet
 
 **Given** le fichier `.env.example` créé
 **When** un développeur clone le projet
@@ -270,7 +311,7 @@ So that je ressens immédiatement l'émotion et l'importance de l'événement.
 
 **Given** la page invité chargée
 **When** le hero s'affiche
-**Then** une photo du couple occupe tout l'écran (100vh) avec un voile doré semi-transparent pour la lisibilité
+**Then** une photo du couple occupe tout l'écran (100vh) avec un vidéo en boucle du couple avec voile blanc semi-transparent (bg-white/30) pour la lisibilité
 
 **Given** le hero visible
 **When** l'animation d'entrée se déclenche
@@ -286,7 +327,7 @@ So that je ressens immédiatement l'émotion et l'importance de l'événement.
 
 **Given** la hero photo
 **When** la page se charge
-**Then** l'image utilise `next/image` avec `priority` (LCP), format WebP/AVIF auto, et `sizes` responsive
+**Then** la vidéo utilise `<video>` autoPlay muted loop playsInline avec sources séparées mobile/desktop
 
 ### Story 2.2: Timeline "Notre Histoire"
 
@@ -790,7 +831,7 @@ So that je comprenne que je dois contacter Ahmed ou Ghizlaine pour recevoir mon 
 
 **Given** la page placeholder
 **When** elle est affichée
-**Then** elle utilise le même design system que le reste du site (fond crème, typographie Cormorant/Geist, palette dorée) pour rester cohérente
+**Then** elle utilise le même design system que le reste du site (fond crème rosé, typographie Cormorant/Geist, palette florale rose) pour rester cohérente
 
 **Given** la page sur mobile
 **When** elle est affichée
@@ -799,3 +840,157 @@ So that je comprenne que je dois contacter Ahmed ou Ghizlaine pour recevoir mon 
 **Given** la page placeholder
 **When** elle est indexée par les moteurs de recherche
 **Then** les balises meta indiquent `noindex, nofollow` pour ne pas référencer le site publiquement
+
+> **Note :** Epic 7 a été remplacée par le Save the Date (Epic 8). La page `/` affiche désormais l'animation Save the Date au lieu du placeholder.
+
+## Epic 8: Page Save the Date — Contenu & Cadre Doré
+
+L'invité qui ouvre le lien `/` voit immédiatement le contenu Save the Date (prénoms, date, lieu, message poétique) sur un écran crème élégant avec fond responsive. L'expérience est parfaite pour les utilisateurs `prefers-reduced-motion` et accessible à tous les lecteurs d'écran.
+
+### Story 8.1: Fondation — Layout, Police & Tokens CSS
+
+As a invité,
+I want la page `/` s'affiche avec un fond crème `#FAF7F2` et la police Cormorant Garamond chargée,
+So that je vois immédiatement un écran élégant et cohérent avec l'univers du mariage.
+
+**Acceptance Criteria:**
+
+**Given** un visiteur accède à la page `/`
+**When** la page se charge
+**Then** le fond est `#FAF7F2` (crème chaud) et occupe `min-h-dvh`
+**And** la police Cormorant Garamond (poids 300, 400) est chargée via `next/font/google` dans `app/layout.tsx` avec la variable CSS `--font-cormorant`
+**And** les tokens d'animation sont définis dans `globals.css` (`@theme inline`) : `--animation-act1` (1500ms), `--animation-act2` (1200ms), `--animation-pause` (300ms), `--animation-act3` (2000ms), `--easing-flight`, `--easing-land`, `--easing-reveal`
+**And** `app/page.tsx` remplace l'ancienne landing page non-invités
+
+### Story 8.2: Contenu Save the Date — HTML Sémantique & Texte
+
+As a invité,
+I want voir les prénoms du couple, la date, le lieu et un message poétique affichés de manière lisible et élégante,
+So that je retiens immédiatement la date et le lieu du mariage.
+
+**Acceptance Criteria:**
+
+**Given** un visiteur accède à la page `/`
+**When** la page se charge
+**Then** le contenu est affiché centré avec :
+- `h1` : "Ahmed & Ghizlaine" en Cormorant Garamond 300, couleur `#2C2418`
+- `time` : "17 Octobre 2026" en Cormorant Garamond 400, couleur `#6B3A4E` (mauve-deep)
+- `address` : "Casablanca" en Cormorant Garamond 400, couleur `#4A5E3A` (olive-deep)
+- Séparateur doré `w-12` couleur `#B8860B`
+- `blockquote` : message poétique en Geist Sans italique, couleur `#7A5A6A` (mauve-soft)
+
+### Story 8.3: Cadre Doré — SVG Décoratif
+
+As a invité,
+I want voir un cadre doré fin encadrant le contenu,
+So that l'écran évoque un faire-part physique premium.
+
+**Acceptance Criteria:**
+
+**Given** un visiteur accède à la page `/`
+**When** la page se charge
+**Then** le composant `GoldenFrame` est un conteneur layout invisible (sans bordure ni ornement visible — la direction visuelle a évolué vers "Épure + Image d'Arrière-Plan")
+
+### Story 8.4: Responsive & Accessibilité — Validation Complète
+
+As a invité sur mobile ou desktop,
+I want que la page s'affiche parfaitement sur tous les écrans de 360px à 1920px,
+So that l'expérience est élégante quelle que soit la taille de mon écran.
+
+**Acceptance Criteria:**
+
+**Given** `prefers-reduced-motion` activé
+**When** la page se charge
+**Then** le contenu textuel est affiché directement sans animation, aucun pigeon ni enveloppe affiché
+
+**Given** un lecteur d'écran
+**When** le contenu est lu
+**Then** l'ordre est : "Ahmed & Ghizlaine" → "17 Octobre 2026" → "Casablanca" → message poétique
+**And** les éléments décoratifs sont ignorés (`aria-hidden`)
+**And** Lighthouse Performance > 85 sur mobile
+
+## Epic 9: Animation Pigeon Voyageur — Le Spectacle en 3 Actes
+
+L'invité vit une micro-narration animée de 5 secondes : un pigeon stylisé Lottie entre en vol, dépose une enveloppe cachetée A&G, s'envole, puis l'enveloppe s'ouvre pour révéler le contenu Save the Date.
+
+### Story 9.1: Sceau A&G — SVG Monogramme
+
+As a invité,
+I want voir un sceau doré portant les initiales "A&G" entouré d'entrelacs géométriques,
+So that le cachet personnalisé renforce le sentiment d'invitation sur mesure.
+
+**Acceptance Criteria:**
+
+**Given** le composant `SealAG` est rendu
+**When** il s'affiche
+**Then** un cercle doré (`#B8860B`) contient les initiales "A" et "G" en serif élégante avec "&" entre les deux
+**And** des motifs géométriques arabesques entourent le monogramme en `#D4A54A`
+**And** SVG inline dans `components/save-the-date/seal-ag.tsx`, Server Component, `aria-hidden="true"`
+
+### Story 9.2: Enveloppe — SVG + Animation Ouverture
+
+As a invité,
+I want voir une enveloppe élégante dont le sceau se brise et le rabat se soulève,
+So that l'ouverture crée l'anticipation de la révélation.
+
+**Acceptance Criteria:**
+
+**Given** le composant `Envelope` est rendu
+**When** l'animation Acte 3 démarre
+**Then** le sceau se réduit (`seal-break`), le rabat se soulève (`envelope-open` via `rotateX()`), l'enveloppe disparaît (`opacity: 0`)
+**And** SVG inline dans `components/save-the-date/envelope.tsx`, coins arrondis, ombre portée
+**And** en `prefers-reduced-motion` : `display: none`
+
+### Story 9.3: Pigeon Voyageur — Lottie + Animation Vol
+
+As a invité,
+I want voir un pigeon stylisé entrer en vol gracieux et déposer l'enveloppe,
+So that la narration du messager crée l'émerveillement.
+
+**Acceptance Criteria:**
+
+**Given** le composant `PigeonVoyageur` est rendu
+**When** l'animation démarre
+**Then** le pigeon entre via Lottie (`lottie-react`) avec trajectoire CSS keyframes `translate` + `rotate`
+**And** deux fichiers Lottie : `oiseau.json` (mobile), `pigeon.json` (desktop ≥1024px)
+**And** Client Component (`'use client'`), fichiers chargés via `fetch()` + `useEffect`
+**And** en `prefers-reduced-motion` : `display: none`
+
+### Story 9.4: Orchestration Animation — Timeline 5000ms
+
+As a invité,
+I want que l'animation se joue en séquence cohérente de 5 secondes au chargement,
+So that je vis un spectacle de 3 actes sans saccade.
+
+**Acceptance Criteria:**
+
+**Given** un visiteur accède à `/` (animations autorisées)
+**When** la page se charge
+**Then** le Client Component `SaveTheDateScene` gère le gating :
+- Attend chargement Lottie + 2 `requestAnimationFrame` (ou timeout 3s)
+- Ajoute `.scene-ready` → animations CSS démarrent
+- Ajoute `.pigeon-done` (3600ms) et `.envelope-done` (5100ms) pour protection breakpoint
+**And** l'animation se joue une seule fois (`animation-iteration-count: 1`)
+**And** 60fps sans jank sur iPhone 11 / Galaxy A52
+
+## Epic 10: Open Graph & Favicon Save the Date
+
+Aperçu WhatsApp visuel attractif avec enveloppe dorée fermée + sceau A&G. Favicon personnalisé dans l'onglet du navigateur.
+
+### Story 10.1: Image Open Graph + Favicon (Satori)
+
+As a invité qui reçoit le lien `/` sur WhatsApp,
+I want voir un aperçu visuel avec une enveloppe dorée et le titre "Ahmed & Ghizlaine — Save the Date",
+So that ma curiosité est piquée et j'ai envie d'ouvrir le lien.
+
+**Acceptance Criteria:**
+
+**Given** le lien `/` est partagé sur WhatsApp
+**When** la plateforme génère l'aperçu
+**Then** une image OG 1200×630px s'affiche : enveloppe fermée + sceau A&G sur fond crème
+**And** `og:title` : "Ahmed & Ghizlaine — 17 Octobre 2026"
+**And** fichier `app/opengraph-image.tsx` via `ImageResponse` (Satori)
+**And** police locale `/public/fonts/cormorant-garamond-light.ttf` via `readFileSync`
+**And** `runtime = 'nodejs'`, prerender statique
+**And** favicon `app/icon.tsx` : sceau A&G simplifié 48×48px (Satori)
+**And** `metadataBase: new URL("https://ag-wedding.com")` dans `layout.tsx`

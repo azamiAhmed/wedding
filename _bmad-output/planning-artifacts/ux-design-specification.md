@@ -16,7 +16,7 @@ inputDocuments:
 
 ### Vision Projet
 
-Invitation digitale premium pour le mariage d'Ahmed & Ghizlaine. Site monopage émotionnel, accessible exclusivement via lien unique WhatsApp. L'expérience combine la fluidité interactive d'Apple, le raffinement visuel des maisons de luxe (LVMH, Chanel), et la chaleur d'un doré marocain traditionnel. L'invité confirme sa présence en < 10 secondes dans un parcours sans friction.
+Invitation digitale premium pour le mariage d'Ahmed & Ghizlaine. Site monopage émotionnel, accessible exclusivement via lien unique WhatsApp. L'expérience combine la fluidité interactive d'Apple, le raffinement visuel des maisons de luxe (LVMH, Chanel), et la douceur d'une palette florale aquarelle inspirée de fleurs sauvages. L'invité confirme sa présence en < 10 secondes dans un parcours sans friction.
 
 ### Utilisateurs Cibles
 
@@ -29,9 +29,9 @@ Invitation digitale premium pour le mariage d'Ahmed & Ghizlaine. Site monopage �
 
 ### Défis UX Clés
 
-1. **Photos non professionnelles** — Le lot de photos disponibles n'est pas issu d'un shooting pro. Le design doit compenser : traitements visuels (voiles dorés, grains, recadrages), compositions soignées, et animations de révélation qui élèvent n'importe quelle photo.
+1. **Photos non professionnelles** — Le lot de photos disponibles n'est pas issu d'un shooting pro. Le design doit compenser : traitements visuels (voiles blancs, grains, recadrages), compositions soignées, et animations de révélation qui élèvent n'importe quelle photo.
 
-2. **Fusionner deux esthétiques** — Le minimalisme froid du luxe européen (Chanel, LVMH) et la chaleur dorée marocaine/orientale. Ces deux mondes doivent coexister sans dissonance : épuré MAIS chaleureux, élégant MAIS pas distant.
+2. **Fusionner deux esthétiques** — Le minimalisme froid du luxe européen (Chanel, LVMH) et la douceur florale aquarelle. Ces deux mondes doivent coexister sans dissonance : épuré MAIS chaleureux, élégant MAIS pas distant.
 
 3. **RSVP élégant ET ultra-simple** — Le formulaire RSVP doit ressembler à une invitation, pas à un Google Forms. Il doit être suffisamment simple pour Fatima (58 ans) tout en étant visuellement cohérent avec le reste du site pour ne pas décevoir Karim (28 ans).
 
@@ -39,13 +39,13 @@ Invitation digitale premium pour le mariage d'Ahmed & Ghizlaine. Site monopage �
 
 ### Opportunités Design
 
-1. **Identité unique** — La combinaison doré chaud marocain + minimalisme luxe est rare dans les sites de mariage. C'est ce qui fera que Karim dira "c'est pas un template".
+1. **Identité unique** — La combinaison rose pétale floral + minimalisme luxe est rare dans les sites de mariage. C'est ce qui fera que Karim dira "c'est pas un template".
 
 2. **Scroll narratif cinématique** — La page unique avec révélation progressive crée une expérience de storytelling immersive. Chaque scroll dévoile un chapitre de l'histoire du couple.
 
 3. **Le RSVP comme moment émotionnel** — "Ahmed & Ghizlaine comptent sur vous" + "Je serai là" transforme un acte administratif en promesse personnelle. L'overlay peut être un moment design à part entière.
 
-4. **Élévation photographique** — Les traitements visuels (zoom progressif au scroll, voile doré pour lisibilité, grain subtil) peuvent transformer des photos classiques en éléments premium.
+4. **Élévation photographique** — Les traitements visuels (zoom progressif au scroll, voile blanc pour lisibilité, grain subtil) peuvent transformer des photos classiques en éléments premium.
 
 ## Core User Experience
 
@@ -195,7 +195,7 @@ Le site n'est pas un site d'information — c'est une **expérience narrative** 
 |---------|--------|------------------------|
 | Photo plein écran comme héro | Chanel | Landing : photo du couple en full-bleed, texte par-dessus |
 | Espace blanc généreux | Chanel/LVMH | Chaque section respire, pas de surcharge |
-| Palette restreinte (3 couleurs max) | Chanel | Blanc/crème + doré chaud + texte foncé — c'est tout |
+| Palette restreinte (3 couleurs max) | Chanel | Blanc/crème + rose pétale + texte foncé — c'est tout |
 | Typographie display grand format | Apple | Prénoms "Ahmed & Ghizlaine" en très grand, centré, impact |
 
 **Patterns d'Interaction :**
@@ -222,7 +222,7 @@ Le site n'est pas un site d'information — c'est une **expérience narrative** 
 
 **Adopter tel quel :**
 - Scroll snap section plein écran (Apple) — c'est le cœur de la navigation
-- Palette restreinte 3 couleurs (Chanel) — blanc/crème, doré chaud, texte foncé
+- Palette restreinte 3 couleurs (Chanel) — blanc/crème, rose pétale, texte foncé
 - Espace blanc généreux (Chanel) — le vide est du luxe
 - Action en 1-2 taps (Revolut) — pour tout le parcours RSVP
 
@@ -258,7 +258,7 @@ Le site n'est pas un site d'information — c'est une **expérience narrative** 
 - Composants 100% custom sauf `dialog` (overlay RSVP) de shadcn/ui
 - Scroll animations : **CSS Scroll-Driven Animations natives** (Safari 16+, Chrome — les navigateurs cibles)
 - Micro-interactions (overlay, boutons) : **Framer Motion** si nécessaire, CSS animations sinon
-- Styling luxe complet : palette dorée, typographie élégante, espace blanc généreux
+- Styling luxe complet : palette florale, typographie élégante, espace blanc généreux
 
 **Admin — shadcn/ui standard :**
 - 7 composants shadcn/ui : `dialog`, `table`, `badge`, `switch`, `button`, `input`, `dropdown-menu`
@@ -268,7 +268,7 @@ Le site n'est pas un site d'information — c'est une **expérience narrative** 
 ### Stratégie de Personnalisation
 
 **Design Tokens (centralisés dans `@theme inline` de Tailwind CSS 4) :**
-- Couleurs : blanc/crème, doré chaud marocain, texte foncé
+- Couleurs : blanc/crème, rose pétale floral, texte foncé
 - Typographie : serif display (titres), sans-serif moderne (corps)
 - Espacements : généreux côté invité, compact côté admin
 - Border-radius : doux et arrondis
@@ -372,25 +372,25 @@ L'invité décrirait cette expérience : *"J'ai reçu un truc magnifique, mon no
 
 | Rôle | Nom | Hex | Usage |
 |------|-----|-----|-------|
-| Fond principal | Crème Chaud | `#FAF7F2` | Background des sections, base du site |
-| Accent signature | Doré Marocain | `#B8860B` | Titres accentués, monogramme A&G, bordures, bouton RSVP |
-| Texte principal | Brun Profond | `#2C2418` | Corps de texte, titres — pas un noir pur, un brun foncé chaud |
+| Fond principal | Crème Chaud | `#FDF8F6` | Background des sections, base du site |
+| Accent signature | Rose Pétale | `#C77B95` | Titres accentués, monogramme A&G, bordures, bouton RSVP |
+| Texte principal | Prune Profond | `#3A2434` | Corps de texte, titres — pas un noir pur, un prune foncé chaud |
 
 **Nuances Complémentaires :**
 
 | Rôle | Nom | Hex | Usage |
 |------|-----|-----|-------|
-| Doré clair | Doré Lumineux | `#D4A54A` | Hover, accents secondaires, icônes |
-| Doré très clair | Voile Doré | `#E8D5A8` | Overlays sur photos, séparateurs, backgrounds subtils |
-| Fond alternatif | Blanc Cassé | `#FFFDF9` | Sections alternées, overlay RSVP |
-| Texte secondaire | Brun Moyen | `#6B5D4F` | Sous-titres, texte d'accompagnement |
-| Erreur | Rouge Doux | `#C45B4A` | Messages d'erreur (élégant, pas agressif) |
-| Succès | Vert Olive | `#6B8F5E` | Confirmation RSVP, statut confirmé (admin) |
+| Rose clair | Rose Doré | `#D4A0B0` | Hover, accents secondaires, icônes |
+| Rose très clair | Voile Blush | `#F0D5DD` | Overlays sur photos, séparateurs, backgrounds subtils |
+| Fond alternatif | Blanc Cassé | `#FFFBFC` | Sections alternées, overlay RSVP |
+| Texte secondaire | Mauve Moyen | `#7A6070` | Sous-titres, texte d'accompagnement |
+| Erreur | Rose Vif | `#D4708A` | Messages d'erreur (élégant, pas agressif) |
+| Succès | Sauge | `#7A9B7A` | Confirmation RSVP, statut confirmé (admin) |
 
 **Contrastes WCAG :**
-- Brun Profond `#2C2418` sur Crème `#FAF7F2` → ratio ~14:1 (AAA)
-- Doré `#B8860B` sur Crème `#FAF7F2` → ratio ~4.8:1 (AA large text — titres display uniquement)
-- Brun Moyen `#6B5D4F` sur Crème `#FAF7F2` → ratio ~5.2:1 (AA)
+- Prune Profond `#3A2434` sur Crème `#FDF8F6` → ratio ~12:1 (AAA)
+- Rose Pétale `#C77B95` sur Crème `#FDF8F6` → ratio ~3.5:1 (AA large text — titres display uniquement)
+- Mauve Moyen `#7A6070` sur Crème `#FDF8F6` → ratio ~4.6:1 (AA)
 
 ### Système Typographique
 
@@ -449,19 +449,19 @@ Sans-serif moderne, neutre et lisible. Contraste parfait avec Cormorant.
 | Doré sur fond clair | Réservé aux tailles display (≥ 24px) ou éléments décoratifs |
 | Taille minimale | 14px minimum (12px uniquement pour captions non-essentielles) |
 | Touch targets | 44x44px minimum pour tous les éléments interactifs |
-| Focus visible | Outline doré au focus clavier sur tous les éléments interactifs |
+| Focus visible | Outline rose au focus clavier sur tous les éléments interactifs |
 | Réduction de mouvement | `prefers-reduced-motion` : désactive scroll animations, conserve transitions simples |
 
 ## Design Direction
 
 ### Directions Explorées
 
-Trois variations de composition explorées dans l'esthétique établie (doré chaud + crème + Cormorant/Geist) :
+Trois variations de composition explorées dans l'esthétique établie (rose pétale + crème + Cormorant/Geist) :
 
 | Direction | Concept | Hero | Intensité visuelle |
 |-----------|---------|------|--------------------|
 | A — Épure Absolue | Entrée minimaliste type invitation papier | Fond crème, prénoms seuls, photo révélée au 1er scroll | Basse — le texte porte l'émotion |
-| B — Cinématique Immersive | Impact visuel immédiat, "waouh" dès le 1er pixel | Photo plein écran + voile doré + prénoms par-dessus | Haute — l'image porte l'émotion |
+| B — Cinématique Immersive | Impact visuel immédiat, "waouh" dès le 1er pixel | Vidéo plein écran + voile blanc + prénoms par-dessus | Haute — l'image porte l'émotion |
 | C — Élégance Équilibrée | Photo comme un tableau dans un cadre | Photo recadrée (70%), espace crème autour | Moyenne — texte et image en harmonie |
 
 ### Direction Retenue : B — Cinématique Immersive
@@ -475,21 +475,21 @@ La direction B est retenue car elle est la plus alignée avec les principes déf
 ### Principes de Composition
 
 **Hero (Section 1) :**
-- Photo du couple en full-bleed (`100vw × 100vh`)
-- Voile doré semi-transparent (`#B8860B` à 15-20% opacité) pour lisibilité du texte
-- Prénoms "Ahmed & Ghizlaine" en Cormorant XL, blanc ou doré clair, centrés
+- Vidéo en boucle du couple en full-bleed (`100vw × 100vh`), sources séparées mobile/desktop
+- Voile blanc semi-transparent (bg-white/30) pour lisibilité du texte
+- Prénoms "Ahmed & Ghizlaine" en Cormorant XL, brun profond #3A2434, centrés
 - Nom de l'invité en Geist Sans, plus petit, en bas du hero
 - Animation d'entrée : fade-in + légère translation vers le haut
 
 **Sections Narratives :**
 - Alternance rythme fort : section photo plein écran → section texte sur crème
 - Chaque section = 1 message, 1 visuel, 1 émotion
-- Les photos en plein écran utilisent le voile doré pour la cohérence
+- Les photos en plein écran utilisent le voile blanc pour la cohérence
 - Les sections texte respirent avec espace blanc généreux
 
 **Overlay RSVP :**
-- Fond Blanc Cassé (`#FFFDF9`) semi-transparent avec backdrop-blur
-- Bordure dorée subtile
+- Fond Blanc Cassé (`#FFFBFC`) semi-transparent avec backdrop-blur
+- Bordure rose subtile
 - Typographie mixte : Cormorant pour l'accroche émotionnelle, Geist pour les contrôles
 
 ## User Journey Flows
@@ -687,10 +687,10 @@ Chaleureux et non-rejetant. Le visiteur est peut-être un ami qui n'a pas encore
 
 ### Design
 
-- Même design system que le site invité (fond crème `#FAF7F2`, Cormorant Garamond pour le titre, Geist pour le corps)
+- Même design system que le site invité (fond crème `#FDF8F6`, Cormorant Garamond pour le titre, Geist pour le corps)
 - Message centré verticalement et horizontalement
 - Prénoms "Ahmed & Ghizlaine" en Cormorant Display L
-- Séparateur doré décoratif (`w-12`, doré `#B8860B`)
+- Séparateur rose décoratif (`w-12`, rose pétale `#C77B95`)
 - Pas de photo, pas d'animation — page statique et sobre
 - Pas de lien vers `/admin`
 - Métadonnées `noindex, nofollow`
@@ -717,9 +717,9 @@ Chaleureux et non-rejetant. Le visiteur est peut-être un ami qui n'a pas encore
 ### Composants Custom — Site Invité
 
 **`HeroSection`**
-- Photo plein écran + voile doré + prénoms (Cormorant XL) + nom invité (Geist)
-- États : skeleton doré → révélé (fade-in + translate-up)
-- Technique : `object-fit: cover`, overlay gradient doré en pseudo-élément, CSS keyframes
+- Vidéo en boucle plein écran + voile blanc + prénoms (Cormorant XL) + nom invité (Geist)
+- États : skeleton rose → révélé (fade-in + translate-up)
+- Technique : `<video>` autoPlay muted loop playsInline, overlay bg-white/30, separate mobile/desktop video sources, CSS keyframes
 - Accessibilité : `alt` photo, `role="banner"`, prénoms en `h1`
 
 **`ScrollSection`**
@@ -731,7 +731,7 @@ Chaleureux et non-rejetant. Le visiteur est peut-être un ami qui n'a pas encore
 **`Timeline`**
 - Frise "Notre Histoire" — rencontre → fiançailles → jour J
 - Étapes révélées au scroll (CSS Scroll-Driven)
-- Technique : flexbox vertical, ligne dorée centrale, points dorés, texte alterné (desktop) ou à droite (mobile)
+- Technique : flexbox vertical, ligne rose centrale, points roses, texte alterné (desktop) ou à droite (mobile)
 - Accessibilité : `role="list"`, `aria-label="Notre histoire"`
 
 **`FloatingRsvpButton`**
@@ -810,10 +810,10 @@ Chaleureux et non-rejetant. Le visiteur est peut-être un ami qui n'a pas encore
 
 | Niveau | Style | Usage | Exemple |
 |--------|-------|-------|---------|
-| Primaire | Fond doré (`#B8860B`), texte blanc, bords arrondis | Action principale unique par écran | "Je serai là", "Sauvegarder" |
-| Secondaire | Fond transparent, bordure doré fine, texte brun | Action alternative | "Je ne pourrai pas", "Annuler" |
+| Primaire | Fond rose pétale (`#C77B95`), texte blanc, bords arrondis | Action principale unique par écran | "Je serai là", "Sauvegarder" |
+| Secondaire | Fond transparent, bordure rose fine, texte brun | Action alternative | "Je ne pourrai pas", "Annuler" |
 | Tertiaire / Ghost | Pas de fond ni bordure, texte brun moyen, underline hover | Action discrète | "Modifier", "Retour" |
-| Destructif | Fond rouge doux (`#C45B4A`), texte blanc | Suppression (admin) | "Supprimer l'invité" |
+| Destructif | Fond rose vif (`#D4708A`), texte blanc | Suppression (admin) | "Supprimer l'invité" |
 
 **Règles :** Max 1 primaire par écran. Tous les boutons : 44x44px minimum, `border-radius: 8px`.
 
@@ -869,6 +869,7 @@ Note : côté invité, aucun formulaire textuel — uniquement stepper/bouton. F
 | Feedback bouton | `ease-out` | 150ms | Scale au tap (0.97 → 1.0) |
 | Overlay ouverture | `cubic-bezier(0.32, 0.72, 0, 1)` | 400ms | Slide-up RSVP |
 | Pulse RSVP | `ease-in-out` | 2000ms, infini | Attire l'attention |
+| Smooth snap scroll desktop | `easeInOutCubic` (JS) | 1200ms | Transition entre sections desktop |
 | `prefers-reduced-motion` | — | — | Animations ≥ 300ms désactivées |
 
 ### Intégration Design System
@@ -948,3 +949,78 @@ Breakpoints Tailwind CSS 4 par défaut — pas de custom.
 - Media queries : mobile-first (`min-width`), classes Tailwind (`sm:`, `md:`, `lg:`)
 - Scroll-snap : désactivé en paysage `@media (orientation: landscape)`
 - Fonts : `next/font/google` Cormorant Garamond, `font-display: swap`
+
+## Save the Date — Design UX (Epics 8-10)
+
+### Direction Visuelle
+
+**"Épure + Image d'Arrière-Plan"** — Cadre invisible, fond responsive (mobile: `arriere plan 4.jpeg`, desktop: `arriere plan 2.jpg`), contenu textuel centré sur fond crème `#FAF7F2`.
+
+### Animation — Micro-narration en 3 Actes
+
+**Timeline : 5000ms total**
+
+| Phase | Durée | Action |
+|-------|-------|--------|
+| Acte 1 (0-1500ms) | 1500ms | Pigeon Lottie entre en vol depuis la gauche |
+| Acte 2 (1500-2700ms) | 1200ms | Dépôt enveloppe (300ms) + envol pigeon (900ms) |
+| Pause (2700-3000ms) | 300ms | Enveloppe seule, sceau visible |
+| Acte 3 (3000-5000ms) | 2000ms | Sceau se brise, enveloppe s'ouvre, texte apparaît en séquence |
+
+**Tokens d'animation :**
+- `--easing-flight` : trajectoire vol pigeon
+- `--easing-land` : rebond micro au dépôt
+- `--easing-reveal` : apparition texte douce
+
+### Éléments Visuels
+
+**Pigeon :**
+- Lottie frame-by-frame, recoloré palette aquarelle florale (mauves, blush, cream)
+- Effet CSS watercolor
+- 80-100px mobile / 150-180px desktop
+- Deux fichiers : `oiseau.json` (mobile), `pigeon.json` (desktop ≥1024px)
+
+**Enveloppe :**
+- Blanc Cassé `#FFFDF9`, grain quasi-imperceptible, liseré doré `#D4A54A`
+- 120px mobile / 200px desktop
+- Coins arrondis (rx=8), ombre portée (drop shadow)
+- État final : disparue (`opacity: 0`)
+
+**Sceau A&G :**
+- Monogramme latin "A&G" + entrelacs arabesques géométriques
+- Cercle doré `#B8860B`, détails `#D4A54A`
+- 30-40px mobile / 50-60px desktop
+
+### Couleurs Texte (différenciées par rôle)
+
+| Rôle | Couleur | Hex |
+|------|---------|-----|
+| Prénoms | Brun profond | `#2C2418` |
+| Date | Mauve profond | `#6B3A4E` |
+| Lieu | Olive profond | `#4A5E3A` |
+| Message | Mauve doux | `#7A5A6A` |
+
+### Backgrounds Responsives
+
+- Mobile : `/images/rings/arriere plan 4.jpeg`
+- Desktop (≥1024px) : `/images/rings/arriere plan 2.jpg`
+- Appliqués via `.landing-bg` dans `globals.css`
+
+### Accessibilité Save the Date
+
+| État | Comportement |
+|------|-------------|
+| `prefers-reduced-motion` | Pas de pigeon, pas d'enveloppe — texte + cadre + séparateur uniquement |
+| Lecteur d'écran | HTML sémantique (`h1`, `time`, `address`, `blockquote`), éléments décoratifs `aria-hidden` |
+| Loading lent | Fond crème `#FAF7F2` = loading state élégant, timeout 3s → affichage direct |
+
+### Open Graph WhatsApp
+
+- Image : enveloppe fermée + sceau A&G sur fond crème (1200×630px, Satori)
+- `og:title` : "Ahmed & Ghizlaine — 17 Octobre 2026"
+- L'enveloppe fermée crée la curiosité — ne révèle pas tout le contenu
+- Police locale TTF pour Satori (pas de fetch Google)
+
+### Breakpoint Protection
+
+Les classes `.pigeon-done` (3600ms) et `.envelope-done` (5100ms) empêchent le re-flash de l'animation lors des changements de breakpoint (ex: rotation appareil).

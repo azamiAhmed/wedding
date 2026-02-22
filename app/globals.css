@@ -23,19 +23,19 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
 
-  /* Wedding color tokens */
-  --color-cream-warm: #FAF7F2;
-  --color-gold-moroccan: #B8860B;
-  --color-brown-deep: #2C2418;
-  --color-gold-luminous: #D4A54A;
-  --color-gold-veil: #E8D5A8;
-  --color-white-broken: #FFFDF9;
-  --color-brown-medium: #6B5D4F;
-  --color-red-soft: #C45B4A;
-  --color-green-olive: #6B8F5E;
-  --color-mauve-deep: #6B3A4E;
-  --color-olive-deep: #4A5E3A;
-  --color-mauve-soft: #7A5A6A;
+  /* Wedding color tokens — palette florale aquarelle */
+  --color-cream-warm: #FDF8F6;
+  --color-gold-moroccan: #C77B95;
+  --color-brown-deep: #3A2434;
+  --color-gold-luminous: #D4A0B0;
+  --color-gold-veil: #F0D5DD;
+  --color-white-broken: #FFFBFC;
+  --color-brown-medium: #7A6070;
+  --color-red-soft: #D4708A;
+  --color-green-olive: #7A9B7A;
+  --color-mauve-deep: #8B4A6E;
+  --color-olive-deep: #5A7A5A;
+  --color-mauve-soft: #A07A9B;
 
   /* Fonts */
   --font-sans: var(--font-geist-sans);
@@ -105,8 +105,8 @@
 }
 
 @keyframes rsvpPulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(184, 134, 11, 0.4); }
-  50% { box-shadow: 0 0 0 8px rgba(184, 134, 11, 0); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(199, 123, 149, 0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(199, 123, 149, 0); }
 }
 
 .rsvp-pulse {
@@ -585,24 +585,24 @@
   --radius: 0.5rem;
 
   /* shadcn semantic tokens — wedding palette */
-  --background: #FAF7F2;
-  --foreground: #2C2418;
-  --card: #FFFDF9;
-  --card-foreground: #2C2418;
-  --popover: #FFFDF9;
-  --popover-foreground: #2C2418;
-  --primary: #B8860B;
-  --primary-foreground: #FFFDF9;
-  --secondary: #E8D5A8;
-  --secondary-foreground: #2C2418;
-  --muted: #E8D5A8;
-  --muted-foreground: #6B5D4F;
-  --accent: #E8D5A8;
-  --accent-foreground: #2C2418;
-  --destructive: #C45B4A;
-  --border: #E8D5A8;
-  --input: #E8D5A8;
-  --ring: #B8860B;
+  --background: #FDF8F6;
+  --foreground: #3A2434;
+  --card: #FFFBFC;
+  --card-foreground: #3A2434;
+  --popover: #FFFBFC;
+  --popover-foreground: #3A2434;
+  --primary: #C77B95;
+  --primary-foreground: #FFFBFC;
+  --secondary: #F0D5DD;
+  --secondary-foreground: #3A2434;
+  --muted: #F0D5DD;
+  --muted-foreground: #7A6070;
+  --accent: #F0D5DD;
+  --accent-foreground: #3A2434;
+  --destructive: #D4708A;
+  --border: #F0D5DD;
+  --input: #F0D5DD;
+  --ring: #C77B95;
 }
 
 @layer base {
