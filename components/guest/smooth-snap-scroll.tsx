@@ -10,27 +10,46 @@ function easeInOutCubic(t: number): number {
 
 export function SmoothSnapScroll() {
   useEffect(() => {
-    // Desktop only (≥1024px)
-    if (typeof window === 'undefined' || window.innerWidth < 1024) return
+    if (typeof window === 'undefined') return
 
     const container = document.querySelector('.guest-scroll-container') as HTMLElement | null
     if (!container) return
 
+    // === IntersectionObserver: toggle .in-view (toutes tailles) ===
+    const sections = container.querySelectorAll(
+      '.section-info, .section-timeline, .section-venue, .section-program, .section-merci'
+    )
+    const sectionObserver = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view')
+          } else {
+            entry.target.classList.remove('in-view')
+          }
+        }
+      },
+      { root: container, threshold: 0.4 }
+    )
+    sections.forEach((s) => sectionObserver.observe(s))
+
+    // === Smooth snap scroll: desktop only (≥1024px) ===
     let isScrolling = false
     let animationId: number | null = null
+    const isDesktop = window.innerWidth >= 1024
 
     function getSnapSections(): HTMLElement[] {
       return Array.from(container!.querySelectorAll<HTMLElement>('[class*="snap-start"]'))
     }
 
     function getCurrentIndex(): number {
-      const sections = getSnapSections()
+      const snapSections = getSnapSections()
       const scrollTop = container!.scrollTop
 
       let closest = 0
       let minDist = Infinity
-      for (let i = 0; i < sections.length; i++) {
-        const dist = Math.abs(sections[i].offsetTop - scrollTop)
+      for (let i = 0; i < snapSections.length; i++) {
+        const dist = Math.abs(snapSections[i].offsetTop - scrollTop)
         if (dist < minDist) {
           minDist = dist
           closest = i
@@ -43,7 +62,6 @@ export function SmoothSnapScroll() {
       if (isScrolling) return
       isScrolling = true
 
-      // Temporarily disable snap so it doesn't fight the animation
       container!.style.scrollSnapType = 'none'
 
       const startY = container!.scrollTop
@@ -82,19 +100,18 @@ export function SmoothSnapScroll() {
         return
       }
 
-      // Ignorer les micro-scrolls trackpad
       if (Math.abs(e.deltaY) < 30) return
 
       e.preventDefault()
 
-      const sections = getSnapSections()
+      const snapSections = getSnapSections()
       const current = getCurrentIndex()
       const direction = e.deltaY > 0 ? 1 : -1
       const nextIndex = current + direction
 
-      if (nextIndex < 0 || nextIndex >= sections.length) return
+      if (nextIndex < 0 || nextIndex >= snapSections.length) return
 
-      smoothScrollTo(sections[nextIndex].offsetTop)
+      smoothScrollTo(snapSections[nextIndex].offsetTop)
     }
 
     function handleKeyDown(e: KeyboardEvent) {
@@ -103,42 +120,28 @@ export function SmoothSnapScroll() {
 
       if (isScrolling) return
 
-      const sections = getSnapSections()
+      const snapSections = getSnapSections()
       const current = getCurrentIndex()
       const direction = ['ArrowDown', 'PageDown', ' '].includes(e.key) ? 1 : -1
       const nextIndex = current + direction
 
-      if (nextIndex < 0 || nextIndex >= sections.length) return
+      if (nextIndex < 0 || nextIndex >= snapSections.length) return
 
-      smoothScrollTo(sections[nextIndex].offsetTop)
+      smoothScrollTo(snapSections[nextIndex].offsetTop)
     }
 
-    container.addEventListener('wheel', handleWheel, { passive: false })
-    window.addEventListener('keydown', handleKeyDown)
-
-    // IntersectionObserver: toggle .in-view on all guest sections
-    const sections = container.querySelectorAll(
-      '.section-info, .section-timeline, .section-venue, .section-program, .section-merci'
-    )
-    const sectionObserver = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('in-view')
-          } else {
-            entry.target.classList.remove('in-view')
-          }
-        }
-      },
-      { root: container, threshold: 0.4 }
-    )
-    sections.forEach((s) => sectionObserver.observe(s))
+    if (isDesktop) {
+      container.addEventListener('wheel', handleWheel, { passive: false })
+      window.addEventListener('keydown', handleKeyDown)
+    }
 
     return () => {
-      container.removeEventListener('wheel', handleWheel)
-      window.removeEventListener('keydown', handleKeyDown)
-      if (animationId) cancelAnimationFrame(animationId)
       sectionObserver.disconnect()
+      if (isDesktop) {
+        container.removeEventListener('wheel', handleWheel)
+        window.removeEventListener('keydown', handleKeyDown)
+      }
+      if (animationId) cancelAnimationFrame(animationId)
       container.style.scrollSnapType = ''
     }
   }, [])
