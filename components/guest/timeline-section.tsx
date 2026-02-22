@@ -46,9 +46,9 @@ export function TimelineSection() {
           {TIMELINE_EVENTS.map((event, i) => (
             <article
               key={event.title}
-              className={i < TIMELINE_EVENTS.length - 1 ? 'pb-12' : ''}
+              className={`relative ${i < TIMELINE_EVENTS.length - 1 ? 'pb-12' : ''}`}
             >
-              <div className="absolute left-0 mt-1.5 h-4 w-4 rounded-full bg-gold-moroccan border-2 border-cream-warm" />
+              <div className="absolute -left-8 top-1.5 h-4 w-4 rounded-full bg-gold-moroccan border-2 border-cream-warm" />
               <div className="scroll-reveal">
                 <EventCard event={event} titleSize="text-xl" />
               </div>

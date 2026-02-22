@@ -164,69 +164,67 @@
   to { opacity: 1; transform: scale(1); }
 }
 
-/* --- Overrides desktop : animations d'entrée par section --- */
+/* --- Desktop : animations temporelles déclenchées par IntersectionObserver (.in-view) ---
+ * Le snap scroll rend les animations view() inutilisables (tout apparaît d'un coup).
+ * On désactive view() sur desktop et on utilise des animations CSS classiques
+ * avec stagger, déclenchées quand la section reçoit la classe .in-view.
+ * Rejouées si on quitte puis revient à la section.
+ */
 @media (min-width: 1024px) {
   @supports (animation-timeline: view()) {
-    /*
-     * Info : fade stagger via animation-range offsets progressifs
-     * DOM : <section.section-info> children are:
-     *   h2 (child 1, not .scroll-reveal)
-     *   div.scroll-reveal (child 2 — separator)
-     *   p.scroll-reveal (child 3 — message)
-     *   p.scroll-reveal (child 4 — submessage)
-     * ⚠️ FRAGILE: indices must be updated if children are added/reordered
-     */
-    .section-info .scroll-reveal {
-      animation-name: entryFadeStagger;
-    }
-    .section-info .scroll-reveal:nth-child(2) {
-      animation-range: entry 0% entry 50%;
-    }
-    .section-info .scroll-reveal:nth-child(3) {
-      animation-range: entry 5% entry 55%;
-    }
-    .section-info .scroll-reveal:nth-child(4) {
-      animation-range: entry 10% entry 60%;
-    }
-
-    /*
-     * Timeline desktop : slide depuis les côtés alternés
-     * DOM : div.hidden.md:block.relative children are:
-     *   div (child 1 — gold center line, NOT an <article>)
-     *   article.scroll-reveal (child 2 — La Rencontre, isLeft=true)
-     *   article.scroll-reveal (child 3 — Les Fiançailles, isLeft=false)
-     *   article.scroll-reveal (child 4 — Le Jour J, isLeft=true)
-     * Using article:nth-of-type() to count ONLY <article> elements,
-     * ignoring the <div> gold line:
-     *   nth-of-type(odd) = articles 1,3 = isLeft = slide from left
-     *   nth-of-type(even) = article 2 = isRight = slide from right
-     */
-    .section-timeline article.scroll-reveal:nth-of-type(odd) {
-      animation-name: entrySlideFromLeft;
-      animation-range: entry 70% cover 30%;
-    }
-    .section-timeline article.scroll-reveal:nth-of-type(even) {
-      animation-name: entrySlideFromRight;
-      animation-range: entry 70% cover 30%;
-    }
-
-    /* Venue : scale reveal */
-    .section-venue .scroll-reveal {
-      animation-name: entryScaleReveal;
-      animation-range: entry 0% entry 50%;
-    }
-
-    /*
-     * Program : scale reveal (PAS bounce — bounce imperceptible avec snap scroll)
-     * Les 5 event cards sont enfants d'un wrapper <div class="mt-10 w-full space-y-8">,
-     * pas enfants directs de .section-program. Le stagger naturel vient de
-     * l'espacement vertical (space-y-8) qui décale les view() triggers.
-     */
-    .section-program .scroll-reveal {
-      animation-name: entryScaleReveal;
-      animation-range: entry 0% entry 50%;
+    /* Désactiver scroll-driven sur desktop — caché par défaut */
+    .scroll-reveal {
+      animation: none;
+      opacity: 0;
+      transform: translateY(24px);
     }
   }
+
+  /* Info : fade stagger */
+  .section-info.in-view .scroll-reveal {
+    animation: entryFadeStagger 700ms ease-out both;
+  }
+  .section-info.in-view .scroll-reveal:nth-child(2) { animation-delay: 100ms; }
+  .section-info.in-view .scroll-reveal:nth-child(3) { animation-delay: 300ms; }
+  .section-info.in-view .scroll-reveal:nth-child(4) { animation-delay: 500ms; }
+
+  /* Timeline : slide alterné gauche/droite */
+  .section-timeline.in-view article.scroll-reveal:nth-of-type(odd) {
+    animation: entrySlideFromLeft 800ms ease-out both;
+  }
+  .section-timeline.in-view article.scroll-reveal:nth-of-type(even) {
+    animation: entrySlideFromRight 800ms ease-out both;
+  }
+  .section-timeline.in-view article.scroll-reveal:nth-of-type(1) { animation-delay: 200ms; }
+  .section-timeline.in-view article.scroll-reveal:nth-of-type(2) { animation-delay: 500ms; }
+  .section-timeline.in-view article.scroll-reveal:nth-of-type(3) { animation-delay: 800ms; }
+
+  /* Venue : scale reveal */
+  .section-venue.in-view .scroll-reveal {
+    animation: entryScaleReveal 700ms ease-out both;
+  }
+  .section-venue.in-view .scroll-reveal:nth-child(2) { animation-delay: 0ms; }
+  .section-venue.in-view .scroll-reveal:nth-child(3) { animation-delay: 150ms; }
+  .section-venue.in-view .scroll-reveal:nth-child(4) { animation-delay: 300ms; }
+  .section-venue.in-view .scroll-reveal:nth-child(5) { animation-delay: 450ms; }
+  .section-venue.in-view .scroll-reveal:nth-child(6) { animation-delay: 600ms; }
+
+  /* Program : scale reveal staggeré */
+  .section-program.in-view .scroll-reveal {
+    animation: entryScaleReveal 700ms ease-out both;
+  }
+  .section-program.in-view .scroll-reveal:nth-child(1) { animation-delay: 100ms; }
+  .section-program.in-view .scroll-reveal:nth-child(2) { animation-delay: 250ms; }
+  .section-program.in-view .scroll-reveal:nth-child(3) { animation-delay: 400ms; }
+  .section-program.in-view .scroll-reveal:nth-child(4) { animation-delay: 550ms; }
+  .section-program.in-view .scroll-reveal:nth-child(5) { animation-delay: 700ms; }
+
+  /* Merci : fade stagger */
+  .section-merci.in-view .scroll-reveal {
+    animation: entryFadeStagger 700ms ease-out both;
+  }
+  .section-merci.in-view .scroll-reveal:nth-child(2) { animation-delay: 100ms; }
+  .section-merci.in-view .scroll-reveal:nth-child(3) { animation-delay: 300ms; }
 }
 
 /* === Alliance Rings: Scroll-Driven Animation === */
@@ -342,8 +340,13 @@
   }
 }
 
-/* Landscape mobile only: disable rings — snap is off, scroll behavior differs */
+/* Landscape mobile only: disable snap + rings — too cramped for full-screen sections */
 @media (orientation: landscape) and (max-height: 500px) {
+  .guest-scroll-container {
+    scroll-snap-type: none;
+    overflow-y: auto;
+  }
+
   .alliance-rings-container {
     display: none !important;
   }

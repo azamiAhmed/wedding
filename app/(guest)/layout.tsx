@@ -1,3 +1,5 @@
+import { SmoothSnapScroll } from '@/components/guest/smooth-snap-scroll'
+
 export default function GuestLayout({
   children,
 }: {
@@ -10,9 +12,10 @@ export default function GuestLayout({
         style={{ backgroundImage: "url('/images/rings/arriere plan 2.jpg')" }}
         aria-hidden="true"
       />
-      <main className="guest-scroll-container h-dvh overflow-y-scroll snap-y snap-mandatory landscape:snap-none landscape:overflow-y-auto bg-cream-warm lg:bg-transparent font-sans">
+      <main className="guest-scroll-container h-dvh overflow-y-scroll snap-y snap-mandatory bg-cream-warm lg:bg-transparent font-sans">
         {children}
       </main>
+      <SmoothSnapScroll />
     </>
   )
 }
