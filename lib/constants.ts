@@ -1,7 +1,7 @@
 export const COUPLE = {
-  names: 'Ahmed & Ghizlaine',
-  contactNames: 'Ahmed ou Ghizlaine',
-  date: '9 Octobre 2026',
+  names: 'Ghizlaine & Ahmed',
+  contactNames: 'Ghizlaine ou Ahmed',
+  date: '2 Octobre 2026',
   inviteText: 'Vous êtes cordialement invité(e)',
   greeting: (name: string) => `${name}, vous êtes attendu(e)`,
   message: 'Nous avons le plaisir de vous convier à célébrer notre union.',
@@ -37,8 +37,8 @@ export const TIMELINE_EVENTS: TimelineEvent[] = [
       'Le « oui » qui scelle notre promesse, une évidence depuis le premier jour.',
   },
   {
-    date: '9 Octobre 2026',
-    dateTime: '2026-10-09',
+    date: '2 Octobre 2026',
+    dateTime: '2026-10-02',
     title: 'Le Jour J',
     description:
       'Le plus beau chapitre commence, entourés de ceux que nous aimons.',
@@ -96,25 +96,25 @@ export const RSVP = {
 } as const
 
 export const OG = {
-  title: 'Ahmed & Ghizlaine vous invitent',
+  title: 'Ghizlaine & Ahmed vous invitent',
   description:
-    'Célébrez avec nous notre mariage le 9 Octobre 2026. Nous avons hâte de partager ce moment avec vous.',
+    'Célébrez avec nous notre mariage le 2 Octobre 2026. Nous avons hâte de partager ce moment avec vous.',
 } as const
 
 export const SAVE_THE_DATE = {
-  title: 'Ahmed & Ghizlaine',
+  title: 'Ghizlaine & Ahmed',
   groom: 'Ahmed',
   bride: 'Ghizlaine',
-  date: 'Le 9 octobre 2026',
-  dateTime: '2026-10-09',
+  date: 'Le 2 octobre 2026',
+  dateTime: '2026-10-02',
   city: 'À Casablanca, Maroc',
   messageLine1: 'Sous les étoiles et les lumières de Casablanca,',
   messageLine2: 'une promesse sera célébrée... Save the date !',
 } as const
 
 export const SAVE_THE_DATE_OG = {
-  title: 'Ahmed & Ghizlaine \u2014 Save the Date',
-  description: '9 Octobre 2026 \u00b7 Casablanca',
+  title: 'Ghizlaine & Ahmed \u2014 Save the Date',
+  description: '2 Octobre 2026 \u00b7 Casablanca',
 } as const
 
 export const PROGRAM_EVENTS: ProgramEvent[] = [
