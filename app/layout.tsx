@@ -16,9 +16,9 @@ const geistSans = Geist({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://ag-wedding.com"),
-  title: "Ahmed & Ghizlaine — 9 Octobre 2026",
+  title: "Ghizlaine & Ahmed — 2 Octobre 2026",
   description:
-    "Célébrez avec nous le mariage d'Ahmed et Ghizlaine. Confirmez votre présence et découvrez les détails de la cérémonie.",
+    "Célébrez avec nous le mariage de Ghizlaine et Ahmed. Confirmez votre présence et découvrez les détails de la cérémonie.",
 };
 
 export default function RootLayout({
