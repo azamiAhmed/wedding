@@ -23,23 +23,38 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
 
-  /* Wedding color tokens — palette florale aquarelle */
-  --color-cream-warm: #FDF8F6;
-  --color-gold-moroccan: #C77B95;
-  --color-brown-deep: #3A2434;
-  --color-gold-luminous: #D4A0B0;
-  --color-gold-veil: #F0D5DD;
-  --color-white-broken: #FFFBFC;
-  --color-brown-medium: #7A6070;
-  --color-red-soft: #D4708A;
-  --color-green-olive: #7A9B7A;
-  --color-mauve-deep: #8B4A6E;
-  --color-olive-deep: #5A7A5A;
-  --color-mauve-soft: #A07A9B;
+  /* Wedding color tokens — palette ivoire / sable / bordeaux */
+  /* Primary palette */
+  --color-ivory: #FBF8F2;         /* page background, off-white */
+  --color-cream: #F5EFE4;         /* warm card cream */
+  --color-sand: #E4D6BE;          /* sand beige */
+  --color-sand-soft: #EFE7D8;     /* light sand — borders, veils */
+  --color-bordeaux: #6E8FB5;      /* main accent (dusty blue) */
+  --color-bordeaux-deep: #45648A; /* deep accent / headings (deep blue) */
+  --color-blush: #A9C2DD;         /* soft light blue */
+  --color-ink: #34271F;           /* primary text */
+  --color-ink-soft: #7A6A5E;      /* muted text */
+  --color-sage: #8A9A7B;          /* greenery neutral */
+  --color-sage-deep: #5F7050;
+
+  /* Legacy aliases → re-skin existing components automatically */
+  --color-cream-warm: var(--color-ivory);
+  --color-white-broken: #FFFDF8;
+  --color-gold-moroccan: var(--color-bordeaux);
+  --color-gold-luminous: var(--color-blush);
+  --color-gold-veil: var(--color-sand-soft);
+  --color-brown-deep: var(--color-ink);
+  --color-brown-medium: var(--color-ink-soft);
+  --color-red-soft: #A63D4E;
+  --color-green-olive: var(--color-sage);
+  --color-mauve-deep: var(--color-bordeaux-deep);
+  --color-olive-deep: var(--color-sage-deep);
+  --color-mauve-soft: #B49A8E;
 
   /* Fonts */
   --font-sans: var(--font-geist-sans);
   --font-display: var(--font-cormorant);
+  --font-script: var(--font-pinyon-script);
 
   /* Radius */
   --radius-sm: calc(var(--radius) - 4px);
@@ -83,6 +98,72 @@
   }
 }
 
+/* === V2 invitation: ornaments, shimmer, gentle float === */
+@keyframes ornamentShimmer {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+@keyframes gentleFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+@keyframes softBounce {
+  0%, 100% { transform: translateY(0); opacity: 0.55; }
+  50% { transform: translateY(6px); opacity: 1; }
+}
+
+.v2-ornament {
+  animation: ornamentShimmer 4s ease-in-out infinite;
+}
+
+.v2-scroll-indicator {
+  animation: softBounce 2.2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v2-ornament,
+  .v2-scroll-indicator {
+    animation: none !important;
+  }
+}
+
+/* === Collage home: soft staggered entrance (opacity only — safe with transforms) === */
+@keyframes collageEnter {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.collage-enter {
+  opacity: 0;
+  animation: collageEnter 800ms ease-out forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .collage-enter {
+    opacity: 1;
+    animation: none !important;
+  }
+}
+
+/* === Collage home: gentle floral sway === */
+@keyframes collageSway {
+  0%, 100% { transform: rotate(-2.2deg); }
+  50% { transform: rotate(2.2deg); }
+}
+
+.collage-sway {
+  transform-origin: center bottom;
+  animation: collageSway 7s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .collage-sway {
+    animation: none !important;
+  }
+}
+
 @keyframes scrollReveal {
   from {
     opacity: 0;
@@ -105,8 +186,8 @@
 }
 
 @keyframes rsvpPulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(199, 123, 149, 0.4); }
-  50% { box-shadow: 0 0 0 8px rgba(199, 123, 149, 0); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(110, 143, 181, 0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(110, 143, 181, 0); }
 }
 
 .rsvp-pulse {
@@ -117,9 +198,12 @@
 
 @media (min-width: 1024px) {
   .section-info,
+  .section-countdown,
   .section-timeline,
   .section-venue,
   .section-program,
+  .section-details,
+  .section-liste,
   .section-merci {
     position: relative;
     isolation: isolate;
@@ -129,16 +213,19 @@
      généré en JS (page.tsx). Le bas d'une section a la même opacité que le haut
      de la suivante → transition seamless, aucune ligne de démarcation. */
   .section-info::before,
+  .section-countdown::before,
   .section-timeline::before,
   .section-venue::before,
   .section-program::before,
+  .section-details::before,
+  .section-liste::before,
   .section-merci::before {
     content: '';
     position: absolute;
     inset: 0;
     z-index: -1;
     pointer-events: none;
-    background: var(--overlay-bg, rgba(250, 247, 242, 0.85));
+    background: var(--overlay-bg, rgba(251, 248, 242, 0.85));
   }
 }
 
@@ -230,6 +317,27 @@
 }
 .section-merci.in-view .scroll-reveal:nth-child(2) { animation-delay: 100ms; }
 .section-merci.in-view .scroll-reveal:nth-child(3) { animation-delay: 300ms; }
+.section-merci.in-view .scroll-reveal:nth-child(4) { animation-delay: 500ms; }
+.section-merci.in-view .scroll-reveal:nth-child(5) { animation-delay: 650ms; }
+.section-merci.in-view .scroll-reveal:nth-child(6) { animation-delay: 800ms; }
+
+/* Countdown : scale reveal staggered */
+.section-countdown.in-view .scroll-reveal {
+  animation: entryScaleReveal 600ms ease-out both;
+}
+.section-countdown.in-view .scroll-reveal:nth-child(1) { animation-delay: 80ms; }
+.section-countdown.in-view .scroll-reveal:nth-child(2) { animation-delay: 180ms; }
+.section-countdown.in-view .scroll-reveal:nth-child(3) { animation-delay: 280ms; }
+.section-countdown.in-view .scroll-reveal:nth-child(4) { animation-delay: 380ms; }
+.section-countdown.in-view .scroll-reveal:nth-child(5) { animation-delay: 480ms; }
+
+/* Details : fade stagger */
+.section-details.in-view .scroll-reveal {
+  animation: entryFadeStagger 700ms ease-out both;
+}
+.section-details.in-view .scroll-reveal:nth-child(1) { animation-delay: 100ms; }
+.section-details.in-view .scroll-reveal:nth-child(2) { animation-delay: 250ms; }
+.section-details.in-view .scroll-reveal:nth-child(3) { animation-delay: 400ms; }
 
 /* === Alliance Rings: Scroll-Driven Animation === */
 
@@ -584,25 +692,25 @@
 :root {
   --radius: 0.5rem;
 
-  /* shadcn semantic tokens — wedding palette */
-  --background: #FDF8F6;
-  --foreground: #3A2434;
-  --card: #FFFBFC;
-  --card-foreground: #3A2434;
-  --popover: #FFFBFC;
-  --popover-foreground: #3A2434;
-  --primary: #C77B95;
-  --primary-foreground: #FFFBFC;
-  --secondary: #F0D5DD;
-  --secondary-foreground: #3A2434;
-  --muted: #F0D5DD;
-  --muted-foreground: #7A6070;
-  --accent: #F0D5DD;
-  --accent-foreground: #3A2434;
-  --destructive: #D4708A;
-  --border: #F0D5DD;
-  --input: #F0D5DD;
-  --ring: #C77B95;
+  /* shadcn semantic tokens — palette ivoire / sable / bordeaux */
+  --background: #FBF8F2;
+  --foreground: #34271F;
+  --card: #FFFDF8;
+  --card-foreground: #34271F;
+  --popover: #FFFDF8;
+  --popover-foreground: #34271F;
+  --primary: #6E8FB5;
+  --primary-foreground: #FFFDF8;
+  --secondary: #EFE7D8;
+  --secondary-foreground: #34271F;
+  --muted: #EFE7D8;
+  --muted-foreground: #7A6A5E;
+  --accent: #E4D6BE;
+  --accent-foreground: #34271F;
+  --destructive: #A63D4E;
+  --border: #E4D6BE;
+  --input: #E4D6BE;
+  --ring: #6E8FB5;
 }
 
 @layer base {

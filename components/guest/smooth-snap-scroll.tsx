@@ -17,7 +17,7 @@ export function SmoothSnapScroll() {
 
     // === IntersectionObserver: toggle .in-view (toutes tailles) ===
     const sections = container.querySelectorAll(
-      '.section-info, .section-timeline, .section-venue, .section-program, .section-merci'
+      '.section-info, .section-countdown, .section-timeline, .section-venue, .section-program, .section-details, .section-liste, .section-merci'
     )
     const sectionObserver = new IntersectionObserver(
       (entries) => {
@@ -36,10 +36,16 @@ export function SmoothSnapScroll() {
     // === Smooth snap scroll: desktop only (≥1024px) ===
     let isScrolling = false
     let animationId: number | null = null
-    const isDesktop = window.innerWidth >= 1024
+    // Section-by-section snap scroll is disabled on desktop — free scroll instead.
+    // (Snap remains on mobile via CSS scroll-snap.)
+    const isDesktop = false
 
     function getSnapSections(): HTMLElement[] {
-      return Array.from(container!.querySelectorAll<HTMLElement>('[class*="snap-start"]'))
+      // Exclude hidden elements (e.g. the mobile/desktop collage variant that is
+      // display:none at the current breakpoint) — offsetParent is null when hidden.
+      return Array.from(
+        container!.querySelectorAll<HTMLElement>('[class*="snap-start"]')
+      ).filter((el) => el.offsetParent !== null)
     }
 
     function getCurrentIndex(): number {

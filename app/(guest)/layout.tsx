@@ -9,10 +9,10 @@ export default function GuestLayout({
     <>
       <div
         className="hidden lg:block fixed inset-0 -z-10 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url('/images/rings/arriere plan 2.jpg')" }}
+        style={{ backgroundImage: "url('/images/collage/paper-texture.webp')" }}
         aria-hidden="true"
       />
-      <main className="guest-scroll-container h-dvh overflow-y-scroll snap-y snap-mandatory bg-cream-warm lg:bg-transparent font-sans">
+      <main className="guest-scroll-container h-dvh overflow-y-scroll snap-y snap-mandatory md:snap-none bg-cream-warm lg:bg-transparent font-sans">
         {children}
       </main>
       <SmoothSnapScroll />

@@ -14,6 +14,29 @@ export const COUPLE = {
   merciMessage: 'Votre présence est notre plus belle bénédiction.',
 } as const
 
+export const COLLAGE = {
+  inviteLine1: 'Venez célébrer',
+  inviteLine2: 'notre mariage',
+  date: '02 Octobre 2026',
+  city: 'Casablanca, Maroc',
+  bride: 'Ghizlaine',
+  groom: 'Ahmed',
+  greeting: (name: string) => `Cher·e ${name}, ouvrez notre invitation`,
+  programme: 'Programme',
+  details: 'Les détails',
+  rsvp: 'Confirmez votre présence',
+  cta: 'cliquez ici',
+  polaroidCaption: 'Nous deux',
+  scrollHint: 'Découvrir',
+  aria: {
+    mariage: 'Voir la section Notre mariage',
+    programme: 'Voir le programme',
+    histoire: 'Voir notre histoire',
+    infos: 'Voir les informations pratiques',
+    rsvp: 'Confirmer votre présence',
+  },
+} as const
+
 export interface TimelineEvent {
   date: string
   dateTime: string
@@ -56,18 +79,65 @@ export interface VenueInfo {
   city: string
   description: string
   details: VenueDetail[]
+  mapsEmbedUrl: string
+  mapsLinkUrl: string
 }
 
 export const VENUE: VenueInfo = {
-  name: 'Nom du lieu',
-  address: '123 Rue Example',
-  city: 'Ville, Maroc',
+  // TODO: remplacer par le vrai lieu de réception (placeholder présentable en attendant)
+  name: 'Lieu de réception',
+  address: 'Adresse communiquée prochainement',
+  city: 'Casablanca, Maroc',
   description: 'Un lieu magique pour célébrer notre union.',
   details: [
     { label: 'Accès', value: 'Indications à venir' },
     { label: 'Parking', value: 'Parking disponible sur place' },
   ],
+  // No-API-key Google Maps embed — replace the query with the venue address.
+  mapsEmbedUrl: 'https://www.google.com/maps?q=Casablanca,Maroc&output=embed',
+  mapsLinkUrl: 'https://www.google.com/maps/search/?api=1&query=Casablanca+Maroc',
 }
+
+export interface Hotel {
+  name: string
+  area: string
+  url?: string
+}
+
+export const HOTELS: Hotel[] = [
+  // Recommandations (à confirmer/ajuster) — hôtels réputés de Casablanca pour les invités
+  {
+    name: 'Four Seasons Casablanca',
+    area: 'Corniche · Ain Diab',
+    url: 'https://www.fourseasons.com/casablanca/',
+  },
+  {
+    name: 'Hyatt Regency Casablanca',
+    area: 'Place des Nations Unies · Centre',
+    url: 'https://www.hyatt.com/hyatt-regency/en-US/casrc-hyatt-regency-casablanca',
+  },
+  {
+    name: 'Hôtel Le Doge — Relais & Châteaux',
+    area: 'Quartier Gauthier',
+    url: 'https://www.hotelledoge.com/',
+  },
+]
+
+export const METEO = {
+  label: 'Météo',
+  title: 'Début octobre à Casablanca',
+  text: 'Des journées douces et ensoleillées (22–26°C) et des soirées plus fraîches au bord de l’océan. Prévoyez une étole ou une veste légère pour la soirée.',
+} as const
+
+export const LISTE_MARIAGE = {
+  eyebrow: 'Votre présence avant tout',
+  title: 'Liste de mariage',
+  intro:
+    'Votre présence à nos côtés est le plus précieux des cadeaux. Si vous souhaitez néanmoins nous gâter, vous pouvez participer à notre cagnotte pour notre voyage de noces.',
+  buttonLabel: 'Participer à la cagnotte',
+  // TODO: remplacer par le vrai lien de cagnotte (Leetchi, Lydia, ...)
+  cagnotteUrl: '#',
+} as const
 
 export interface ProgramEvent {
   title: string
