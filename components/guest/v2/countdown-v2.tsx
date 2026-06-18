@@ -45,7 +45,7 @@ export function CountdownV2() {
 
   return (
     <section
-      className="section-countdown min-h-dvh snap-start flex flex-col justify-center px-6 lg:px-12 bg-cream-warm lg:bg-transparent"
+      className="section-countdown min-h-dvh snap-start flex flex-col justify-center px-6 lg:px-12 bg-transparent"
       role="region"
       aria-label="Compte à rebours avant le mariage"
     >

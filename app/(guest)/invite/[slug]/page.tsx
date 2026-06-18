@@ -12,7 +12,6 @@ import { DetailsV2 } from '@/components/guest/v2/details-v2'
 import { ListeMariageV2 } from '@/components/guest/v2/liste-mariage-v2'
 import { MerciV2 } from '@/components/guest/v2/merci-v2'
 import { RsvpOverlay } from '@/components/guest/rsvp-overlay'
-import { AllianceRings } from '@/components/guest/alliance-rings'
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -83,7 +82,6 @@ export default async function InvitePage({
           </div>
         )
       })}
-      <AllianceRings />
       <RsvpOverlay
         slug={slug}
         guestFirstName={guest.firstName}

@@ -21,7 +21,7 @@ function PinIcon() {
 export function VenueV2() {
   return (
     <section
-      className="section-venue min-h-dvh snap-start flex flex-col justify-center px-6 lg:px-12 py-16 lg:py-20 bg-white-broken lg:bg-transparent"
+      className="section-venue min-h-dvh snap-start flex flex-col justify-center px-6 lg:px-12 py-16 lg:py-20 bg-transparent"
       role="region"
       aria-label={COUPLE.venueTitle}
     >

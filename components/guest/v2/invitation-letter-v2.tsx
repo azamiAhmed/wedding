@@ -20,7 +20,7 @@ function CornerOrnament({ className = '' }: { className?: string }) {
 export function InvitationLetterV2({ guestName }: { guestName: string }) {
   return (
     <section
-      className="section-info min-h-dvh snap-start flex flex-col justify-center px-6 lg:px-12 bg-cream-warm lg:bg-transparent"
+      className="section-info min-h-dvh snap-start flex flex-col justify-center px-6 lg:px-12 bg-transparent"
       role="region"
       aria-label="Invitation"
     >

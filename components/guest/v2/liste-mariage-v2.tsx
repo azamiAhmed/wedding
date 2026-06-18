@@ -22,7 +22,7 @@ export function ListeMariageV2() {
 
   return (
     <section
-      className="section-liste min-h-dvh snap-start flex flex-col justify-center px-6 lg:px-12 py-16 lg:py-20 bg-cream-warm lg:bg-transparent"
+      className="section-liste min-h-dvh snap-start flex flex-col justify-center px-6 lg:px-12 py-16 lg:py-20 bg-transparent"
       role="region"
       aria-label={LISTE_MARIAGE.title}
     >

@@ -225,7 +225,7 @@
     inset: 0;
     z-index: -1;
     pointer-events: none;
-    background: var(--overlay-bg, rgba(251, 248, 242, 0.85));
+    background: transparent;
   }
 }
 

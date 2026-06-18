@@ -42,18 +42,12 @@ const RW = {
 } as const
 
 /* Portrait stage (mobile-up to lg) — fits within both 90vw and 94dvh */
-const STAGE_W = 'min(90vw, calc(94dvh * 597 / 735))'
-const STAGE_H = 'calc(min(90vw, calc(94dvh * 597 / 735)) * 735 / 597)'
+const STAGE_W = 'min(140vw, calc(96dvh * 597 / 735))'
+const STAGE_H = 'calc(min(140vw, calc(96dvh * 597 / 735)) * 735 / 597)'
 
 /* Wide landscape stage (xl) — spreads elements across the width */
 const WIDE_H = 'min(90dvh, 820px)'
 const WIDE_W = `min(95vw, calc(${WIDE_H} * 1.72))`
-
-const paperBg: React.CSSProperties = {
-  backgroundImage: "url('/images/collage/paper-texture.webp')",
-  backgroundSize: 'cover',
-  backgroundPosition: 'center',
-}
 
 function scrollToId(id: string) {
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -207,12 +201,16 @@ function CollageStage({
   height,
   items,
   guestName,
+  namesScale = 1.65,
+  bgOpacity = 1,
 }: {
   className: string
   width: string
   height: string
   items: Item[]
   guestName: string
+  namesScale?: number
+  bgOpacity?: number
 }) {
   const stageRef = useRef<HTMLDivElement>(null)
 
@@ -220,7 +218,6 @@ function CollageStage({
   useEffect(() => {
     const stage = stageRef.current
     if (!stage) return
-    const coarse = window.matchMedia('(pointer: coarse)').matches
     const spots = Array.from(stage.querySelectorAll<HTMLElement>('[data-movable]'))
 
     const S = spots.map((el) => ({
@@ -243,8 +240,7 @@ function CollageStage({
     }
 
     const cleanups: Array<() => void> = []
-    if (!coarse) {
-      for (const s of S) {
+    for (const s of S) {
         const down = (e: PointerEvent) => {
           s.pending = true; s.moved = 0
           s.sx = e.clientX; s.sy = e.clientY; s.bx = s.dragX; s.by = s.dragY
@@ -281,7 +277,6 @@ function CollageStage({
       }
       stage.addEventListener('click', onClick, true)
       cleanups.push(() => stage.removeEventListener('click', onClick, true))
-    }
 
     raf = requestAnimationFrame(tick)
     return () => {
@@ -291,10 +286,10 @@ function CollageStage({
   }, [items])
 
   return (
-    <section className={className} style={paperBg} role="banner" aria-label="Accueil">
+    <section className={className} style={{ backgroundColor: `rgba(251, 248, 242, ${bgOpacity})` }} role="banner" aria-label="Accueil">
       <div ref={stageRef} className="relative" style={{ width, height }}>
         {items.map((it) => (
-          <Spot key={it.id} top={it.top} left={it.left} width={`${it.w}%`} z={it.z} delay={it.delay} movable={!!it.action} depth={DEPTH[it.el] ?? 0.5}>
+          <Spot key={it.id} top={it.top} left={it.left} width={`${it.w * (it.el === 'names' ? namesScale : 1.1)}%`} z={it.z} delay={it.delay} movable={it.el !== 'names'} depth={DEPTH[it.el] ?? 0.5}>
             {it.action ? (
               <Clickable
                 onClick={it.action === 'rsvp' ? openRsvp : () => scrollToId(ANCHOR[it.action as keyof typeof ANCHOR])}
@@ -347,6 +342,9 @@ const WIDE: Item[] = [
   { id: 'rsvp', el: 'envRsvp', action: 'rsvp', top: 80, left: 23, w: 21, z: 20, delay: 500 },
 ]
 
+/* Opacité du voile ivoire de la 1ʳᵉ section (masque le fond floral derrière le collage) */
+const SECTION1_BG_OPACITY = 0.75
+
 export function CollageHome({ guestName }: { guestName: string }) {
   return (
     <>
@@ -354,63 +352,14 @@ export function CollageHome({ guestName }: { guestName: string }) {
         {COLLAGE.bride} &amp; {COLLAGE.groom} — {COLLAGE.date}, {COLLAGE.city}
       </h1>
 
-      {/* MOBILE: vertical moodboard */}
-      <section className="relative min-h-dvh snap-start overflow-hidden md:hidden" style={paperBg} role="banner" aria-label="Accueil">
-        <div className="pointer-events-none absolute -left-6 top-[32%] z-0 w-20 opacity-90">
-          <AssetImg asset={RW.hyacL} />
-        </div>
-        <div className="pointer-events-none absolute -right-5 top-[56%] z-0 w-24 opacity-90">
-          <AssetImg asset={RW.hyacR} />
-        </div>
-        <div className="relative z-10 flex flex-col items-center gap-7 px-8 pb-20 pt-10">
-          <div className="w-60">
-            <Names guestName={guestName} />
-          </div>
-          <div className="w-44">
-            <AssetImg asset={RW.envOpen} priority />
-          </div>
-          <Clickable onClick={() => scrollToId(ANCHOR.mariage)} label={COLLAGE.aria.mariage}>
-            <div className="mx-auto w-48">
-              <AssetImg asset={RW.oval} />
-            </div>
-          </Clickable>
-          <Clickable onClick={() => scrollToId(ANCHOR.programme)} label={COLLAGE.aria.programme}>
-            <div className="mx-auto w-48">
-              <AssetImg asset={RW.programme} />
-            </div>
-          </Clickable>
-          <Clickable onClick={() => scrollToId(ANCHOR.histoire)} label={COLLAGE.aria.histoire}>
-            <div className="mx-auto w-52">
-              <Polaroid />
-            </div>
-          </Clickable>
-          <div className="pointer-events-none -my-1 w-36">
-            <AssetImg asset={RW.flower} />
-          </div>
-          <Clickable onClick={() => scrollToId(ANCHOR.infos)} label={COLLAGE.aria.infos}>
-            <div className="mx-auto w-52">
-              <AssetImg asset={RW.details} />
-            </div>
-          </Clickable>
-          <Clickable onClick={openRsvp} label={COLLAGE.aria.rsvp}>
-            <div className="mx-auto w-60">
-              <AssetImg asset={RW.envRsvp} />
-            </div>
-          </Clickable>
-          <div className="pointer-events-none w-14">
-            <AssetImg asset={RW.champagne} />
-          </div>
-          <ScrollHint className="mt-1" />
-        </div>
-      </section>
-
-      {/* TABLET → lg: portrait collage */}
+      {/* Mobile → lg: portrait collage (draggable items) */}
       <CollageStage
-        className="relative hidden min-h-dvh snap-start items-center justify-center overflow-hidden md:flex xl:hidden"
+        className="relative flex min-h-dvh snap-start items-center justify-center overflow-hidden xl:hidden"
         width={STAGE_W}
         height={STAGE_H}
         items={PORTRAIT}
         guestName={guestName}
+        bgOpacity={SECTION1_BG_OPACITY}
       />
 
       {/* xl+: wide collage spread across the width */}
@@ -420,6 +369,8 @@ export function CollageHome({ guestName }: { guestName: string }) {
         height={WIDE_H}
         items={WIDE}
         guestName={guestName}
+        namesScale={1.155}
+        bgOpacity={SECTION1_BG_OPACITY}
       />
     </>
   )

@@ -42,7 +42,7 @@ function ChapterCard({ event, n }: { event: TimelineEvent; n: number }) {
 export function StoryV2() {
   return (
     <section
-      className="section-timeline min-h-dvh snap-start flex flex-col justify-center bg-cream-warm lg:bg-transparent px-6 lg:px-12 py-16 lg:py-20"
+      className="section-timeline min-h-dvh snap-start flex flex-col justify-center bg-transparent px-6 lg:px-12 py-16 lg:py-20"
       role="region"
       aria-label={COUPLE.timelineTitle}
     >
