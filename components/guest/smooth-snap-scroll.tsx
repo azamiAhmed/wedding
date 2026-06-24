@@ -23,9 +23,9 @@ export function SmoothSnapScroll() {
       (entries) => {
         for (const entry of entries) {
           if (entry.isIntersecting) {
+            // Reveal once and keep it visible — never hide again on scroll
             entry.target.classList.add('in-view')
-          } else {
-            entry.target.classList.remove('in-view')
+            sectionObserver.unobserve(entry.target)
           }
         }
       },

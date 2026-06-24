@@ -10,7 +10,6 @@ import { VenueV2 } from '@/components/guest/v2/venue-v2'
 import { ProgramV2 } from '@/components/guest/v2/program-v2'
 import { DetailsV2 } from '@/components/guest/v2/details-v2'
 import { ListeMariageV2 } from '@/components/guest/v2/liste-mariage-v2'
-import { MerciV2 } from '@/components/guest/v2/merci-v2'
 import { RsvpOverlay } from '@/components/guest/rsvp-overlay'
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -45,17 +44,15 @@ export default async function InvitePage({
   const config = await getSiteConfig()
   const showVenue = config.show_venue !== 'false'
   const showProgram = config.show_program !== 'false'
-  const showMerci = config.show_merci !== 'false'
 
   const overlaySections = [
     { key: 'invitation', anchor: 'notre-mariage', show: true, el: <InvitationLetterV2 guestName={guest.firstName} /> },
     { key: 'countdown', show: true, el: <CountdownV2 /> },
     { key: 'story', anchor: 'notre-histoire', show: true, el: <StoryV2 /> },
-    { key: 'venue', anchor: 'infos-pratiques', show: showVenue, el: <VenueV2 /> },
     { key: 'program', anchor: 'programme', show: showProgram, el: <ProgramV2 /> },
-    { key: 'details', show: true, el: <DetailsV2 /> },
+    { key: 'venue', anchor: 'lieu', show: showVenue, el: <VenueV2 /> },
+    { key: 'details', anchor: 'infos-pratiques', show: true, el: <DetailsV2 /> },
     { key: 'liste', anchor: 'liste-mariage', show: true, el: <ListeMariageV2 /> },
-    { key: 'merci', anchor: 'merci', show: showMerci, el: <MerciV2 /> },
   ]
 
   const visible = overlaySections.filter((s) => s.show)

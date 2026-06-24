@@ -1,40 +1,17 @@
 import { HOTELS, METEO } from '@/lib/constants'
 
-const PALETTE = [
-  { name: 'Ivoire', hex: '#FBF8F2' },
-  { name: 'Sable', hex: '#E4D6BE' },
-  { name: 'Bleu', hex: '#6E8FB5' },
-  { name: 'Bleu ciel', hex: '#A9C2DD' },
-  { name: 'Sauge', hex: '#8A9A7B' },
-]
-
-function Swatch({ name, hex }: { name: string; hex: string }) {
-  return (
-    <div className="scroll-reveal flex flex-col items-center">
-      <div
-        className="h-12 w-12 sm:h-14 sm:w-14 rounded-full shadow-[0_4px_14px_-6px_rgba(58,36,52,0.4)] ring-1 ring-gold-moroccan/20"
-        style={{ backgroundColor: hex }}
-        aria-hidden="true"
-      />
-      <span className="mt-2 font-sans text-[10px] sm:text-xs tracking-wider text-brown-medium">
-        {name}
-      </span>
-    </div>
-  )
-}
-
 export function DetailsV2() {
   return (
     <section
       className="section-details min-h-dvh snap-start flex flex-col justify-center px-6 lg:px-12 py-16 lg:py-20 bg-transparent"
       role="region"
-      aria-label="Détails et dress code"
+      aria-label="Informations pratiques"
     >
       <p className="motion-safe:animate-fade-in-up font-sans text-[10px] sm:text-xs tracking-[0.4em] uppercase text-brown-medium text-center">
-        Pour une harmonie parfaite
+        Tout ce qu&apos;il faut savoir
       </p>
       <h2 className="motion-safe:animate-fade-in-up mt-3 font-display text-[2rem] md:text-[2.75rem] font-light text-brown-deep text-center leading-tight">
-        Dress Code &amp; Ambiance
+        Informations pratiques
       </h2>
 
       <div className="scroll-reveal mt-5 mx-auto h-px w-12 bg-gold-moroccan" />
@@ -59,12 +36,12 @@ export function DetailsV2() {
               Tenue
             </span>
           </div>
-          <p className="font-display text-xl sm:text-2xl text-brown-deep">
-            Chic &amp; floral
-          </p>
+          <p className="font-display text-xl sm:text-2xl text-brown-deep">Chic &amp; coloré</p>
           <p className="mt-2 font-sans text-sm sm:text-base text-brown-medium leading-relaxed">
-            Mettez-vous sur votre trente-et-un. Robes longues ou cocktail, costumes
-            élégants — laissez-vous porter par notre palette bleu &amp; sauge.
+            Toutes les couleurs sont les bienvenues : caftans ou robes longues pour les
+            femmes et costumes pour les hommes seront parfaits pour célébrer cette belle
+            soirée. Venez sur votre 31, avec votre plus beau sourire, pour faire briller
+            cette soirée à nos côtés.
           </p>
         </div>
 
@@ -88,12 +65,10 @@ export function DetailsV2() {
               Ambiance
             </span>
           </div>
-          <p className="font-display text-xl sm:text-2xl text-brown-deep">
-            Élégance, joie, partage
-          </p>
+          <p className="font-display text-xl sm:text-2xl text-brown-deep">Danse, joie, partage</p>
           <p className="mt-2 font-sans text-sm sm:text-base text-brown-medium leading-relaxed">
-            Une fête intime sous les étoiles de Casablanca. Venez le cœur léger et
-            les chaussures de danse aux pieds.
+            Une fête marocaine sous les étoiles de Casablanca. Venez le cœur léger et les
+            chaussures de danse aux pieds.
           </p>
         </div>
       </div>
@@ -166,18 +141,6 @@ export function DetailsV2() {
           <p className="mt-2 font-sans text-sm sm:text-base text-brown-medium leading-relaxed">
             {METEO.text}
           </p>
-        </div>
-      </div>
-
-      {/* Palette */}
-      <div className="scroll-reveal mt-10 w-full">
-        <p className="font-sans text-[10px] sm:text-xs tracking-[0.35em] uppercase text-mauve-deep text-center mb-5">
-          Notre palette
-        </p>
-        <div className="flex flex-wrap items-center justify-center gap-5 sm:gap-7">
-          {PALETTE.map((c) => (
-            <Swatch key={c.hex} name={c.name} hex={c.hex} />
-          ))}
         </div>
       </div>
     </section>

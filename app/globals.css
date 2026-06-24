@@ -129,6 +129,38 @@
   }
 }
 
+/* === Guest sections: center content in a readable column (clear of the floral edges) === */
+.section-info > *,
+.section-countdown > *,
+.section-timeline > *,
+.section-program > *,
+.section-venue > *,
+.section-details > *,
+.section-liste > *,
+.section-merci > * {
+  max-width: 64rem !important;
+  margin-inline: auto;
+}
+
+/* Desktop: fluid width that follows the screen, kept within the floral-free center */
+@media (min-width: 1024px) {
+  .section-info > *,
+  .section-countdown > *,
+  .section-timeline > *,
+  .section-program > *,
+  .section-venue > *,
+  .section-details > *,
+  .section-liste > *,
+  .section-merci > * {
+    max-width: 72vw !important;
+  }
+}
+
+/* Program timeline is left-aligned → keep it a narrower, centered block */
+.section-program > ol {
+  max-width: 38rem !important;
+}
+
 /* === Collage home: soft staggered entrance (opacity only — safe with transforms) === */
 @keyframes collageEnter {
   from { opacity: 0; }

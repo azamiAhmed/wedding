@@ -25,10 +25,7 @@ export function VenueV2() {
       role="region"
       aria-label={COUPLE.venueTitle}
     >
-      <p className="motion-safe:animate-fade-in-up font-sans text-[10px] sm:text-xs tracking-[0.4em] uppercase text-brown-medium text-center">
-        Rendez-vous
-      </p>
-      <h2 className="motion-safe:animate-fade-in-up mt-3 font-display text-[2rem] md:text-[2.75rem] font-light text-brown-deep text-center leading-tight">
+      <h2 className="motion-safe:animate-fade-in-up font-display text-[2rem] md:text-[2.75rem] font-light text-brown-deep text-center leading-tight">
         {COUPLE.venueTitle}
       </h2>
 
@@ -50,10 +47,6 @@ export function VenueV2() {
           </p>
           <p className="font-sans text-sm sm:text-base text-brown-medium text-center">
             {VENUE.city}
-          </p>
-
-          <p className="mt-5 font-display italic text-base sm:text-lg text-brown-deep text-center">
-            « {VENUE.description} »
           </p>
 
           {VENUE.details.length > 0 && (

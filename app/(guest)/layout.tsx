@@ -13,7 +13,7 @@ export default function GuestLayout({
           backgroundColor: '#FBF8F2',
           backgroundImage:
             "linear-gradient(rgba(251,248,242,0.5), rgba(251,248,242,0.5)), url('/images/fully_dynamique_bg.png')",
-          backgroundSize: 'auto, 100% auto',
+          backgroundSize: 'auto, 120% auto',
           backgroundRepeat: 'repeat, repeat-y',
           backgroundPosition: 'center, top center',
           backgroundAttachment: 'local, local',

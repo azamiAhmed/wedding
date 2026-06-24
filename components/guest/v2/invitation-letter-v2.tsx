@@ -1,4 +1,4 @@
-import { COUPLE } from '@/lib/constants'
+import { INVITATION } from '@/lib/constants'
 
 function CornerOrnament({ className = '' }: { className?: string }) {
   return (
@@ -35,35 +35,29 @@ export function InvitationLetterV2({ guestName }: { guestName: string }) {
           <CornerOrnament className="absolute bottom-1 left-1 h-6 w-6 -scale-y-100" />
           <CornerOrnament className="absolute bottom-1 right-1 h-6 w-6 -scale-100" />
 
-          <div className="relative flex flex-col items-center text-center">
+          <div className="relative flex flex-col justify-center text-center">
             <p className="font-sans text-[10px] sm:text-xs tracking-[0.45em] uppercase text-brown-medium">
-              Carte d&apos;invitation
+              {INVITATION.eyebrow}
             </p>
 
-            <div className="scroll-reveal mt-4 h-px w-12 bg-gold-moroccan" />
+            <div className="scroll-reveal mx-auto mt-4 h-px w-12 bg-gold-moroccan" />
 
-            <h2 className="scroll-reveal mt-6 font-display text-3xl sm:text-4xl md:text-[2.75rem] font-light text-brown-deep leading-tight">
-              {COUPLE.infoTitle}
-            </h2>
-
-            <p className="scroll-reveal mt-6 font-display italic text-lg sm:text-xl text-mauve-deep">
-              Cher / Chère{' '}
-              <span className="font-script not-italic text-2xl sm:text-3xl text-brown-deep">
-                {guestName}
-              </span>
+            <p className="scroll-reveal mt-6 w-full font-script text-3xl sm:text-4xl md:text-[2.75rem] text-brown-deep leading-tight">
+              {INVITATION.greeting(guestName)}
             </p>
 
-            <p className="scroll-reveal mt-6 font-display text-base sm:text-lg text-brown-deep leading-relaxed">
-              {COUPLE.message}
-            </p>
-            <p className="scroll-reveal mt-3 font-sans text-sm italic text-brown-medium leading-relaxed">
-              {COUPLE.submessage}
+            <p className="scroll-reveal mt-6 w-full font-display text-base sm:text-lg text-brown-deep leading-relaxed">
+              {INVITATION.body}
             </p>
 
-            <div className="scroll-reveal mt-8 flex items-center gap-3">
+            <p className="scroll-reveal mt-6 w-full font-sans text-sm italic text-brown-medium">
+              {INVITATION.closing}
+            </p>
+
+            <div className="scroll-reveal mt-3 flex items-center justify-center gap-3">
               <span className="h-px w-8 bg-gold-moroccan/60" />
               <span className="font-script text-2xl sm:text-3xl text-brown-deep">
-                Ghizlaine &amp; Ahmed
+                {INVITATION.signature}
               </span>
               <span className="h-px w-8 bg-gold-moroccan/60" />
             </div>

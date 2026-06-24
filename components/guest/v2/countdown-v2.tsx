@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { COUNTDOWN } from '@/lib/constants'
 
 const TARGET = new Date('2026-10-02T15:00:00+01:00').getTime()
 
@@ -49,16 +50,11 @@ export function CountdownV2() {
       role="region"
       aria-label="Compte à rebours avant le mariage"
     >
-      <p className="motion-safe:animate-fade-in-up font-sans text-[10px] sm:text-xs tracking-[0.4em] uppercase text-brown-medium text-center">
-        Plus que
+      <p className="motion-safe:animate-fade-in-up font-sans text-base sm:text-lg md:text-xl tracking-[0.4em] uppercase text-brown-medium text-center">
+        {COUNTDOWN.eyebrow}
       </p>
-      <h2 className="motion-safe:animate-fade-in-up mt-3 font-display text-3xl sm:text-4xl md:text-[3rem] font-light text-brown-deep text-center leading-tight">
-        avant le grand jour
-      </h2>
 
-      <div className="scroll-reveal mt-5 mx-auto h-px w-12 bg-gold-moroccan" />
-
-      <div className="mt-10 flex items-center justify-center gap-3 sm:gap-5">
+      <div className="mt-8 flex items-center justify-center gap-3 sm:gap-5">
         <Cell value={diff.days} label="Jours" />
         <span className="font-display text-3xl text-gold-moroccan/60">·</span>
         <Cell value={diff.hours} label="Heures" />
@@ -70,8 +66,14 @@ export function CountdownV2() {
         </div>
       </div>
 
-      <p className="scroll-reveal mt-10 font-display italic text-base sm:text-lg text-brown-medium text-center">
-        Vendredi 2 octobre 2026 · Casablanca
+      <h2 className="motion-safe:animate-fade-in-up mt-10 font-display text-2xl sm:text-3xl md:text-[2.5rem] font-light text-brown-deep text-center leading-tight">
+        {COUNTDOWN.title}
+      </h2>
+
+      <div className="scroll-reveal mt-5 mx-auto h-px w-12 bg-gold-moroccan" />
+
+      <p className="scroll-reveal mt-8 mx-auto w-full font-display italic text-base sm:text-lg text-brown-medium text-center">
+        {COUNTDOWN.intro}
       </p>
     </section>
   )

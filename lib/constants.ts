@@ -8,10 +8,10 @@ export const COUPLE = {
   submessage: 'Votre présence est le plus beau des cadeaux.',
   infoTitle: 'Nous nous marions',
   timelineTitle: 'Notre Histoire',
-  venueTitle: 'Lieu de la Cérémonie',
-  programTitle: 'Programme de la Journée',
+  venueTitle: 'Lieu de la cérémonie',
+  programTitle: 'Programme de la soirée',
   merciTitle: 'Merci',
-  merciMessage: 'Votre présence est notre plus belle bénédiction.',
+  merciMessage: 'Votre présence sera notre plus grande joie.',
 } as const
 
 export const COLLAGE = {
@@ -35,6 +35,34 @@ export const COLLAGE = {
     infos: 'Voir les informations pratiques',
     rsvp: 'Confirmer votre présence',
   },
+} as const
+
+export const INVITATION = {
+  eyebrow: "Carte d'invitation",
+  greeting: (name: string) => `Cher/Chère ${name}`,
+  body:
+    "Nous avons la joie de vous convier à la célébration de notre mariage le vendredi 02 octobre 2026, à Casablanca. C'est avec une grande émotion que nous nous apprêtons à unir nos vies, entourés de ceux qui comptent le plus pour nous. Votre présence à nos côtés serait pour nous un immense bonheur et rendrait cette soirée encore plus belle et inoubliable.",
+  closing: 'Avec toute notre affection,',
+  signature: 'Ghizlaine & Ahmed',
+} as const
+
+export const COUNTDOWN = {
+  eyebrow: 'Plus que',
+  title: 'avant le grand jour',
+  intro:
+    'Chaque jour qui passe nous rapproche du plus beau « oui » de notre vie, et avec lui la joie de vous retrouver à nos côtés.',
+} as const
+
+export const STORY = {
+  title: 'Notre histoire',
+  paragraphs: [
+    'Il y a des rencontres qui arrivent comme une évidence, des regards qui marquent, des moments simples qui deviennent précieux, et des histoires qui grandissent doucement, jour après jour.',
+    "Notre histoire a grandi doucement, portée par des moments simples, des liens sincères et cette certitude, de plus en plus forte, d'avoir trouvé l'un en l'autre une évidence.",
+    'Tous ces instants nous ont menés à une étape inoubliable : nos fiançailles, le 17 janvier 2026.',
+    'Depuis ce jour, nous avançons avec émotion vers ce grand moment où nous avons choisi de nous dire « oui ».',
+    "Aujourd'hui, c'est entourés de ceux que nous aimons que nous nous apprêtons à écrire le plus beau chapitre de notre vie.",
+  ],
+  photoCaption: 'Nous deux',
 } as const
 
 export interface TimelineEvent {
@@ -84,18 +112,23 @@ export interface VenueInfo {
 }
 
 export const VENUE: VenueInfo = {
-  // TODO: remplacer par le vrai lieu de réception (placeholder présentable en attendant)
-  name: 'Lieu de réception',
-  address: 'Adresse communiquée prochainement',
-  city: 'Casablanca, Maroc',
-  description: 'Un lieu magique pour célébrer notre union.',
+  name: 'Layali Palace',
+  address: 'À Bouskoura (banlieue proche de Casablanca)',
+  city: 'G94M+4H5, Bouskoura, Maroc',
+  description: '',
   details: [
-    { label: 'Accès', value: 'Indications à venir' },
-    { label: 'Parking', value: 'Parking disponible sur place' },
+    {
+      label: 'Parking',
+      value:
+        'Un parking dédié aux invités est disponible à l’entrée de la salle des fêtes.',
+    },
+    {
+      label: 'Navette',
+      value: 'Une navette sera mise à disposition de nos invités venus de loin.',
+    },
   ],
-  // No-API-key Google Maps embed — replace the query with the venue address.
-  mapsEmbedUrl: 'https://www.google.com/maps?q=Casablanca,Maroc&output=embed',
-  mapsLinkUrl: 'https://www.google.com/maps/search/?api=1&query=Casablanca+Maroc',
+  mapsEmbedUrl: 'https://www.google.com/maps?q=G94M%2B4H5,Bouskoura,Maroc&output=embed',
+  mapsLinkUrl: 'https://www.google.com/maps/search/?api=1&query=G94M%2B4H5%2CBouskoura%2CMaroc',
 }
 
 export interface Hotel {
@@ -129,11 +162,42 @@ export const METEO = {
   text: 'Des journées douces et ensoleillées (22–26°C) et des soirées plus fraîches au bord de l’océan. Prévoyez une étole ou une veste légère pour la soirée.',
 } as const
 
+export interface FaqItem {
+  q: string
+  a: string
+}
+
+export const FAQ: FaqItem[] = [
+  // TODO: ajuster les questions/réponses
+  {
+    q: 'À quelle heure dois-je arriver ?',
+    a: "L'accueil débute à 18h00. Nous vous conseillons d'arriver à l'heure pour ne rien manquer de la soirée.",
+  },
+  {
+    q: 'Quel est le dress code ?',
+    a: 'Tenue chic et élégante — laissez-vous porter par notre palette bleu & sauge.',
+  },
+  {
+    q: 'Le parking est-il disponible ?',
+    a: 'Oui, un stationnement est prévu à proximité du lieu de réception (détails à venir).',
+  },
+  {
+    q: 'Les enfants sont-ils les bienvenus ?',
+    a: 'Information communiquée prochainement.',
+  },
+  {
+    q: 'Jusqu’à quand puis-je confirmer ma présence ?',
+    a: 'Merci de confirmer dès que possible via le bouton « Confirmez votre présence ».',
+  },
+]
+
 export const LISTE_MARIAGE = {
   eyebrow: 'Votre présence avant tout',
-  title: 'Liste de mariage',
-  intro:
-    'Votre présence à nos côtés est le plus précieux des cadeaux. Si vous souhaitez néanmoins nous gâter, vous pouvez participer à notre cagnotte pour notre voyage de noces.',
+  title: 'Cagnotte de mariage',
+  intro: [
+    'Votre présence à nos côtés sera déjà le plus beau des cadeaux.',
+    'Si toutefois vous souhaitez nous témoigner une attention supplémentaire, une cagnotte sera mise à votre disposition afin de nous accompagner dans nos premiers projets à deux et dans la suite de cette belle aventure.',
+  ],
   buttonLabel: 'Participer à la cagnotte',
   // TODO: remplacer par le vrai lien de cagnotte (Leetchi, Lydia, ...)
   cagnotteUrl: '#',
@@ -142,7 +206,8 @@ export const LISTE_MARIAGE = {
 export interface ProgramEvent {
   title: string
   description: string
-  icon: 'welcome' | 'ceremony' | 'cocktail' | 'dinner' | 'dance'
+  icon: 'welcome' | 'ceremony' | 'tradition' | 'dinner' | 'cake' | 'dance'
+  time?: string
 }
 
 export const RSVP = {
@@ -189,28 +254,40 @@ export const SAVE_THE_DATE_OG = {
 
 export const PROGRAM_EVENTS: ProgramEvent[] = [
   {
+    time: '18h00',
     title: 'Accueil des invités',
-    description: 'Réception chaleureuse.',
+    description:
+      'Ouverture de la soirée et accueil de nos proches dans une ambiance chaleureuse.',
     icon: 'welcome',
   },
   {
-    title: 'Cérémonie',
-    description: 'Célébration de notre union.',
+    title: "Première entrée & signature de l'acte",
+    description:
+      "Nous ferons notre entrée dans la salle pour partager avec vous les premiers instants de cette célébration, suivi d'un moment fort et symbolique, entourés de nos familles et de nos proches.",
     icon: 'ceremony',
   },
   {
-    title: 'Cocktail',
-    description: 'Convivialité et partage.',
-    icon: 'cocktail',
+    title: 'Entrée en tenue traditionnelle',
+    description:
+      "Un clin d'œil à nos origines et à nos traditions, dans une ambiance festive et pleine d'émotion.",
+    icon: 'tradition',
   },
   {
-    title: 'Dîner',
-    description: 'Un festin pour les papilles.',
+    title: 'Dîner & célébration',
+    description:
+      'Un temps de partage, de musique et de joie autour de ceux que nous aimons.',
     icon: 'dinner',
   },
   {
-    title: 'Soirée dansante',
-    description: 'Place à la fête !',
+    title: 'Robe blanche & pièce montée',
+    description:
+      'Un moment symbolique et inoubliable autour de la coupe de la pièce montée.',
+    icon: 'cake',
+  },
+  {
+    title: 'Place à la fête',
+    description:
+      'La soirée se poursuivra en musique, en danse et en souvenirs inoubliables.',
     icon: 'dance',
   },
 ]

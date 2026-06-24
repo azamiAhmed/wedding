@@ -113,14 +113,15 @@ function Names({ guestName }: { guestName: string }) {
 function Polaroid() {
   return (
     <div className="rotate-[-3deg] bg-white-broken p-2 pb-8 shadow-[0_16px_34px_-16px_rgba(52,39,31,0.45)] transition-shadow duration-300 group-hover:shadow-[0_26px_50px_-16px_rgba(52,39,31,0.55)]">
-      {/* TODO: remplacer par la vraie photo → <Image src="/images/votre-photo.jpg" alt="Ghizlaine et Ahmed" fill sizes="..." className="object-cover" /> */}
-      <div className="relative flex aspect-[4/5] w-full items-center justify-center overflow-hidden bg-gradient-to-br from-blush/40 via-cream to-sage/25">
-        <div className="flex flex-col items-center gap-1.5 text-bordeaux/50">
-          <svg viewBox="0 0 24 24" className="h-8 w-8" fill="none" stroke="currentColor" strokeWidth="1.3" aria-hidden="true">
-            <path d="M12 21s-7-4.35-9.5-8.5C1 9.5 2.5 6 6 6c2 0 3.2 1.3 4 2.5C10.8 7.3 14 6 14 6c3.5 0 5 3.5 3.5 6.5C19 16.65 12 21 12 21z" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-          <span className="font-sans text-[8px] uppercase tracking-[0.3em]">Votre photo</span>
-        </div>
+      <div className="relative aspect-[4/5] w-full overflow-hidden bg-sand">
+        <Image
+          src="/personal/couple-2.jpg"
+          alt="Ghizlaine et Ahmed"
+          fill
+          draggable={false}
+          sizes="(max-width: 1024px) 45vw, 16vw"
+          className="pointer-events-none select-none object-cover"
+        />
       </div>
     </div>
   )
@@ -145,6 +146,7 @@ function Spot({
   delay = 0,
   movable = false,
   depth = 0,
+  domId,
   children,
 }: {
   top: number
@@ -154,11 +156,13 @@ function Spot({
   delay?: number
   movable?: boolean
   depth?: number
+  domId?: string
   children: React.ReactNode
 }) {
   return (
     <div
       data-depth={depth}
+      data-id={domId}
       data-movable={movable ? '' : undefined}
       className={cn('collage-enter collage-spot absolute', movable && 'touch-none cursor-grab active:cursor-grabbing')}
       style={{
@@ -289,7 +293,7 @@ function CollageStage({
     <section className={className} style={{ backgroundColor: `rgba(251, 248, 242, ${bgOpacity})` }} role="banner" aria-label="Accueil">
       <div ref={stageRef} className="relative" style={{ width, height }}>
         {items.map((it) => (
-          <Spot key={it.id} top={it.top} left={it.left} width={`${it.w * (it.el === 'names' ? namesScale : 1.1)}%`} z={it.z} delay={it.delay} movable={it.el !== 'names'} depth={DEPTH[it.el] ?? 0.5}>
+          <Spot key={it.id} domId={it.id} top={it.top} left={it.left} width={`${it.w * (it.el === 'names' ? namesScale : 1.1)}%`} z={it.z} delay={it.delay} movable={it.el !== 'names'} depth={DEPTH[it.el] ?? 0.5}>
             {it.action ? (
               <Clickable
                 onClick={it.action === 'rsvp' ? openRsvp : () => scrollToId(ANCHOR[it.action as keyof typeof ANCHOR])}
@@ -308,38 +312,35 @@ function CollageStage({
   )
 }
 
-/* Portrait distribution (matches the reference moodboard) */
+/* Portrait distribution (mobile reference #11 — no champagne, no ribbon) */
 const PORTRAIT: Item[] = [
-  { id: 'hyacL', el: 'hyacL', top: 30, left: 12, w: 14, z: 5 },
-  { id: 'hyacR', el: 'hyacR', top: 40, left: 87, w: 17, z: 5 },
-  { id: 'flower', el: 'flower', top: 64, left: 37, w: 20, z: 14 },
-  { id: 'ribbon', el: 'ribbon', top: 63, left: 55, w: 15, z: 12 },
-  { id: 'bouquet', el: 'bouquet', top: 79, left: 71, w: 18, z: 12 },
-  { id: 'champagne', el: 'champagne', top: 93, left: 50, w: 12, z: 12 },
-  { id: 'envOpen', el: 'envOpen', top: 26, left: 30, w: 27, z: 10, delay: 120, priority: true },
-  { id: 'names', el: 'names', top: 12, left: 50, w: 28, z: 30 },
-  { id: 'oval', el: 'oval', action: 'mariage', top: 41, left: 68, w: 26, z: 20, delay: 220 },
-  { id: 'programme', el: 'programme', action: 'programme', top: 53, left: 28, w: 24, z: 20, delay: 160 },
-  { id: 'polaroid', el: 'polaroid', action: 'histoire', top: 48, left: 48, w: 19, z: 22, delay: 300 },
-  { id: 'details', el: 'details', action: 'infos', top: 70, left: 72, w: 24, z: 20, delay: 400 },
-  { id: 'rsvp', el: 'envRsvp', action: 'rsvp', top: 84, left: 34, w: 35, z: 20, delay: 500 },
+  { id: 'hyacL', el: 'hyacL', top: 34.5, left: 54.4, w: 14, z: 5 },
+  { id: 'hyacR', el: 'hyacR', top: 57.8, left: 65.7, w: 16, z: 5 },
+  { id: 'bouquet', el: 'bouquet', top: 73, left: 30.4, w: 18, z: 12 },
+  { id: 'flower', el: 'flower', top: 76.5, left: 59.6, w: 21, z: 25 },
+  { id: 'envOpen', el: 'envOpen', top: 38.8, left: 69.8, w: 30, z: 10, delay: 120, priority: true },
+  { id: 'names', el: 'names', top: 11, left: 50, w: 28, z: 30 },
+  { id: 'oval', el: 'oval', action: 'mariage', top: 41.8, left: 28.4, w: 27, z: 20, delay: 160 },
+  { id: 'polaroid', el: 'polaroid', action: 'histoire', top: 57.8, left: 48.8, w: 23, z: 22, delay: 300 },
+  { id: 'programme', el: 'programme', action: 'programme', top: 67.7, left: 73, w: 25, z: 20, delay: 220 },
+  { id: 'details', el: 'details', action: 'infos', top: 74.8, left: 26.6, w: 25, z: 20, delay: 400 },
+  { id: 'rsvp', el: 'envRsvp', action: 'rsvp', top: 87.5, left: 47, w: 35, z: 20, delay: 500 },
 ]
 
 /* Wide distribution (xl) — spread across the width */
+/* Wide distribution (desktop reference #12 — centered cluster, champagne top-right) */
 const WIDE: Item[] = [
-  { id: 'hyacL', el: 'hyacL', top: 26, left: 8, w: 10, z: 5 },
-  { id: 'hyacR', el: 'hyacR', top: 26, left: 91, w: 12, z: 5 },
-  { id: 'flower', el: 'flower', top: 74, left: 35, w: 12, z: 14 },
-  { id: 'ribbon', el: 'ribbon', top: 53, left: 59, w: 13, z: 16 },
-  { id: 'bouquet', el: 'bouquet', top: 76, left: 85, w: 13, z: 12 },
-  { id: 'champagne', el: 'champagne', top: 88, left: 50, w: 6, z: 12 },
-  { id: 'envOpen', el: 'envOpen', top: 44, left: 19, w: 16, z: 10, delay: 120, priority: true },
-  { id: 'names', el: 'names', top: 16, left: 50, w: 19, z: 30 },
-  { id: 'oval', el: 'oval', action: 'mariage', top: 37, left: 78, w: 15, z: 20, delay: 220 },
-  { id: 'programme', el: 'programme', action: 'programme', top: 58, left: 27, w: 15, z: 20, delay: 160 },
-  { id: 'polaroid', el: 'polaroid', action: 'histoire', top: 51, left: 45, w: 12, z: 22, delay: 300 },
-  { id: 'details', el: 'details', action: 'infos', top: 65, left: 74, w: 16, z: 20, delay: 400 },
-  { id: 'rsvp', el: 'envRsvp', action: 'rsvp', top: 80, left: 23, w: 21, z: 20, delay: 500 },
+  { id: 'hyacL', el: 'hyacL', top: 30.1, left: 15.8, w: 10, z: 5 },
+  { id: 'hyacR', el: 'hyacR', top: 49.9, left: 74, w: 11, z: 5 },
+  { id: 'flower', el: 'flower', top: 75.4, left: 40.9, w: 12, z: 25 },
+  { id: 'ribbon', el: 'ribbon', top: 39.4, left: 62.8, w: 11, z: 16 },
+  { id: 'envOpen', el: 'envOpen', top: 41.2, left: 24.4, w: 16, z: 10, delay: 120, priority: true },
+  { id: 'names', el: 'names', top: 14, left: 48, w: 19, z: 30 },
+  { id: 'oval', el: 'oval', action: 'mariage', top: 49.3, left: 63.5, w: 15, z: 20, delay: 220 },
+  { id: 'programme', el: 'programme', action: 'programme', top: 54.1, left: 37.5, w: 15, z: 20, delay: 160 },
+  { id: 'polaroid', el: 'polaroid', action: 'histoire', top: 61.5, left: 50.9, w: 12, z: 22, delay: 300 },
+  { id: 'details', el: 'details', action: 'infos', top: 88.2, left: 33.1, w: 16, z: 20, delay: 400 },
+  { id: 'rsvp', el: 'envRsvp', action: 'rsvp', top: 79.5, left: 66.3, w: 21, z: 20, delay: 500 },
 ]
 
 /* Opacité du voile ivoire de la 1ʳᵉ section (masque le fond floral derrière le collage) */
