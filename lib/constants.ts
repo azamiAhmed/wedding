@@ -65,37 +65,6 @@ export const STORY = {
   photoCaption: 'Nous deux',
 } as const
 
-export interface TimelineEvent {
-  date: string
-  dateTime: string
-  title: string
-  description: string
-}
-
-export const TIMELINE_EVENTS: TimelineEvent[] = [
-  {
-    date: '24 Avril 2025',
-    dateTime: '2025-04-24',
-    title: 'La Rencontre',
-    description:
-      'Le début de notre histoire, un moment inattendu qui a tout changé.',
-  },
-  {
-    date: '17 Janvier 2026',
-    dateTime: '2026-01-17',
-    title: 'Les Fiançailles',
-    description:
-      'Le « oui » qui scelle notre promesse, une évidence depuis le premier jour.',
-  },
-  {
-    date: '2 Octobre 2026',
-    dateTime: '2026-10-02',
-    title: 'Le Jour J',
-    description:
-      'Le plus beau chapitre commence, entourés de ceux que nous aimons.',
-  },
-]
-
 interface VenueDetail {
   label: string
   value: string
@@ -161,35 +130,6 @@ export const METEO = {
   title: 'Début octobre à Casablanca',
   text: 'Des journées douces et ensoleillées (22–26°C) et des soirées plus fraîches au bord de l’océan. Prévoyez une étole ou une veste légère pour la soirée.',
 } as const
-
-export interface FaqItem {
-  q: string
-  a: string
-}
-
-export const FAQ: FaqItem[] = [
-  // TODO: ajuster les questions/réponses
-  {
-    q: 'À quelle heure dois-je arriver ?',
-    a: "L'accueil débute à 18h00. Nous vous conseillons d'arriver à l'heure pour ne rien manquer de la soirée.",
-  },
-  {
-    q: 'Quel est le dress code ?',
-    a: 'Tenue chic et élégante — laissez-vous porter par notre palette bleu & sauge.',
-  },
-  {
-    q: 'Le parking est-il disponible ?',
-    a: 'Oui, un stationnement est prévu à proximité du lieu de réception (détails à venir).',
-  },
-  {
-    q: 'Les enfants sont-ils les bienvenus ?',
-    a: 'Information communiquée prochainement.',
-  },
-  {
-    q: 'Jusqu’à quand puis-je confirmer ma présence ?',
-    a: 'Merci de confirmer dès que possible via le bouton « Confirmez votre présence ».',
-  },
-]
 
 export const LISTE_MARIAGE = {
   eyebrow: 'Votre présence avant tout',

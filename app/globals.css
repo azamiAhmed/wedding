@@ -371,124 +371,11 @@
 .section-details.in-view .scroll-reveal:nth-child(2) { animation-delay: 250ms; }
 .section-details.in-view .scroll-reveal:nth-child(3) { animation-delay: 400ms; }
 
-/* === Alliance Rings: Scroll-Driven Animation === */
-
-/* Named scroll timeline on guest scroll container */
-.guest-scroll-container {
-  scroll-timeline-name: --guest-scroll;
-}
-
-/*
- * Alliance rings — scroll-driven descent + convergence.
- * 0-82%: descent on the sides
- * 82-100%: convergence toward center with glow
- */
-
-/* --- Mobile keyframes (default) --- */
-
-@keyframes allianceLeftMove {
-  0%   { opacity: 0;    transform: translate(-42vw, -40vh) scale(0.4); }
-  8%   { opacity: 0.2;  transform: translate(-42vw, -38vh) scale(0.45); }
-  25%  { opacity: 0.2;  transform: translate(-42vw, -28vh) scale(0.45); }
-  50%  { opacity: 0.25; transform: translate(-42vw, -12vh) scale(0.5); }
-  75%  { opacity: 0.3;  transform: translate(-42vw, 4vh) scale(0.55); }
-  82%  { opacity: 0.35; transform: translate(-42vw, 12vh) scale(0.6); }
-  90%  { opacity: 0.6;  transform: translate(-20vw, 22vh) scale(0.65); }
-  96%  { opacity: 0.85; transform: translate(-40px, 22vh) scale(0.74); }
-  100% { opacity: 1;    transform: translate(-25px, 22vh) scale(0.8); }
-}
-
-@keyframes allianceRightMove {
-  0%   { opacity: 0;    transform: translate(42vw, -40vh) scale(0.4); }
-  8%   { opacity: 0.2;  transform: translate(42vw, -38vh) scale(0.45); }
-  25%  { opacity: 0.2;  transform: translate(42vw, -28vh) scale(0.45); }
-  50%  { opacity: 0.25; transform: translate(42vw, -12vh) scale(0.5); }
-  75%  { opacity: 0.3;  transform: translate(42vw, 4vh) scale(0.55); }
-  82%  { opacity: 0.35; transform: translate(42vw, 12vh) scale(0.6); }
-  90%  { opacity: 0.6;  transform: translate(20vw, 22vh) scale(0.65); }
-  96%  { opacity: 0.85; transform: translate(40px, 22vh) scale(0.74); }
-  100% { opacity: 1;    transform: translate(25px, 22vh) scale(0.8); }
-}
-
-/* --- Desktop keyframes (≥768px) --- */
-
-@keyframes allianceLeftMoveLg {
-  0%   { opacity: 0;    transform: translate(-44vw, -40vh) scale(0.5); }
-  8%   { opacity: 0.2;  transform: translate(-44vw, -38vh) scale(0.55); }
-  25%  { opacity: 0.2;  transform: translate(-44vw, -26vh) scale(0.55); }
-  50%  { opacity: 0.25; transform: translate(-44vw, -8vh) scale(0.6); }
-  75%  { opacity: 0.3;  transform: translate(-44vw, 8vh) scale(0.65); }
-  82%  { opacity: 0.35; transform: translate(-44vw, 16vh) scale(0.75); }
-  90%  { opacity: 0.6;  transform: translate(-22vw, 22vh) scale(0.9); }
-  96%  { opacity: 0.85; transform: translate(-50px, 22vh) scale(1.15); }
-  100% { opacity: 1;    transform: translate(-35px, 22vh) scale(1.3); }
-}
-
-@keyframes allianceRightMoveLg {
-  0%   { opacity: 0;    transform: translate(44vw, -40vh) scale(0.5); }
-  8%   { opacity: 0.2;  transform: translate(44vw, -38vh) scale(0.55); }
-  25%  { opacity: 0.2;  transform: translate(44vw, -26vh) scale(0.55); }
-  50%  { opacity: 0.25; transform: translate(44vw, -8vh) scale(0.6); }
-  75%  { opacity: 0.3;  transform: translate(44vw, 8vh) scale(0.65); }
-  82%  { opacity: 0.35; transform: translate(44vw, 16vh) scale(0.75); }
-  90%  { opacity: 0.6;  transform: translate(22vw, 22vh) scale(0.9); }
-  96%  { opacity: 0.85; transform: translate(50px, 22vh) scale(1.15); }
-  100% { opacity: 1;    transform: translate(35px, 22vh) scale(1.3); }
-}
-
-/* Default: rings hidden (graceful degradation for unsupported browsers) */
-.alliance-rings-container {
-  display: none;
-}
-
-@supports (animation-timeline: scroll()) {
-  .alliance-rings-container {
-    display: block;
-  }
-
-  .alliance-ring-left,
-  .alliance-ring-right {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    /* Centering: half of width (90px) and height (135px) from component */
-    margin-left: calc(90px / -2);
-    margin-top: calc(135px / -2);
-    opacity: 0;
-  }
-
-  .alliance-ring-left {
-    animation: allianceLeftMove linear both;
-    animation-timeline: --guest-scroll;
-  }
-
-  .alliance-ring-right {
-    animation: allianceRightMove linear both;
-    animation-timeline: --guest-scroll;
-  }
-}
-
-/* Desktop: switch to larger keyframes */
-@media (min-width: 768px) {
-  @supports (animation-timeline: scroll()) {
-    .alliance-ring-left {
-      animation-name: allianceLeftMoveLg;
-    }
-    .alliance-ring-right {
-      animation-name: allianceRightMoveLg;
-    }
-  }
-}
-
-/* Landscape mobile only: disable snap + rings — too cramped for full-screen sections */
+/* Landscape mobile only: disable snap — too cramped for full-screen sections */
 @media (orientation: landscape) and (max-height: 500px) {
   .guest-scroll-container {
     scroll-snap-type: none;
     overflow-y: auto;
-  }
-
-  .alliance-rings-container {
-    display: none !important;
   }
 }
 
@@ -697,10 +584,6 @@
 
   .rsvp-pulse {
     animation: none !important;
-  }
-
-  .alliance-rings-container {
-    display: none !important;
   }
 
   .envelope-container {
