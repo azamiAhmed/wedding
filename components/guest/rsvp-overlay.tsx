@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { CheckCircle } from 'lucide-react'
 import { type Guest } from '@/lib/db/schema'
 import { RSVP } from '@/lib/constants'
@@ -42,6 +42,19 @@ export function RsvpOverlay({
   >(null)
   const [error, setError] = useState<string | null>(null)
   const [currentStatus, setCurrentStatus] = useState(initialStatus)
+
+  // Allow other components (e.g. the collage RSVP envelope) to open the overlay
+  useEffect(() => {
+    function handleExternalOpen() {
+      setIsOpen(true)
+      setPersonsCount(savedPersonsCount)
+      setView(currentStatus !== 'pending' ? 'returning' : 'form')
+      setResultType(null)
+      setError(null)
+    }
+    window.addEventListener('open-rsvp', handleExternalOpen)
+    return () => window.removeEventListener('open-rsvp', handleExternalOpen)
+  }, [currentStatus, savedPersonsCount])
 
   function handleOpenChange(open: boolean) {
     setIsOpen(open)

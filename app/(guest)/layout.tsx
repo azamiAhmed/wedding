@@ -7,12 +7,18 @@ export default function GuestLayout({
 }) {
   return (
     <>
-      <div
-        className="hidden lg:block fixed inset-0 -z-10 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url('/images/rings/arriere plan 2.jpg')" }}
-        aria-hidden="true"
-      />
-      <main className="guest-scroll-container h-dvh overflow-y-scroll snap-y snap-mandatory bg-cream-warm lg:bg-transparent font-sans">
+      <main
+        className="guest-scroll-container h-dvh overflow-y-scroll snap-y snap-mandatory lg:snap-none font-sans"
+        style={{
+          backgroundColor: '#FBF8F2',
+          backgroundImage:
+            "linear-gradient(rgba(251,248,242,0.5), rgba(251,248,242,0.5)), url('/images/fully_dynamique_bg.png')",
+          backgroundSize: 'auto, 120% auto',
+          backgroundRepeat: 'repeat, repeat-y',
+          backgroundPosition: 'center, top center',
+          backgroundAttachment: 'local, local',
+        }}
+      >
         {children}
       </main>
       <SmoothSnapScroll />

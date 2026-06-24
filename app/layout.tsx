@@ -1,11 +1,18 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Geist } from "next/font/google";
+import { Cormorant_Garamond, Geist, Pinyon_Script } from "next/font/google";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
   subsets: ["latin"],
-  weight: ["300", "400"],
+  weight: ["300", "400", "500", "600"],
+  display: "swap",
+});
+
+const pinyon = Pinyon_Script({
+  variable: "--font-pinyon-script",
+  subsets: ["latin"],
+  weight: ["400"],
   display: "swap",
 });
 
@@ -29,7 +36,7 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <body
-        className={`${cormorant.variable} ${geistSans.variable} antialiased`}
+        className={`${cormorant.variable} ${pinyon.variable} ${geistSans.variable} antialiased`}
       >
         {children}
       </body>
