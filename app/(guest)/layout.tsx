@@ -8,7 +8,7 @@ export default function GuestLayout({
   return (
     <>
       <main
-        className="guest-scroll-container h-dvh overflow-y-scroll snap-y snap-mandatory lg:snap-none font-sans"
+        className="guest-scroll-container h-dvh overflow-y-scroll snap-none font-sans"
         style={{
           backgroundColor: '#FBF8F2',
           backgroundImage:
