@@ -141,6 +141,21 @@ export const LISTE_MARIAGE = {
   buttonLabel: 'Participer à la cagnotte',
   // TODO: remplacer par le vrai lien de cagnotte (Leetchi, Lydia, ...)
   cagnotteUrl: '#',
+  rib: {
+    heading: 'Par virement bancaire',
+    intro: 'Vous pouvez nous adresser votre participation directement par virement :',
+    holderLabel: 'Titulaire',
+    holder: 'Ahmed Azami & Ghizlaine Bouzoubaa',
+    bankLabel: 'Banque',
+    bank: 'Revolut',
+    ibanLabel: 'IBAN',
+    iban: 'FR76 2823 3000 0106 4583 1693 060',
+    ibanRaw: 'FR7628233000010645831693060',
+    bicLabel: 'BIC',
+    bic: 'REVOFRP2',
+    copyLabel: 'Copier',
+    copiedLabel: 'Copié',
+  },
 } as const
 
 export interface ProgramEvent {
@@ -152,14 +167,14 @@ export interface ProgramEvent {
 
 export const RSVP = {
   confirmButton: 'Confirmer ma présence',
-  modifyButton: 'Modifier ma réponse',
+  modifyButton: 'Confirmez votre présence',
   ariaConfirm: 'Ouvrir formulaire RSVP',
   ariaModify: 'Modifier réponse RSVP',
   overlayTitle: 'Confirmez votre présence',
   guestLabel: 'Invité',
-  stepperLabel: 'Nous serons',
-  confirmAction: 'Je serai là',
-  declineAction: 'Je ne pourrai pas',
+  stepperLabel: 'Veuillez indiquer le nombre de convives (dont vous)',
+  confirmAction: 'Avec joie, nous serons présents',
+  declineAction: 'Nous ne pourrons malheureusement pas être présents',
   successMessage: 'On a hâte de vous voir !',
   declineMessage: 'Nous comprenons, vous nous manquerez',
   loadingText: 'Confirmation...',

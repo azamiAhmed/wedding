@@ -98,14 +98,11 @@ function Clickable({
   )
 }
 
-function Names({ guestName }: { guestName: string }) {
+function Names() {
   return (
     <div className="relative w-full">
       <div className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[135%] w-[135%] -translate-x-1/2 -translate-y-1/2 rounded-[50%] bg-[radial-gradient(ellipse,_rgba(251,248,242,0.8)_38%,_rgba(251,248,242,0)_70%)]" />
       <AssetImg asset={RW.names} priority alt={`${COLLAGE.bride} & ${COLLAGE.groom}`} />
-      <p className="mx-auto mt-1 text-center font-display text-xs italic text-ink-soft sm:text-sm">
-        {COLLAGE.greeting(guestName)}
-      </p>
     </div>
   )
 }
@@ -193,8 +190,8 @@ type Item = {
   priority?: boolean
 }
 
-function renderInner(it: Item, guestName: string) {
-  if (it.el === 'names') return <Names guestName={guestName} />
+function renderInner(it: Item) {
+  if (it.el === 'names') return <Names />
   if (it.el === 'polaroid') return <Polaroid />
   return <AssetImg asset={RW[it.el]} priority={it.priority} />
 }
@@ -204,7 +201,6 @@ function CollageStage({
   width,
   height,
   items,
-  guestName,
   namesScale = 1.65,
   bgOpacity = 1,
 }: {
@@ -212,7 +208,6 @@ function CollageStage({
   width: string
   height: string
   items: Item[]
-  guestName: string
   namesScale?: number
   bgOpacity?: number
 }) {
@@ -299,10 +294,10 @@ function CollageStage({
                 onClick={it.action === 'rsvp' ? openRsvp : () => scrollToId(ANCHOR[it.action as keyof typeof ANCHOR])}
                 label={ARIA[it.action]}
               >
-                {renderInner(it, guestName)}
+                {renderInner(it)}
               </Clickable>
             ) : (
-              renderInner(it, guestName)
+              renderInner(it)
             )}
           </Spot>
         ))}
@@ -346,7 +341,7 @@ const WIDE: Item[] = [
 /* Opacité du voile ivoire de la 1ʳᵉ section (masque le fond floral derrière le collage) */
 const SECTION1_BG_OPACITY = 0.75
 
-export function CollageHome({ guestName }: { guestName: string }) {
+export function CollageHome() {
   return (
     <>
       <h1 className="sr-only">
@@ -359,7 +354,6 @@ export function CollageHome({ guestName }: { guestName: string }) {
         width={STAGE_W}
         height={STAGE_H}
         items={PORTRAIT}
-        guestName={guestName}
         bgOpacity={SECTION1_BG_OPACITY}
       />
 
@@ -369,7 +363,6 @@ export function CollageHome({ guestName }: { guestName: string }) {
         width={WIDE_W}
         height={WIDE_H}
         items={WIDE}
-        guestName={guestName}
         namesScale={1.155}
         bgOpacity={SECTION1_BG_OPACITY}
       />
