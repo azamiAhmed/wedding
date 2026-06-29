@@ -61,7 +61,7 @@ export default async function InvitePage({
 
   return (
     <>
-      <CollageHome guestName={guest.firstName} />
+      <CollageHome />
       {visible.map((section, i) => {
         const top = OVERLAY_START - step * i
         const bottom = OVERLAY_START - step * (i + 1)

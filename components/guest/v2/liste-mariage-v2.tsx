@@ -1,4 +1,5 @@
 import { COUPLE, LISTE_MARIAGE } from '@/lib/constants'
+import { RibCard } from './rib-card'
 
 function HeartFlourish() {
   return (
@@ -68,14 +69,18 @@ export function ListeMariageV2() {
             ))}
           </div>
 
-          <a
-            href={LISTE_MARIAGE.cagnotteUrl}
-            {...(hasLink ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-            aria-disabled={!hasLink}
-            className="mt-8 inline-flex min-h-12 items-center justify-center rounded-lg bg-gold-moroccan px-8 py-3 font-sans text-base font-medium text-white-broken transition-colors duration-200 hover:bg-gold-moroccan/90 active:scale-[0.97]"
-          >
-            {LISTE_MARIAGE.buttonLabel}
-          </a>
+          <RibCard />
+
+          {hasLink && (
+            <a
+              href={LISTE_MARIAGE.cagnotteUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-8 inline-flex min-h-12 items-center justify-center rounded-lg bg-gold-moroccan px-8 py-3 font-sans text-base font-medium text-white-broken transition-colors duration-200 hover:bg-gold-moroccan/90 active:scale-[0.97]"
+            >
+              {LISTE_MARIAGE.buttonLabel}
+            </a>
+          )}
         </div>
       </div>
 
