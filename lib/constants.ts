@@ -78,6 +78,9 @@ export interface VenueInfo {
   details: VenueDetail[]
   mapsEmbedUrl: string
   mapsLinkUrl: string
+  photo: string
+  photoAlt: string
+  photoCaption: string
 }
 
 export const VENUE: VenueInfo = {
@@ -85,6 +88,9 @@ export const VENUE: VenueInfo = {
   address: 'À Bouskoura (banlieue proche de Casablanca)',
   city: 'G94M+4H5, Bouskoura, Maroc',
   description: '',
+  photo: '/images/collage/layaly-palace.jpeg',
+  photoAlt: 'Salle de réception du Layali Palace illuminée de lustres',
+  photoCaption: 'Layali Palace',
   details: [
     {
       label: 'Parking',
@@ -109,9 +115,9 @@ export interface Hotel {
 export const HOTELS: Hotel[] = [
   // Recommandations (à confirmer/ajuster) — hôtels réputés de Casablanca pour les invités
   {
-    name: 'Four Seasons Casablanca',
-    area: 'Corniche · Ain Diab',
-    url: 'https://www.fourseasons.com/casablanca/',
+    name: 'Pestana Casablanca',
+    area: 'Anfa Place · Corniche',
+    url: 'https://www.pestana.com/en/hotel/pestana-casablanca',
   },
   {
     name: 'Hyatt Regency Casablanca',

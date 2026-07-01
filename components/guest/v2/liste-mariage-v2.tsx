@@ -44,7 +44,7 @@ export function ListeMariageV2() {
 
   return (
     <section
-      className="section-liste min-h-dvh snap-start flex flex-col justify-center py-20 lg:py-24 px-6 lg:px-12 bg-transparent"
+      className="section-liste min-h-dvh snap-start flex flex-col justify-center py-12 lg:py-24 px-6 lg:px-12 bg-transparent"
       role="region"
       aria-label={LISTE_MARIAGE.title}
     >
