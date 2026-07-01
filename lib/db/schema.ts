@@ -12,6 +12,7 @@ export const guests = pgTable('guests', {
   firstName: varchar('first_name', { length: 100 }).notNull(),
   lastName: varchar('last_name', { length: 100 }).notNull(),
   groupName: varchar('group_name', { length: 100 }),
+  category: varchar('category', { length: 20 }),
   maxPersons: integer('max_persons').notNull().default(1),
   status: varchar('status', { length: 20 }).notNull().default('pending'),
   personsConfirmed: integer('persons_confirmed').notNull().default(0),

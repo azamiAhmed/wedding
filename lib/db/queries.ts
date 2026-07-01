@@ -2,7 +2,11 @@ import { asc, eq } from 'drizzle-orm'
 import { db } from './index'
 import { guests, siteConfig, type Guest } from './schema'
 import { generateSlug } from '../utils'
-import { type GuestCreateInput, type GuestUpdateInput } from '../schemas/guest'
+import {
+  type GuestCreateInput,
+  type GuestUpdateInput,
+  type RsvpSubmitInput,
+} from '../schemas/guest'
 
 export async function getGuestBySlug(slug: string) {
   return db.query.guests.findFirst({
@@ -27,6 +31,23 @@ export async function createGuest(data: GuestCreateInput) {
   const result = await db
     .insert(guests)
     .values({ ...data, slug })
+    .returning()
+  return result[0]
+}
+
+export async function createRsvpSubmission(data: RsvpSubmitInput) {
+  const slug = generateSlug()
+  const result = await db
+    .insert(guests)
+    .values({
+      slug,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      category: data.category,
+      status: data.status,
+      personsConfirmed: data.status === 'confirmed' ? data.personsConfirmed : 0,
+      maxPersons: Math.max(data.personsConfirmed, 1),
+    })
     .returning()
   return result[0]
 }

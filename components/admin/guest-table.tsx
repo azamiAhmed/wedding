@@ -8,7 +8,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { StatusBadge } from './status-badge'
-import { CopyLinkButton } from './copy-link-button'
+import { CategoryBadge } from './category-badge'
 import { DeleteGuestButton } from './delete-guest-button'
 import { EditGuestButton } from './edit-guest-button'
 
@@ -24,7 +24,7 @@ export function GuestTable({ guests }: GuestTableProps) {
           <TableHead>Nom</TableHead>
           <TableHead>Statut</TableHead>
           <TableHead>Personnes</TableHead>
-          <TableHead>Lien</TableHead>
+          <TableHead>Catégorie</TableHead>
           <TableHead>Actions</TableHead>
         </TableRow>
       </TableHeader>
@@ -43,7 +43,7 @@ export function GuestTable({ guests }: GuestTableProps) {
                 : '—'}
             </TableCell>
             <TableCell>
-              <CopyLinkButton slug={guest.slug} />
+              <CategoryBadge category={guest.category} />
             </TableCell>
             <TableCell>
               <div className="flex items-center gap-3">

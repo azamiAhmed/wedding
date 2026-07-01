@@ -39,7 +39,7 @@ export const COLLAGE = {
 
 export const INVITATION = {
   eyebrow: "Carte d'invitation",
-  greeting: (name: string) => `Cher/Chère ${name}`,
+  greeting: 'Cher·e invité·e',
   body:
     "Nous avons la joie de vous convier à la célébration de notre mariage le vendredi 02 octobre 2026, à Casablanca. C'est avec une grande émotion que nous nous apprêtons à unir nos vies, entourés de ceux qui comptent le plus pour nous. Votre présence à nos côtés serait pour nous un immense bonheur et rendrait cette soirée encore plus belle et inoubliable.",
   closing: 'Avec toute notre affection,',
@@ -178,6 +178,11 @@ export const RSVP = {
   ariaModify: 'Modifier réponse RSVP',
   overlayTitle: 'Confirmez votre présence',
   guestLabel: 'Invité',
+  firstNameLabel: 'Prénom',
+  lastNameLabel: 'Nom',
+  firstNamePlaceholder: 'Votre prénom',
+  lastNamePlaceholder: 'Votre nom',
+  nameRequired: 'Merci d’indiquer votre prénom et votre nom.',
   stepperLabel: 'Veuillez indiquer le nombre de convives (dont vous)',
   confirmAction: 'Avec joie, nous serons présents',
   declineAction: 'Nous ne pourrons malheureusement pas être présents',

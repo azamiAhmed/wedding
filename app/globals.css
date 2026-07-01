@@ -379,6 +379,21 @@
   }
 }
 
+/* Mobile : le bouton RSVP flottant (position:fixed, pleine largeur) recouvre le bas
+   de l'écran. On réserve sa hauteur en bas de chaque section pour que le contenu
+   cliquable (ex. bouton « Itinéraire ») ne passe jamais dessous. */
+@media (max-width: 1023px) {
+  .guest-scroll-container .section-info,
+  .guest-scroll-container .section-countdown,
+  .guest-scroll-container .section-timeline,
+  .guest-scroll-container .section-venue,
+  .guest-scroll-container .section-program,
+  .guest-scroll-container .section-details,
+  .guest-scroll-container .section-liste {
+    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 6rem);
+  }
+}
+
 /* === Save the Date: Pigeon Voyageur Animation Keyframes === */
 
 /* Pigeon lifecycle — mobile: arc relative to center (0,0 = envelope) */
