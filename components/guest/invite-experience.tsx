@@ -1,7 +1,4 @@
-import type { Metadata } from 'next'
-import { notFound } from 'next/navigation'
-import { getGuestBySlug, getSiteConfig } from '@/lib/db/queries'
-import { OG } from '@/lib/constants'
+import { getSiteConfig } from '@/lib/db/queries'
 import { CollageHome } from '@/components/guest/v2/collage-home'
 import { CountdownV2 } from '@/components/guest/v2/countdown-v2'
 import { InvitationLetterV2 } from '@/components/guest/v2/invitation-letter-v2'
@@ -12,47 +9,31 @@ import { DetailsV2 } from '@/components/guest/v2/details-v2'
 import { ListeMariageV2 } from '@/components/guest/v2/liste-mariage-v2'
 import { RsvpOverlay } from '@/components/guest/rsvp-overlay'
 
-export async function generateMetadata(): Promise<Metadata> {
-  return {
-    title: OG.title,
-    description: OG.description,
-    openGraph: {
-      title: OG.title,
-      description: OG.description,
-      type: 'website',
-    },
-  }
-}
+export type InviteCategory = 'famille' | 'amis'
 
 /* Dégradé d'opacité continu sur les overlays desktop. Le bas d'une section a la
    même opacité que le haut de la suivante → transition seamless. */
 const OVERLAY_START = 0.92
 const OVERLAY_END = 0.35
 
-export default async function InvitePage({
-  params,
+export async function InviteExperience({
+  category,
 }: {
-  params: Promise<{ slug: string }>
+  category: InviteCategory
 }) {
-  const { slug } = await params
-
-  const guest = await getGuestBySlug(slug)
-  if (!guest) {
-    notFound()
-  }
-
   const config = await getSiteConfig()
   const showVenue = config.show_venue !== 'false'
   const showProgram = config.show_program !== 'false'
+  const showCagnotte = category === 'amis'
 
   const overlaySections = [
-    { key: 'invitation', anchor: 'notre-mariage', show: true, el: <InvitationLetterV2 guestName={guest.firstName} /> },
+    { key: 'invitation', anchor: 'notre-mariage', show: true, el: <InvitationLetterV2 /> },
     { key: 'countdown', show: true, el: <CountdownV2 /> },
     { key: 'story', anchor: 'notre-histoire', show: true, el: <StoryV2 /> },
     { key: 'program', anchor: 'programme', show: showProgram, el: <ProgramV2 /> },
     { key: 'venue', anchor: 'lieu', show: showVenue, el: <VenueV2 /> },
     { key: 'details', anchor: 'infos-pratiques', show: true, el: <DetailsV2 /> },
-    { key: 'liste', anchor: 'liste-mariage', show: true, el: <ListeMariageV2 /> },
+    { key: 'liste', anchor: 'liste-mariage', show: true, el: <ListeMariageV2 showCagnotte={showCagnotte} /> },
   ]
 
   const visible = overlaySections.filter((s) => s.show)
@@ -79,12 +60,7 @@ export default async function InvitePage({
           </div>
         )
       })}
-      <RsvpOverlay
-        slug={slug}
-        guestFirstName={guest.firstName}
-        initialStatus={guest.status}
-        initialPersonsConfirmed={guest.personsConfirmed}
-      />
+      <RsvpOverlay category={category} />
     </>
   )
 }

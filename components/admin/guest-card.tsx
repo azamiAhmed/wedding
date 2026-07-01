@@ -1,6 +1,6 @@
 import { type Guest } from '@/lib/db/schema'
 import { StatusBadge } from './status-badge'
-import { CopyLinkButton } from './copy-link-button'
+import { CategoryBadge } from './category-badge'
 import { DeleteGuestButton } from './delete-guest-button'
 import { EditGuestButton } from './edit-guest-button'
 
@@ -20,7 +20,10 @@ export function GuestCardList({ guests }: GuestCardListProps) {
             <p className="font-medium text-brown-deep">
               {guest.lastName} {guest.firstName}
             </p>
-            <StatusBadge status={guest.status} />
+            <div className="flex items-center gap-2">
+              <CategoryBadge category={guest.category} />
+              <StatusBadge status={guest.status} />
+            </div>
           </div>
           <div className="flex items-center justify-between text-sm text-brown-medium">
             <span>
@@ -29,7 +32,6 @@ export function GuestCardList({ guests }: GuestCardListProps) {
                 : '—'}
             </span>
             <div className="flex items-center gap-3">
-              <CopyLinkButton slug={guest.slug} />
               <EditGuestButton guest={guest} />
               <DeleteGuestButton
                 guestId={guest.id}

@@ -1,4 +1,22 @@
+import Image from 'next/image'
 import { COUPLE, VENUE } from '@/lib/constants'
+
+function VenuePhoto() {
+  return (
+    <div className="rotate-[-1.5deg] bg-white-broken p-3 pb-8 shadow-[0_18px_44px_-18px_rgba(52,39,31,0.45)]">
+      <div className="relative aspect-[3/2] w-full overflow-hidden bg-sand">
+        <Image
+          src={VENUE.photo}
+          alt={VENUE.photoAlt}
+          fill
+          sizes="(max-width: 1024px) 85vw, 40vw"
+          className="object-cover"
+        />
+      </div>
+      <p className="mt-2.5 text-center font-script text-2xl text-ink">{VENUE.photoCaption}</p>
+    </div>
+  )
+}
 
 function PinIcon() {
   return (
@@ -21,7 +39,7 @@ function PinIcon() {
 export function VenueV2() {
   return (
     <section
-      className="section-venue min-h-dvh snap-start flex flex-col justify-center px-6 lg:px-12 py-16 lg:py-20 bg-transparent"
+      className="section-venue min-h-dvh snap-start flex flex-col justify-center px-6 lg:px-12 py-10 lg:py-20 bg-transparent"
       role="region"
       aria-label={COUPLE.venueTitle}
     >
@@ -30,6 +48,10 @@ export function VenueV2() {
       </h2>
 
       <div className="scroll-reveal mt-5 mx-auto h-px w-12 bg-gold-moroccan" />
+
+      <div className="scroll-reveal mt-10 mx-auto w-full sm:w-[28rem] lg:w-[34rem]">
+        <VenuePhoto />
+      </div>
 
       <div className="scroll-reveal mt-10 w-full">
         <div className="relative px-6 py-8 sm:px-10 sm:py-10 border border-gold-moroccan/30 bg-cream-warm/85 backdrop-blur-sm shadow-[0_10px_40px_-20px_rgba(58,36,52,0.3)]">

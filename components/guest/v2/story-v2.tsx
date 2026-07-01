@@ -21,7 +21,7 @@ function StoryPhoto() {
 export function StoryV2() {
   return (
     <section
-      className="section-timeline min-h-dvh snap-start flex flex-col justify-center bg-transparent px-6 lg:px-12 py-16 lg:py-20"
+      className="section-timeline min-h-dvh snap-start flex flex-col justify-center bg-transparent px-6 lg:px-12 py-10 lg:py-20"
       role="region"
       aria-label={STORY.title}
     >

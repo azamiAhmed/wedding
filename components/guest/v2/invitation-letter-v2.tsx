@@ -17,7 +17,7 @@ function CornerOrnament({ className = '' }: { className?: string }) {
   )
 }
 
-export function InvitationLetterV2({ guestName }: { guestName: string }) {
+export function InvitationLetterV2() {
   return (
     <section
       className="section-info min-h-dvh snap-start flex flex-col justify-center px-6 lg:px-12 bg-transparent"
@@ -43,7 +43,7 @@ export function InvitationLetterV2({ guestName }: { guestName: string }) {
             <div className="scroll-reveal mx-auto mt-4 h-px w-12 bg-gold-moroccan" />
 
             <p className="scroll-reveal mt-6 w-full font-script text-3xl sm:text-4xl md:text-[2.75rem] text-brown-deep leading-tight">
-              {INVITATION.greeting(guestName)}
+              {INVITATION.greeting}
             </p>
 
             <p className="scroll-reveal mt-6 w-full font-display text-base sm:text-lg text-brown-deep leading-relaxed">
