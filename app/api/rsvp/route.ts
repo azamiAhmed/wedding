@@ -34,7 +34,8 @@ export async function POST(request: Request) {
       },
       { status: 201 }
     )
-  } catch {
+  } catch (e) {
+    console.error('[POST /api/rsvp] échec création RSVP:', e)
     return NextResponse.json(
       { error: 'Erreur serveur', code: 'INTERNAL_ERROR' },
       { status: 500 }

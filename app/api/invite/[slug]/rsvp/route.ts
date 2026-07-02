@@ -42,7 +42,8 @@ export async function PUT(
     const updated = await updateGuestRsvp(slug, status, finalPersonsConfirmed)
 
     return NextResponse.json(updated)
-  } catch {
+  } catch (e) {
+    console.error('[PUT /api/invite/[slug]/rsvp] échec mise à jour RSVP:', e)
     return NextResponse.json(
       { error: 'Erreur serveur', code: 'INTERNAL_ERROR' },
       { status: 500 }
